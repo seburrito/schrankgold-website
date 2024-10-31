@@ -1,0 +1,138 @@
+/* Define Avenir Roman */
+@font-face {
+    font-family: 'Avenir Roman';
+    src: url('./fonts/AvenirLTStd-Roman.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define Avenir Black */
+@font-face {
+    font-family: 'Avenir Black';
+    src: url('./fonts/AvenirLTStd-Black.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Define Avenir Book */
+@font-face {
+    font-family: 'Avenir Book';
+    src: url('./fonts/AvenirLTStd-Book.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 200vh;
+    background-color: #990036;
+}
+
+.wardrobe {
+    position: fixed; /* Make the wardrobe fixed to the viewport */
+    top: 37%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the wardrobe */
+    perspective: 1000px; /* Enable 3D transforms */
+    width: 400px; /* Set width explicitly if not set */
+    height: auto;
+}
+
+#wardrobe-svg {
+    width: 100%;
+    height: auto;
+}
+
+/* Close the left door */
+#door-left-group {
+    transform-origin: right center;
+    transform-box: fill-box; /* Use the element's bounding box */
+    /* transition: transform 0.5s; */
+}
+
+/* Close the right door */
+#door-right-group {
+    transform-origin: left center;
+    transform-box: fill-box;
+    /* transition: transform 0.5s; */
+}
+
+#door-left-group, #door-right-group {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.2s linear;
+}
+
+
+/* Open the left door on hover
+.wardrobe:hover #door-left-group {
+    transform: rotateY(0deg);
+}
+
+Open the right door on hover
+.wardrobe:hover #door-right-group {
+    transform: rotateY(0deg);
+} 
+*/
+
+/* Style for the text container */
+.schrankgold-title {
+    position: fixed; /* Keep it fixed in the viewport */
+    bottom: 37%; /* Adjust this value to position it exactly between wardrobe and subtitle */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+}
+
+/* Styles for SCHRANK */
+.schrank {
+    font-family: 'Avenir Roman', sans-serif;
+    font-size: 115px; /* Adjust as needed */
+    color: white;
+}
+
+/* Styles for GOLD */
+.gold {
+    font-family: 'Avenir Black', sans-serif;
+    font-size: 115px; /* Adjust as needed */
+    color: #CA9921;
+}
+
+/* Styles for best second (to be added later) */
+.best-second-subtitle {
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 80px; /* Adjust as needed */
+    color: white;
+    position: fixed; /* Keep the text fixed in the viewport */
+    bottom: 30%; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%) translateY(100%); /* Start off-screen */
+    opacity: 0; /* Start hidden */
+    display: flex;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    letter-spacing: 10px; /* Increase this value to add more spacing */
+}
+
+@keyframes wobble {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(11deg); }
+    40% { transform: rotate(-6deg); }
+    60% { transform: rotate(3deg); }
+    80% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.wobble-animation {
+    animation: wobble 2s ease-out forwards; /* Runs the wobble animation for 2 seconds and stops */
+    transform-origin: 50% 30%; /* Center horizontally, slightly higher vertically */
+}
