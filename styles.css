@@ -31,17 +31,28 @@
     box-sizing: border-box;
 }
 
-body {
+.landing-section {
+    position: relative; /* Ensure absolute elements are positioned relative to this section */
     height: 200vh;
+    perspective: 1000px; /* Enable 3D transforms */
     background-color: #990036;
 }
 
+.landing-section-content {
+    position: fixed !important;
+    z-index: 10; /* Add this */
+}
+
+
+.landing-section.animation-complete .landing-section-content {
+    position: absolute;
+}
+
+
 .wardrobe {
-    position: fixed; /* Make the wardrobe fixed to the viewport */
     top: 37%;
     left: 50%;
     transform: translate(-50%, -50%); /* Center the wardrobe */
-    perspective: 1000px; /* Enable 3D transforms */
     width: 400px; /* Set width explicitly if not set */
     height: auto;
 }
@@ -66,9 +77,9 @@ body {
 }
 
 #door-left-group, #door-right-group {
-    will-change: transform;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
+    /* will-change: transform; */
+    /* transform-style: preserve-3d; */
+    /* backface-visibility: hidden; */
     transition: transform 0.2s linear;
 }
 
@@ -86,7 +97,6 @@ Open the right door on hover
 
 /* Style for the text container */
 .schrankgold-title {
-    position: fixed; /* Keep it fixed in the viewport */
     bottom: 37%; /* Adjust this value to position it exactly between wardrobe and subtitle */
     left: 50%;
     transform: translateX(-50%);
@@ -113,7 +123,6 @@ Open the right door on hover
     font-family: 'Avenir Book', sans-serif;
     font-size: 80px; /* Adjust as needed */
     color: white;
-    position: fixed; /* Keep the text fixed in the viewport */
     bottom: 30%; /* Adjust as needed */
     left: 50%;
     transform: translateX(-50%) translateY(100%); /* Start off-screen */
@@ -135,4 +144,13 @@ Open the right door on hover
 .wobble-animation {
     animation: wobble 2s ease-out forwards; /* Runs the wobble animation for 2 seconds and stops */
     transform-origin: 50% 30%; /* Center horizontally, slightly higher vertically */
+}
+
+.after-section {
+    height: 200vh; /* Makes it twice the viewport height */
+    background-color: #f0f0f0; /* Light gray background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
 }
