@@ -1,156 +1,205 @@
-/* Define Avenir Roman */
+/* ============ FONT FACES ============ */
 @font-face {
-    font-family: 'Avenir Roman';
-    src: url('./fonts/AvenirLTStd-Roman.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Avenir Roman";
+  src: url("./fonts/AvenirLTStd-Roman.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Define Avenir Black */
 @font-face {
-    font-family: 'Avenir Black';
-    src: url('./fonts/AvenirLTStd-Black.otf') format('opentype');
-    font-weight: bold;
-    font-style: normal;
+  font-family: "Avenir Black";
+  src: url("./fonts/AvenirLTStd-Black.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
 }
 
-/* Define Avenir Book */
 @font-face {
-    font-family: 'Avenir Book';
-    src: url('./fonts/AvenirLTStd-Book.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Avenir Book";
+  src: url("./fonts/AvenirLTStd-Book.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-
-
-/* General Styles */
+/* ================== RESET + GENERAL ================== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  background-color: #990036; /* Apply red background to the whole page */
+}
+
+/* ================== LANDING SECTION ================== */
 .landing-section {
-    position: relative; /* Ensure absolute elements are positioned relative to this section */
-    height: 200vh;
-    perspective: 1000px; /* Enable 3D transforms */
-    background-color: #990036;
+  position: relative;
+  /* 200vh or any large value so there's enough scroll space 
+       for the pinned container to remain until the user scrolls far enough. */
+  height: 200vh;
 }
 
-.landing-section-content {
-    position: fixed !important;
-    z-index: 10; /* Add this */
+/* 
+     content-container: STICKY at top:0, min-height:100vh 
+     so it remains pinned for exactly 100vh of scrolling. 
+     Then it naturally scrolls off.
+  */
+.content-container {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+
+  /* Center its children (wardrobe, brand text, subtitle) vertically + horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px; /* spacing between the wardrobe, brand text, and subtitle */
 }
 
-
-.landing-section.animation-complete .landing-section-content {
-    position: absolute;
-}
-
-
+/* ================== WARDROBE (SVG) ================== */
 .wardrobe {
-    top: 37%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Center the wardrobe */
-    width: 400px; /* Set width explicitly if not set */
-    height: auto;
+  /* Adjust as needed to control the SVG size. */
+  width: 400px;
+  height: auto;
 }
 
+/* If you like a 3D transform on the doors, the parent's perspective can remain:
+     If so, you could do: 
+     .landing-section { perspective: 1000px; } 
+     Then #door-left-group, #door-right-group rotate in 3D. 
+  */
 #wardrobe-svg {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
+  shape-rendering: geometricPrecision;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
-/* Close the left door */
-#door-left-group {
-    transform-origin: right center;
-    transform-box: fill-box; /* Use the element's bounding box */
-    /* transition: transform 0.5s; */
-}
-
-/* Close the right door */
+/* Doors rotate from 180deg (closed) to 0deg (open) in JS. */
+#door-left-group,
 #door-right-group {
-    transform-origin: left center;
-    transform-box: fill-box;
-    /* transition: transform 0.5s; */
+  will-change: transform; /* Suggest GPU optimization */
+  transform-origin: center; /* Ensure smooth transformations */
+  transform-box: fill-box;
+  transform: translateZ(0); /* Force hardware acceleration */
+  transition: transform 0.2s linear;
+}
+#door-left-group {
+  transform-origin: right center;
+  transform-box: fill-box;
+}
+#door-right-group {
+  transform-origin: left center;
+  transform-box: fill-box;
 }
 
-#door-left-group, #door-right-group {
-    /* will-change: transform; */
-    /* transform-style: preserve-3d; */
-    /* backface-visibility: hidden; */
-    transition: transform 0.2s linear;
-}
-
-
-/* Open the left door on hover
-.wardrobe:hover #door-left-group {
-    transform: rotateY(0deg);
-}
-
-Open the right door on hover
-.wardrobe:hover #door-right-group {
-    transform: rotateY(0deg);
-} 
-*/
-
-/* Style for the text container */
+/* ================== BRAND TEXT ================== */
 .schrankgold-title {
-    bottom: 37%; /* Adjust this value to position it exactly between wardrobe and subtitle */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: -30px; /* Reduce the space below the title */
+  gap: -2px; /* Slight overlap between SCHRANK and GOLD */
 }
 
-/* Styles for SCHRANK */
-.schrank {
-    font-family: 'Avenir Roman', sans-serif;
-    font-size: 115px; /* Adjust as needed */
-    color: white;
-}
-
-/* Styles for GOLD */
+.schrank,
 .gold {
-    font-family: 'Avenir Black', sans-serif;
-    font-size: 115px; /* Adjust as needed */
-    color: #CA9921;
+  display: inline-block; /* Prevent unnecessary spacing between elements */
+  margin: 0; /* Remove any default margins */
+  padding: 0; /* Remove any padding */
+  line-height: 1; /* Ensure consistent alignment */
 }
 
-/* Styles for best second (to be added later) */
+.schrank {
+  font-family: "Avenir Roman", sans-serif;
+  font-size: clamp(
+    24px,
+    10vw,
+    115px
+  ); /* Minimum: 24px, Scales: 5% of viewport width, Maximum: 115px */
+  color: white;
+}
+.gold {
+  font-family: "Avenir Black", sans-serif;
+  font-size: clamp(24px, 10vw, 115px);
+  color: #ca9921;
+}
+
+/* ================== SUBTITLE TEXT ================== */
 .best-second-subtitle {
-    font-family: 'Avenir Book', sans-serif;
-    font-size: 80px; /* Adjust as needed */
-    color: white;
-    bottom: 30%; /* Adjust as needed */
-    left: 50%;
-    transform: translateX(-50%) translateY(100%); /* Start off-screen */
-    opacity: 0; /* Start hidden */
-    display: flex;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-    letter-spacing: 10px; /* Increase this value to add more spacing */
+  font-family: "Avenir Book", sans-serif;
+  font-size: clamp(
+    16px,
+    6vw,
+    75px
+  ); /* Minimum: 16px, Scales: 4% of viewport width, Maximum: 80px */
+  color: white;
+  letter-spacing: clamp(8px, 6vw, 12px);
+  /* Start hidden off-screen */
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
 
+/* ================== WOBBLE ANIMATION ================== */
 @keyframes wobble {
-    0% { transform: rotate(0deg); }
-    20% { transform: rotate(11deg); }
-    40% { transform: rotate(-6deg); }
-    60% { transform: rotate(3deg); }
-    80% { transform: rotate(-2deg); }
-    100% { transform: rotate(0deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(11deg);
+  }
+  40% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(3deg);
+  }
+  80% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
-
 .wobble-animation {
-    animation: wobble 2s ease-out forwards; /* Runs the wobble animation for 2 seconds and stops */
-    transform-origin: 50% 30%; /* Center horizontally, slightly higher vertically */
+  animation: wobble 2s ease-out forwards;
+  transform-origin: 50% 30%;
 }
 
-.after-section {
-    height: 200vh; /* Makes it twice the viewport height */
-    background-color: #f0f0f0; /* Light gray background */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
+/* ================== SECTION STYLES ================== */
+/* General Section Styles */
+section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+h2 {
+  font-family: "Avenir Black", sans-serif;
+  font-size: 36px;
+  color: #ca9921;
+  margin-bottom: 20px;
+}
+
+p {
+  font-family: "Avenir Book", sans-serif;
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* About Section */
+.about-section {
+  background-color: #f9f9f9; /* Light background */
+}
+
+/* Location Section */
+.location-section {
+  background-color: #fff; /* White background */
+}
+
+/* Contact Section */
+.contact-section {
+  background-color: #f0f0f0; /* Slightly darker gray */
 }
