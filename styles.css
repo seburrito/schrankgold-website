@@ -29,6 +29,112 @@
 
 body {
   background-color: #990036; /* Apply red background to the whole page */
+  font-family: "Avenir Book", sans-serif; /* Regular font for text */
+  font-size: 20px; /* Slightly larger paragraph size */
+  color: #333; /* Neutral dark gray */
+  line-height: 1.8; /* Improve readability */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ================== NAVIGATION BAR ================== */
+
+nav {
+  position: sticky; /* Sticks to the top of the viewport */
+  top: 0; /* Places it below the landing page */
+  left: 0;
+  width: 100%; /* Full width of the viewport */
+  background-color: #990036;
+  z-index: 1000; /* Ensures it's above other elements */
+  padding: 10px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+nav .hamburger-menu {
+  display: none;
+  opacity: 0; /* Start fully transparent */
+  visibility: hidden; /* Hidden from view but still occupies space */
+  pointer-events: none; /* Prevent clicks when not visible */
+  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition for opacity and visibility */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+nav .hamburger-menu.visible {
+  visibility: visible; /* Make it visible */
+  opacity: 1; /* Fully opaque */
+  pointer-events: auto; /* Make it clickable */
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Centers the menu items */
+  gap: 30px;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  color: white;
+  text-transform: lowercase;
+  transition: color 0.3s;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #ca9921;
+}
+
+/* Clear fix for floated li elements (if needed) */
+nav::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive Styles for Navigation*/
+@media screen and (max-width: 850px) {
+  nav {
+    position: sticky; /* Sticks to the top of the viewport */
+  }
+  nav ul {
+    display: none; /* Hide the menu */
+    flex-direction: column;
+    background-color: #990036;
+    position: absolute;
+    top: 100%; /* Position below the navbar */
+    left: 0;
+    width: 100%; /* Full-width menu */
+    padding: 5px 0 20px 5px; /* Up Right Down Left */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  nav ul.active {
+    display: flex; /* Show the menu when active */
+    transition: all 0.3s ease-in-out; /* Smooth transition when opening */
+  }
+
+  nav .hamburger-menu {
+    display: block; /* Show hamburger button */
+  }
+
+  .empty-section {
+    display: none;
+  }
 }
 
 /* ================== LANDING SECTION ================== */
@@ -75,6 +181,7 @@ body {
   shape-rendering: geometricPrecision;
   backface-visibility: hidden;
   transform-style: preserve-3d;
+  transition: transform 0.3s ease-out; /* Smooth scaling effect */
 }
 
 /* Doors rotate from 180deg (closed) to 0deg (open) in JS. */
@@ -84,7 +191,7 @@ body {
   transform-origin: center; /* Ensure smooth transformations */
   transform-box: fill-box;
   transform: translateZ(0); /* Force hardware acceleration */
-  transition: transform 0.2s linear;
+  transition: transform 0.4s linear;
 }
 #door-left-group {
   transform-origin: right center;
@@ -168,38 +275,250 @@ body {
   transform-origin: 50% 30%;
 }
 
-/* ================== SECTION STYLES ================== */
-/* General Section Styles */
+/* ================== GENERAL SECTION STYLES ================== */
 section {
-  padding: 50px 20px;
-  text-align: center;
+  padding: 120px 20px; /* More padding around each section */
+  text-align: center; /* Center-align content */
+  background-color: #f9f9f9; /* Light gray background */
 }
 
 h2 {
-  font-family: "Avenir Black", sans-serif;
-  font-size: 36px;
-  color: #ca9921;
-  margin-bottom: 20px;
+  font-family: "Avenir Black", sans-serif; /* Bold font for section titles */
+  font-size: 42px; /* Larger title size */
+  color: #ca9921; /* Gold color for titles */
+  margin-bottom: 40px; /* Add space below titles */
+  margin-top: 0; /* Ensure no extra space above titles */
+  text-transform: uppercase; /* Capitalize titles for emphasis */
+  letter-spacing: 3px; /* Slightly more spacing between letters */
 }
 
 p {
-  font-family: "Avenir Book", sans-serif;
-  font-size: 18px;
-  color: #333;
-  line-height: 1.6;
+  font-family: "Avenir Book", sans-serif; /* Regular font for text */
+  font-size: 20px; /* Slightly larger paragraph size */
+  color: #333; /* Neutral dark gray */
+  line-height: 1.8; /* Improve readability */
+  max-width: 800px; /* Limit text width for better readability */
+  margin: 0 auto; /* Center-align paragraphs with max-width */
+  padding: 0 20px; /* Add padding for mobile-friendly spacing */
 }
 
-/* About Section */
-.about-section {
-  background-color: #f9f9f9; /* Light background */
+div {
+  font-family: "Avenir Book", sans-serif; /* Regular font for text */
+  font-size: 20px; /* Slightly larger paragraph size */
+  color: #333; /* Neutral dark gray */
+  line-height: 1.8; /* Improve readability */
 }
 
-/* Location Section */
-.location-section {
-  background-color: #fff; /* White background */
+/* ================== EMPTY SECTION ================== */
+.empty-section {
+  height: 200px;
+  background-color: #990036;
 }
 
-/* Contact Section */
-.contact-section {
-  background-color: #f0f0f0; /* Slightly darker gray */
+/* ================== GALLERY SECTION ================== */
+
+.gallery-container {
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden; /* Ensures only one post is visible */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-slider {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.gallery-item {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+
+/* Navigation arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+/* ================== LOCATION SECTION ================== */
+
+/* Map Container */
+.map-container {
+  margin-top: 20px; /* Space above the map */
+  width: 100%;
+  max-width: 800px; /* Limit map width for large screens */
+  height: 450px;
+  margin-left: auto;
+  margin-right: auto; /* Center the map */
+  border: 2px solid #ddd; /* Optional border for a polished look */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  overflow: hidden; /* Prevent overflow issues */
+  border-radius: 10px; /* Rounded corners */
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ================== OPENING HOURS SECTION ================== */
+.opening-hours-list {
+  display: inline-block; /* needed so that text-align on container affects positioning */
+  text-align: left; /* ensures internal text is left-aligned */
+  padding: 10px; /* optional */
+}
+
+.opening-hours-list .row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 5px;
+}
+
+.opening-hours-list .label {
+  width: 160px; /* or whatever width fits your layout */
+  flex-shrink: 0;
+}
+
+.opening-hours-list .time {
+  flex-grow: 1;
+}
+
+/* ================== CONTACT INFO SECTION ================== */
+
+.contact-info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 900px;
+  background-color: #990036;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  text-decoration: none;
+  color: #f9f9f9; /* Default color */
+  transition: color 0.3s;
+}
+
+.contact-item:hover {
+  color: #ca9921; /* Hover color for both icon and text */
+}
+
+.contact-item .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.contact-item .icon svg path {
+  fill: #f9f9f9; /* Default icon color */
+  transition: fill 0.3s;
+}
+
+.contact-item:hover .icon svg path {
+  fill: #ca9921; /* Hover color for the icon */
+}
+
+/* Responsive styling for smaller screens */
+@media screen and (max-width: 850px) {
+  .contact-info {
+    display: flex; /* Use flexbox for centering */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center the entire section */
+    text-align: left; /* Ensure text inside the container is left-aligned */
+  }
+
+  .contact-item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center; /* Align icons and text vertically */
+    margin-bottom: 10px; /* Adjust spacing between items */
+    width: 100%; /* Ensure items take full width */
+    max-width: 300px; /* Limit width for better appearance */
+  }
+
+  .contact-item .icon {
+    width: 50px; /* Reduce icon width for less spacing */
+    margin-right: 10px; /* Adjust spacing between icon and text */
+    flex-shrink: 0;
+  }
+
+  .contact-item value {
+    flex-grow: 1; /* Allow the text to take up remaining space */
+  }
+}
+
+/* ================== FOOTER ================== */
+
+/* Footer Styles */
+footer {
+  background-color: #990036; /* Match your theme */
+  color: white;
+  text-align: center;
+  padding: 0 0 20px;
+}
+
+.footer-container {
+  max-width: 800px; /* Center content with a limit */
+  margin: 0 auto; /* Center-align the footer */
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 20px;
+  display: flex;
+  justify-content: center; /* Center the links */
+  gap: 20px; /* Spacing between links */
+}
+
+.footer-links li {
+  display: inline; /* Ensure links are inline */
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover {
+  color: #ca9921; /* Gold hover effect */
+}
+
+.footer-container p {
+  color: #f9f9f9;
+  font-size: 16px;
 }

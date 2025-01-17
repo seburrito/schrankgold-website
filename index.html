@@ -2,12 +2,13 @@
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <title>Schrankgold</title>
+    <title>Schrankgold - Best Second</title>
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   </head>
   <body>
     <!-- LANDING SECTION (e.g., 200vh) -->
-    <div class="landing-section">
+    <div class="landing-section" id="landing">
       <!-- 
       A single STICKY container for your wardrobe, brand text, and subtitle.
       It "sticks" for 100vh, so everything remains pinned & centered until
@@ -144,34 +145,202 @@
     </div>
     <!-- .landing-section -->
 
+    <!-- EMPTY SECTION -->
+    <section class="empty-section"></section>
+
+    <!-- Navigation Bar -->
+    <nav>
+      <button class="hamburger-menu" onclick="toggleMenu()">☰</button>
+      <ul>
+        <li><a href="#landing">Start</a></li>
+        <li><a href="#about">Über Uns</a></li>
+        <li><a href="#gallery">Gallerie</a></li>
+        <li><a href="#location">Standort</a></li>
+        <li><a href="#opening-hours">Öffnungszeiten</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </nav>
+
     <!-- ABOUT SECTION -->
-  <div class="about-section">
-    <h2>About Our Store</h2>
-    <p>
-      Welcome to Schrankgold! We pride ourselves on offering high-quality, unique wardrobes and furniture pieces.
-      Our owner, Alex Meyer, has been in the furniture business for over 20 years, blending craftsmanship with
-      modern designs.
-    </p>
-  </div>
+    <section class="about-section" id="about">
+      <h2>Über Uns</h2>
+      <p>
+        Komm vorbei, wir freuen uns auf dich!<br />
+        Keine Second-HAND, sondern Second-BEST Ware mitten in Erding.<br />
+        Nachhaltigkeit, Qualität und Mode stehen im Vordergrund.
+      </p>
+    </section>
 
-  <!-- LOCATION AND PARKING SECTION -->
-  <div class="location-section">
-    <h2>Location & Parking</h2>
-    <p>
-      Our store is located at 123 Furniture Street, Berlin. We have plenty of on-site parking available
-      for our customers. Feel free to visit us and explore our collection.
-    </p>
-  </div>
+    <!-- GALLERY SECTION -->
+    <section class="instagram-section" id="gallery">
+      <h2>Gallerie</h2>
 
-  <!-- CONTACT SECTION -->
-  <div class="contact-section">
-    <h2>Contact Us</h2>
-    <p>
-      Have questions? Reach out to us at:
-      <br /><strong>Email:</strong> info@schrankgold.com
-      <br /><strong>Phone:</strong> +49 30 12345678
-    </p>
-  </div>
+      <div class="gallery-container">
+        <!-- Navigation Arrows -->
+        <button class="arrow left" onclick="prevSlide()">&#8249;</button>
+        <button class="arrow right" onclick="nextSlide()">&#8250;</button>
+
+        <!-- Instagram Embed Gallery -->
+        <div class="gallery-slider" id="slider">
+          <div class="gallery-item">
+            <blockquote
+              class="instagram-media"
+              data-instgrm-permalink="https://www.instagram.com/p/DEZhT7tunOb/?utm_source=ig_embed&amp;utm_campaign=loading"
+              data-instgrm-version="14"
+            ></blockquote>
+          </div>
+          <div class="gallery-item">
+            <blockquote
+              class="instagram-media"
+              data-instgrm-permalink="https://www.instagram.com/p/DEKP5qmOPSG/?utm_source=ig_embed&amp;utm_campaign=loading"
+              data-instgrm-version="14"
+            ></blockquote>
+          </div>
+          <div class="gallery-item">
+            <blockquote
+              class="instagram-media"
+              data-instgrm-permalink="https://www.instagram.com/p/DC2KoO8uAAQ/?utm_source=ig_embed&amp;utm_campaign=loading"
+              data-instgrm-version="14"
+            ></blockquote>
+          </div>
+        </div>
+      </div>
+      <script async src="//www.instagram.com/embed.js"></script>
+    </section>
+
+    <!-- LOCATION SECTION -->
+    <section class="location-section" id="location">
+      <h2>Standort</h2>
+      <p>
+        Schaut's gern bei uns vorbei. Wir freuen uns auf euch!<br />
+        Am Rätschenbach 11, 85435 Erding
+      </p>
+      <!-- Google Maps Embed -->
+      <div class="map-container">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2653.789999842458!2d11.90642557694698!3d48.306890171262914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479e11271084ca31%3A0xbe35571c1dfa93d6!2sSchrankGold!5e0!3m2!1sen!2sde!4v1736100143799!5m2!1sen!2sde"
+          width="100%"
+          height="450"
+          style="border: 0"
+          allowfullscreen=""
+          loading="lazy"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- OPENING HOURS SECTION -->
+    <section class="opening-section" id="opening-hours">
+      <h2>Öffnungszeiten</h2>
+      <div class="opening-hours-list">
+        <div class="row">
+          <div class="label"><strong>Montag</strong></div>
+          <div class="time">Geschlossen</div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>Dienstag</strong></div>
+          <div class="time">Geschlossen</div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>Mittwoch</strong></div>
+          <div class="time">10-18 Uhr (durchgehend)</div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>Donnerstag</strong></div>
+          <div class="time">10-13 Uhr & 15-18 Uhr</div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>Freitag</strong></div>
+          <div class="time">10-13 Uhr & 15-18 Uhr</div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>Samstag</strong></div>
+          <div class="time">
+            Jeden 1. und letzten Samstag im Monat 10-13 Uhr
+          </div>
+        </div>
+        <div class="row">
+          <div class="label"><strong>So & Feiertag</strong></div>
+          <div class="time">Geschlossen</div>
+        </div>
+        <!-- Continue for the rest of the days -->
+      </div>
+    </section>
+
+    <section class="contact-info" id="contact">
+      <a href="tel:+49 176 9830 6373" class="contact-item">
+        <span class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M1.277,8.858C2.606,14.138,9.863,21.4,15.142,22.723a8.938,8.938,0,0,0,2.18.274,8.54,8.54,0,0,0,4.006-1,3.11,3.11,0,0,0,.764-4.951h0L20.006,14.96a3.111,3.111,0,0,0-3.444-.651,4.859,4.859,0,0,0-1.471.987c-.178.177-.506.205-.977.077A9.981,9.981,0,0,1,8.626,9.886c-.126-.471-.1-.8.078-.977a4.864,4.864,0,0,0,.988-1.473,3.112,3.112,0,0,0-.651-3.442L6.955,1.909A3.065,3.065,0,0,0,4.3,1.035,3.1,3.1,0,0,0,2,2.672,8.58,8.58,0,0,0,1.277,8.858ZM3.773,3.6A1.115,1.115,0,0,1,4.6,3.013,1.044,1.044,0,0,1,4.767,3a1.088,1.088,0,0,1,.774.323L7.626,5.408a1.1,1.1,0,0,1,.239,1.213A2.9,2.9,0,0,1,7.29,7.5,2.817,2.817,0,0,0,6.7,10.4c.722,2.7,4.205,6.179,6.9,6.9a2.821,2.821,0,0,0,2.907-.6,2.906,2.906,0,0,1,.874-.576,1.1,1.1,0,0,1,1.214.239l2.085,2.085a1.089,1.089,0,0,1,.31.942,1.114,1.114,0,0,1-.591.826,6.517,6.517,0,0,1-4.766.556C11.089,19.641,4.36,12.912,3.216,8.37A6.53,6.53,0,0,1,3.773,3.6Z"
+              fill="#f9f9f9"
+            />
+          </svg>
+        </span>
+        <span class="value">+49 176 9830 6373</span>
+      </a>
+      <a href="mailto:schrankgold.erding@gmail.com" class="contact-item">
+        <span class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M20 4C21.6569 4 23 5.34315 23 7V17C23 18.6569 21.6569 20 20 20H4C2.34315 20 1 18.6569 1 17V7C1 5.34315 2.34315 4 4 4H20ZM19.2529 6H4.74718L11.3804 11.2367C11.7437 11.5236 12.2563 11.5236 12.6197 11.2367L19.2529 6ZM3 7.1688V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7.16882L13.8589 12.8065C12.769 13.667 11.231 13.667 10.1411 12.8065L3 7.1688Z"
+              fill="#f9f9f9"
+            />
+          </svg>
+        </span>
+        <span class="value">schrankgold.erding@gmail.com</span>
+      </a>
+      <a href="https://www.instagram.com/_schrankgold" class="contact-item">
+        <span class="icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+              fill="#f9f9f9"
+            />
+            <path
+              d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+              fill="#CA9921"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z"
+              fill="#f9f9f9"
+            />
+          </svg>
+        </span>
+        <span class="value">@_schrankgold</span>
+      </a>
+    </section>
+
+    <footer>
+      <div class="footer-container">
+        <ul class="footer-links">
+          <li><a href="./impressum.html" target="_blank">Impressum</a></li>
+          <li><a href="./privacy.html" target="_blank">Datenschutzerklärung</a></li>
+        </ul>
+        <p>&copy; 2025 Schrankgold. Alle Rechte vorbehalten.</p>
+      </div>
+    </footer>
+    
 
     <!-- Main JS -->
     <script src="./script.js"></script>
