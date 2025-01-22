@@ -91,7 +91,6 @@ nav ul li a {
   transition: color 0.3s;
   text-decoration: none;
   padding: 8px 16px;
-  transition: background-color 0.3s ease;
 }
 
 nav ul li a:hover {
@@ -166,7 +165,7 @@ nav::after {
 /* ================== WARDROBE (SVG) ================== */
 .wardrobe {
   /* Adjust as needed to control the SVG size. */
-  width: 400px;
+  width: clamp(300px, 30vw, 600px); /* Scales between 300px and 600px */
   height: auto;
 }
 
@@ -207,7 +206,7 @@ nav::after {
   display: flex;
   justify-content: center;
   margin-bottom: -30px; /* Reduce the space below the title */
-  gap: -2px; /* Slight overlap between SCHRANK and GOLD */
+  gap: clamp(-2px, -0.5vw, -4px); /* Adjust gap dynamically */
 }
 
 .schrank,
@@ -216,33 +215,24 @@ nav::after {
   margin: 0; /* Remove any default margins */
   padding: 0; /* Remove any padding */
   line-height: 1; /* Ensure consistent alignment */
+  font-size: clamp(24px, 8vw, 150px); /* Dynamically scale font sizes */
 }
 
 .schrank {
   font-family: "Avenir Roman", sans-serif;
-  font-size: clamp(
-    24px,
-    10vw,
-    115px
-  ); /* Minimum: 24px, Scales: 5% of viewport width, Maximum: 115px */
   color: white;
 }
 .gold {
   font-family: "Avenir Black", sans-serif;
-  font-size: clamp(24px, 10vw, 115px);
   color: #ca9921;
 }
 
 /* ================== SUBTITLE TEXT ================== */
 .best-second-subtitle {
-  font-family: "Avenir Book", sans-serif;
-  font-size: clamp(
-    16px,
-    6vw,
-    75px
-  ); /* Minimum: 16px, Scales: 4% of viewport width, Maximum: 80px */
   color: white;
-  letter-spacing: clamp(8px, 6vw, 12px);
+  font-family: "Avenir Book", sans-serif;
+  font-size: clamp(16px, 4vw, 75px); /* Scale subtitle text dynamically */
+  letter-spacing: clamp(4px, 1.2vw, 22px); /* Adjust letter spacing */
   /* Start hidden off-screen */
   transform: translateY(100%);
   opacity: 0;
