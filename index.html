@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Schrankgold - Best Second</title>
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
   </head>
   <body>
     <!-- LANDING SECTION (e.g., 200vh) -->
@@ -154,7 +154,7 @@
       <ul>
         <li><a href="#landing">Start</a></li>
         <li><a href="#about">Über Uns</a></li>
-        <li><a href="#gallery">Gallerie</a></li>
+        <li><a href="#gallery">Galerie</a></li>
         <li><a href="#location">Standort</a></li>
         <li><a href="#opening-hours">Öffnungszeiten</a></li>
         <li><a href="#contact">Kontakt</a></li>
@@ -172,41 +172,34 @@
     </section>
 
     <!-- GALLERY SECTION -->
-    <section class="instagram-section" id="gallery">
-      <h2>Gallerie</h2>
-
+    <section class="gallery-section" id="gallery">
+      <h2>Galerie</h2>
       <div class="gallery-container">
-        <!-- Navigation Arrows -->
-        <button class="arrow left" onclick="prevSlide()">&#8249;</button>
-        <button class="arrow right" onclick="nextSlide()">&#8250;</button>
-
-        <!-- Instagram Embed Gallery -->
-        <div class="gallery-slider" id="slider">
-          <div class="gallery-item">
-            <blockquote
-              class="instagram-media"
-              data-instgrm-permalink="https://www.instagram.com/p/DEZhT7tunOb/?utm_source=ig_embed&amp;utm_campaign=loading"
-              data-instgrm-version="14"
-            ></blockquote>
-          </div>
-          <div class="gallery-item">
-            <blockquote
-              class="instagram-media"
-              data-instgrm-permalink="https://www.instagram.com/p/DEKP5qmOPSG/?utm_source=ig_embed&amp;utm_campaign=loading"
-              data-instgrm-version="14"
-            ></blockquote>
-          </div>
-          <div class="gallery-item">
-            <blockquote
-              class="instagram-media"
-              data-instgrm-permalink="https://www.instagram.com/p/DC2KoO8uAAQ/?utm_source=ig_embed&amp;utm_campaign=loading"
-              data-instgrm-version="14"
-            ></blockquote>
-          </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image1.png" alt="Gallery Image 1" />
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image2.png" alt="Gallery Image 2" />
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image3.png" alt="Gallery Image 3" />
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image4.png" alt="Gallery Image 4" />
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image5.png" alt="Gallery Image 5" />
+        </div>
+        <div class="gallery-item" onclick="openLightbox(this)">
+          <img src="images/image6.png" alt="Gallery Image 6" />
         </div>
       </div>
-      <script async src="//www.instagram.com/embed.js"></script>
     </section>
+
+    <!-- Lightbox Overlay -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+      <img id="lightbox-img" src="" alt="Enlarged Image" />
+    </div>
 
     <!-- LOCATION SECTION -->
     <section class="location-section" id="location">
@@ -327,7 +320,7 @@
             />
           </svg>
         </span>
-        <span class="value">@_schrankgold</span>
+        <span class="value">_schrankgold</span>
       </a>
     </section>
 
@@ -335,12 +328,13 @@
       <div class="footer-container">
         <ul class="footer-links">
           <li><a href="./impressum.html" target="_blank">Impressum</a></li>
-          <li><a href="./privacy.html" target="_blank">Datenschutzerklärung</a></li>
+          <li>
+            <a href="./privacy.html" target="_blank">Datenschutzerklärung</a>
+          </li>
         </ul>
         <p>&copy; 2025 Schrankgold. Alle Rechte vorbehalten.</p>
       </div>
     </footer>
-    
 
     <!-- Main JS -->
     <script src="./script.js"></script>

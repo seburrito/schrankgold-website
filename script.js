@@ -188,5 +188,27 @@ document.addEventListener("DOMContentLoaded", () => {
   toggleHamburgerMenu();
 });
 
+// Open Lightbox
+function openLightbox(element) {
+  const imgSrc = element.querySelector("img").src;
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const navBar = document.querySelector("nav");
 
+  lightboxImg.src = imgSrc; // Set the clicked image in the lightbox
+  lightbox.classList.add("active"); // Show lightbox
+  navBar.style.display = "none"; // Hide the nav bar
+}
 
+// Close Lightbox
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("active");
+  document.querySelector("nav").style.display = "block"; // Show the nav bar
+}
+
+// Close lightbox with ESC key
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeLightbox();
+  }
+});
