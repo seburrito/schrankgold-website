@@ -1,31 +1,42 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initWardrobeAnimation() {
   const landingSection = document.querySelector(".landing-section");
   const doorLeft = document.querySelector("#door-left-group");
   const doorRight = document.querySelector("#door-right-group");
   const hook = document.querySelector("#coat-hook");
   const bestSecond = document.querySelector(".best-second-subtitle");
+  if (!landingSection || !bestSecond) return;
 
   let wobblyHookTriggered = false;
 
+  function slideUpText(scrolledPx, maxScroll) {
+    const start = 0.3 * maxScroll;
+    const end = 0.5 * maxScroll;
+    if (scrolledPx <= start) {
+      bestSecond.style.transform = "translateY(100%)";
+      bestSecond.style.opacity = "0";
+      return 0;
+    } else if (scrolledPx >= end) {
+      bestSecond.style.transform = "translateY(0)";
+      bestSecond.style.opacity = "1";
+      return 1;
+    } else {
+      const progress = (scrolledPx - start) / (end - start);
+      const translateY = (1 - progress) * 100;
+      bestSecond.style.transform = `translateY(${translateY}%)`;
+      bestSecond.style.opacity = progress;
+      return progress;
+    }
+  }
+
   function onScroll() {
-    // The total height of .landing-section is e.g. 200vh in px
     const sectionOffsetTop = landingSection.offsetTop;
     const sectionHeight = landingSection.offsetHeight;
     const currentScrollY = window.scrollY;
-
-    const delayFactor = 0.2; // Adjust this factor to make the wardrobe stay longer
-    // maxScroll = 200vh - 100vh = 100vh
-    // (the sticky container is 100vh tall, so user can scroll from 0 to 100).
+    const delayFactor = 0.2;
     const maxScroll = (sectionHeight - window.innerHeight) * delayFactor;
-    // how far scrolled inside .landing-section
     const scrolledPx = currentScrollY - sectionOffsetTop;
-    // clamp [0, maxScroll]
     const clampedScroll = Math.min(Math.max(scrolledPx, 0), maxScroll);
     const scrollPercent = maxScroll > 0 ? clampedScroll / maxScroll : 0;
-
-    // 1) Animate the doors from 180 deg (closed) to 0 deg (open).
-    const doorAnimationThreshold = 0.5; // Doors fully open at 50% scroll
-    const doorProgress = Math.min(scrollPercent / doorAnimationThreshold, 1);
 
     if (doorLeft && doorRight) {
       const rotation = 180 * (1 - scrollPercent);
@@ -33,28 +44,23 @@ document.addEventListener("DOMContentLoaded", () => {
       doorRight.style.transform = `rotateY(${rotation}deg)`;
     }
 
-    // 2) Scale the wardrobe AFTER doors open (or overlap slightly)
-    const scaleThresholdStart = 0.7; // Scale starts at 40% scroll
-    const scaleThresholdEnd = 1.5; // Scale completes at 100% scroll
+    const scaleThresholdStart = 0.7;
+    const scaleThresholdEnd = 1.5;
     const scaleProgress = Math.max(
       (scrollPercent - scaleThresholdStart) /
         (scaleThresholdEnd - scaleThresholdStart),
       0
     );
-    const minScale = 1; // Initial scale
-    const maxScale = 1.2; // Maximum scale
+    const minScale = 1;
+    const maxScale = 1.2;
     const scaleValue =
       minScale + (maxScale - minScale) * Math.min(scaleProgress, 1);
-
     const wardrobeSvg = document.querySelector("#wardrobe-svg");
     if (wardrobeSvg) {
-      wardrobeSvg.style.transform = `scale(${scaleValue})`; // Apply scaling
+      wardrobeSvg.style.transform = `scale(${scaleValue})`;
     }
 
-    // 3) Slide the "best second" text from 30% to 50% of the scroll
     const textProgress = slideUpText(clampedScroll, maxScroll);
-
-    // 4) If you want the coat hook to wobble after text is ~90% in:
     if (hook) {
       if (textProgress > 0.9 && !wobblyHookTriggered) {
         hook.classList.add("wobble-animation");
@@ -65,37 +71,28 @@ document.addEventListener("DOMContentLoaded", () => {
         wobblyHookTriggered = false;
       }
     }
-
-    // No need to toggle .animation-complete here, because sticky handles it automatically.
-  }
-
-  function slideUpText(scrolledPx, maxScroll) {
-    // "best second" text appears from 30% → 50% of the scroll
-    const start = 0.3 * maxScroll;
-    const end = 0.5 * maxScroll;
-
-    if (scrolledPx <= start) {
-      // fully hidden
-      bestSecond.style.transform = "translateY(100%)";
-      bestSecond.style.opacity = "0";
-      return 0;
-    } else if (scrolledPx >= end) {
-      // fully visible
-      bestSecond.style.transform = "translateY(0)";
-      bestSecond.style.opacity = "1";
-      return 1;
-    } else {
-      // in-between
-      const progress = (scrolledPx - start) / (end - start);
-      const translateY = (1 - progress) * 100;
-      bestSecond.style.transform = `translateY(${translateY}%)`;
-      bestSecond.style.opacity = progress;
-      return progress;
-    }
   }
 
   window.addEventListener("scroll", onScroll);
-  onScroll(); // run once at load
+  onScroll();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("wardrobe-container");
+  if (container && container.dataset.src) {
+    fetch(container.dataset.src)
+      .then((r) => r.text())
+      .then((svg) => {
+        container.innerHTML = svg;
+        initWardrobeAnimation();
+      })
+      .catch((e) => {
+        console.error("Failed to load wardrobe SVG", e);
+        initWardrobeAnimation();
+      });
+  } else {
+    initWardrobeAnimation();
+  }
 });
 
 // Wait for the Instagram embed script to load and process the blockquote

@@ -159,14 +159,15 @@ nav::after {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 30px; /* spacing between the wardrobe, brand text, and subtitle */
+  gap: clamp(40px, 5vh, 120px); /* increased spacing between wardrobe and branding */
 }
 
 /* ================== WARDROBE (SVG) ================== */
+/* Wardrobe sizing refined: stays larger longer on medium screens */
 .wardrobe {
-  /* Adjust as needed to control the SVG size. */
-  width: clamp(300px, 30vw, 600px); /* Scales between 300px and 600px */
+  width: clamp(340px, 40vw, 640px);
   height: auto;
+  transition: width 0.4s ease;
 }
 
 /* If you like a 3D transform on the doors, the parent's perspective can remain:
@@ -205,18 +206,12 @@ nav::after {
 .schrankgold-title {
   display: flex;
   justify-content: center;
-  margin-bottom: -30px; /* Reduce the space below the title */
-  gap: clamp(-2px, -0.5vw, -4px); /* Adjust gap dynamically */
+  margin-bottom: 10px; /* Adjusted since we use a single SVG now */
 }
 
+/* Legacy text classes kept in case of fallback; not used now */
 .schrank,
-.gold {
-  display: inline-block; /* Prevent unnecessary spacing between elements */
-  margin: 0; /* Remove any default margins */
-  padding: 0; /* Remove any padding */
-  line-height: 1; /* Ensure consistent alignment */
-  font-size: clamp(24px, 8vw, 150px); /* Dynamically scale font sizes */
-}
+.gold { display:none; }
 
 .schrank {
   font-family: "Avenir Roman", sans-serif;
@@ -227,17 +222,73 @@ nav::after {
   color: #ca9921;
 }
 
+/* SVG title replacement */
+/* Unified branding scaling */
+:root {
+  /* Base viewport width reference (design assumption) */
+  --design-vw: 1440;
+  /* Scale factor (smooth between 480px and 1440px) */
+  --brand-scale: clamp(0.55, (100vw / var(--design-vw)), 1);
+  /* Title base width and ratio to subtitle */
+  --title-base: 900; /* px at full scale */
+  --subtitle-ratio: 0.55; /* subtitle = title * ratio */
+  /* Fluid title width (independent of brand-scale now for better continuous shrink) */
+  --title-min: 260px;
+  --title-max: 900px;
+  /* Widen middle range so title uses more horizontal space on small screens */
+  --title-fluid: clamp(var(--title-min), 85vw, var(--title-max));
+}
+
+.branding-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vh, 24px);
+}
+
+.schrankgold-title .title-graphic { width: var(--title-fluid); height: auto; display: block; }
+
+/* Center injected wardrobe SVG */
+.wardrobe { display:flex; justify-content:center; }
+.wardrobe svg { width:100%; height:auto; display:block; }
+
 /* ================== SUBTITLE TEXT ================== */
 .best-second-subtitle {
   color: white;
   font-family: "Avenir Book", sans-serif;
-  font-size: clamp(16px, 4vw, 75px); /* Scale subtitle text dynamically */
+  font-size: clamp(12px, 4vw, 75px); /* Scale subtitle text dynamically */
   letter-spacing: clamp(4px, 1.2vw, 22px); /* Adjust letter spacing */
   /* Start hidden off-screen */
   transform: translateY(100%);
   opacity: 0;
   transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
+
+/* SVG subtitle replacement */
+.best-second-subtitle .subtitle-graphic { width: calc(var(--title-fluid) * var(--subtitle-ratio)); height: auto; display: block; }
+
+/* Fine-tune breakpoints for wardrobe so it doesn’t shrink too fast relative to branding */
+@media (max-width: 1200px) {
+  .wardrobe { width: clamp(360px, 44vw, 600px); }
+}
+@media (max-width: 900px) {
+  .wardrobe { width: clamp(340px, 55vw, 560px); }
+  :root { --brand-scale: clamp(0.62, (100vw / var(--design-vw)), 1); }
+}
+@media (max-width: 700px) {
+  .wardrobe { width: clamp(320px, 62vw, 520px); }
+  :root { --brand-scale: clamp(0.58, (100vw / var(--design-vw)), 1); }
+}
+@media (max-width: 540px) {
+  .wardrobe { width: clamp(300px, 68vw, 480px); }
+  :root { --brand-scale: clamp(0.54, (100vw / var(--design-vw)), 1); }
+}
+@media (max-width: 430px) {
+  .wardrobe { width: clamp(270px, 74vw, 440px); }
+  :root { --brand-scale: clamp(0.5, (100vw / var(--design-vw)), 1); }
+}
+
+/* Removed fine-grained subtitle scaling; single clamp handles responsiveness */
 
 /* ================== WOBBLE ANIMATION ================== */
 @keyframes wobble {
