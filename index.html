@@ -5,15 +5,17 @@
     <title>Schrankgold - Best Second</title>
     <link rel="stylesheet" href="./styles.css" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <!-- Open-source fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Proza+Libre:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Roboto for buttons (semibold) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- MapLibre GL CSS -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
   </head>
   <body>
-    <!-- LANDING SECTION (e.g., 200vh) -->
     <div class="landing-section" id="landing">
-      <!-- 
-      A single STICKY container for your wardrobe, brand text, and subtitle.
-      It "sticks" for 100vh, so everything remains pinned & centered until
-      the user scrolls that full height.
-    -->
       <div class="content-container">
         <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"></div>
         <div class="branding-block">
@@ -24,202 +26,174 @@
             <img src="assets/subtitle.svg" alt="best second" class="subtitle-graphic" />
           </div>
         </div>
-      </div><!-- /.content-container -->
+      </div>
+  <!-- Extra scroll spacer to allow animation progress while content stays visually fixed -->
+  <div class="landing-scroll-spacer" aria-hidden="true"></div>
     </div>
-    <!-- .landing-section -->
-
-    <!-- EMPTY SECTION -->
-    <section class="empty-section"></section>
-
-    <!-- Navigation Bar -->
-    <nav>
-      <button class="hamburger-menu" onclick="toggleMenu()">☰</button>
-      <ul>
-        <li><a href="#landing">Start</a></li>
-        <li><a href="#about">Über Uns</a></li>
-        <li><a href="#gallery">Galerie</a></li>
-        <li><a href="#location">Standort</a></li>
-        <li><a href="#opening-hours">Öffnungszeiten</a></li>
-        <li><a href="#contact">Kontakt</a></li>
-      </ul>
-    </nav>
-
-    <!-- ABOUT SECTION -->
-    <section class="about-section" id="about">
-      <h2>Über Uns</h2>
-      <p>
-        Komm vorbei, wir freuen uns auf dich!<br />
-        Keine Second-HAND, sondern Second-BEST Ware mitten in Erding.<br />
-        Nachhaltigkeit, Qualität und Mode stehen im Vordergrund.
-      </p>
+    <section id="welcome">
+      <div id="welcome-text">
+  <div class="sg-heading-block">
+    <h2 class="sg-section-heading">WILLKOMMEN IM <br />SCHRANKGOLD</h2>
+    <span class="title-underline title-underline--tight" aria-hidden="true"></span>
+  </div>
+        <h3>Komm vorbei, wir freuen uns auf dich!</h3>
+        <p>Keine Second-HAND, sondern Second-BEST-Ware mitten in Erding.<br />
+          Nachhaltigkeit, Qualität, Mode und ein persönlicher Service stehen im Vordergrund.
+        </p>
+      </div>
     </section>
-
-    <!-- GALLERY SECTION -->
-    <section class="gallery-section" id="gallery">
-      <h2>Galerie</h2>
-      <div class="gallery-container">
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image1.png" alt="Gallery Image 1" />
+    <section class="founder-section" id="gabi">
+      <div class="founder-inner">
+        <div class="founder-copy">
+          <div class="sg-heading-block sg-heading-block--right">
+            <h2 class="sg-section-heading--right">MIT FREUDE DABEI</h2>
+            <span class="title-underline title-underline--right title-underline--tight" aria-hidden="true"></span>
+          </div>
+          <h3>Gabi Strobl, das bin ich!<br />Das Herz vom SchrankGold.</h3>
+          <p class="sg-text">Mit Leidenschaft für Stil und Mode wähle ich für mein SchrankGold hochwertige Second-Hand-Mode und neue Lieblingsteile für euch persönlich aus.<br /><br />Ich helfe dir mit herzlicher und ehrlicher Beratung, das perfekte Outfit für deinen Stil oder Anlass zu finden.</p>
         </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image2.png" alt="Gallery Image 2" />
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image3.png" alt="Gallery Image 3" />
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image4.png" alt="Gallery Image 4" />
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image5.png" alt="Gallery Image 5" />
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/image6.png" alt="Gallery Image 6" />
+        <div class="founder-visual">
+          <img src="assets/gabi.svg" alt="Gabi Strobl" class="founder-image" />
         </div>
       </div>
     </section>
+    <!-- So Funktioniert's Section (scaffold) -->
+    <section class="how-section" id="so-funktionierts">
+      <div class="how-inner">
+  <div class="sg-heading-block">
+    <h2 class="sg-section-heading">SO FUNKTIONIERT'S</h2>
+    <span class="title-underline" aria-hidden="true"></span>
+  </div>
+        <h3>Wenn ihr was zum Abgeben habt</h3>
+        <div class="how-steps" aria-label="Ablauf Verkaufsschritte">
+          <!-- Decorative S line asset -->
+          <img src="assets/selling-line.svg" alt="" aria-hidden="true" class="how-line" />
 
-    <!-- Lightbox Overlay -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-      <img id="lightbox-img" src="" alt="Enlarged Image" />
-    </div>
+          <!-- STEP 1 -->
+          <div class="how-step step-1" data-step="1">
+            <div class="how-col left number-side">
+              <div class="step-number" aria-hidden="true">1</div>
+            </div>
+            <div class="how-col right text-side">
+              <div class="step-copy">
+                <h4 class="step-subtitle">Dein Termin bei mir</h4>
+                <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich telefonisch oder über Whatsapp.</p>
+                <div class="step-actions">
+                  <!-- TODO: Insert echte Telefonnummer -->
+                  <a class="sg-btn sg-btn--tel" href="tel:" aria-label="Jetzt anrufen">
+                    <span class="sg-btn__icon" aria-hidden="true">
+                      <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none"><path fill="currentColor" d="M6.4794 0.00441829C7.84667 0.334196 8.66077 1.38269 9.57576 2.39362C9.77722 2.60404 9.97867 2.81446 10.1862 3.03125C11.9612 4.9047 11.9612 4.9047 12.1616 6.39362C12.0096 7.6965 11.935 7.81299 11.0303 8.63605C10.8466 8.78063 10.6628 8.92521 10.4735 9.07418C10.0053 9.52373 10.0053 9.52373 10.1326 10.1714C11.0662 12.4643 13.0861 14.5246 15.2525 15.6866C16.3521 15.6045 16.6141 15.3021 17.4747 14.535C18.4848 13.7472 18.4848 13.7472 19.4141 13.5047C20.991 13.8832 21.8765 14.8931 23.0101 16.0098C23.3707 16.3354 23.3707 16.3354 23.7386 16.6676C24.7472 17.604 25.4846 18.3173 26 19.6057C25.8137 21.7482 23.9443 23.407 22.3636 24.7371C21.1318 25.4899 20.2261 25.8235 18.8081 25.6057C12.0902 23.7206 6.2761 18.341 2.74369 12.5186C0.134797 7.87256 0.134797 7.87257 0 5.62595C0.591992 4.1927 1.58281 3.2184 2.64646 2.11079C2.80813 1.91413 2.9698 1.71746 3.13636 1.51483C4.15088 0.333093 4.91891 -0.0463412 6.4794 0.00441829ZM4.86742 3.0363C4.60784 3.29755 4.34826 3.5588 4.08081 3.82797C3.82039 4.08672 3.55997 4.34547 3.29167 4.61206C2.58513 5.31668 2.58513 5.31668 2.32323 6.31282C2.66977 7.16086 3.03385 7.94707 3.45455 8.75726C3.57327 8.98934 3.69199 9.22143 3.81432 9.46054C4.78796 11.3268 5.86821 13.0606 7.17172 14.7169C7.34672 14.941 7.52172 15.1652 7.70202 15.3961C10.7702 19.1094 15.1933 21.9771 19.7778 23.4441C20.1889 23.0877 20.5996 22.7307 21.0101 22.3734C21.2389 22.1747 21.4676 21.9759 21.7033 21.7711C22.2671 21.2677 22.8057 20.7527 23.3333 20.2118C22.8367 19.0221 22.111 18.2764 21.1919 17.3835C20.9278 17.1252 20.6636 16.8669 20.3914 16.6007C20.1889 16.4057 19.9864 16.2107 19.7778 16.0098C19.4139 16.3192 19.0503 16.6291 18.6869 16.9391C18.4844 17.1116 18.2819 17.2841 18.0732 17.4618C17.6579 17.8245 17.2586 18.2057 16.8687 18.5956C14.5587 18.4216 12.4814 16.6896 10.7879 15.2219C9.14967 13.3029 7.95005 11.6434 7.17172 9.22191C8.02505 8.36857 8.87838 7.51524 9.75758 6.63605C9.14513 5.41115 8.61286 4.75784 7.65657 3.80776C7.3999 3.54943 7.14323 3.2911 6.87879 3.02494C5.95284 2.21646 5.79225 2.22687 4.86742 3.0363Z"/></svg>
+                    </span>
+                    <span class="sg-btn__text">Telefon</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <!-- LOCATION SECTION -->
-    <section class="location-section" id="location">
-      <h2>Standort</h2>
-      <p>
-        Schaut's gern bei uns vorbei. Wir freuen uns auf euch!<br />
-        Am Rätschenbach 11, 85435 Erding
-      </p>
-      <!-- Google Maps Embed -->
-      <div class="map-container">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2653.789999842458!2d11.90642557694698!3d48.306890171262914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479e11271084ca31%3A0xbe35571c1dfa93d6!2sSchrankGold!5e0!3m2!1sen!2sde!4v1736100143799!5m2!1sen!2sde"
-          width="100%"
-          height="450"
-          style="border: 0"
-          allowfullscreen=""
-          loading="lazy"
-        ></iframe>
-      </div>
-    </section>
+          <!-- STEP 2 -->
+          <div class="how-step step-2" data-step="2">
+            <div class="how-col left text-side">
+              <div class="step-copy">
+                <h4 class="step-subtitle">Was wir lieben</h4>
+                <p>Ich freue mich auf eure aktuelle Markenware. Bitte achte auf einen Top-Zustand.</p>
+              </div>
+            </div>
+            <div class="how-col right number-side">
+              <div class="step-number" aria-hidden="true">2</div>
+            </div>
+          </div>
 
-    <!-- OPENING HOURS SECTION -->
-    <section class="opening-section" id="opening-hours">
-      <h2>Öffnungszeiten</h2>
-      <div class="opening-hours-list">
-        <div class="row">
-          <div class="label"><strong>Montag</strong></div>
-          <div class="time">Geschlossen</div>
-        </div>
-        <div class="row">
-          <div class="label"><strong>Dienstag</strong></div>
-          <div class="time">Geschlossen</div>
-        </div>
-        <div class="row">
-          <div class="label"><strong>Mittwoch</strong></div>
-          <div class="time">10-18 Uhr (durchgehend)</div>
-        </div>
-        <div class="row">
-          <div class="label"><strong>Donnerstag</strong></div>
-          <div class="time">10-13 Uhr & 15-18 Uhr</div>
-        </div>
-        <div class="row">
-          <div class="label"><strong>Freitag</strong></div>
-          <div class="time">10-13 Uhr & 15-18 Uhr</div>
-        </div>
-        <div class="row">
-          <div class="label"><strong>Samstag</strong></div>
-          <div class="time">
-            Jeden 1. und letzten Samstag im Monat 10-13 Uhr
+          <!-- STEP 3 -->
+            <div class="how-step step-3" data-step="3">
+              <div class="how-col left number-side">
+                <div class="step-number" aria-hidden="true">3</div>
+              </div>
+              <div class="how-col right text-side">
+                <div class="step-copy">
+                  <h4 class="step-subtitle">Zeit zum Verkaufen</h4>
+                  <p>Deine schönen Stücke bleiben für etwa 2–3 Monate im SchrankGold.</p>
+                </div>
+              </div>
+            </div>
+
+          <!-- STEP 4 -->
+          <div class="how-step step-4" data-step="4">
+            <div class="how-col left text-side">
+              <div class="step-copy">
+                <h4 class="step-subtitle">Faire Auszahlung oder Rückgabe</h4>
+                <p>Bei Verkauf erhältst du 40% des Erlöses. Nicht verkaufte Artikel werden zurückgegeben.</p>
+              </div>
+            </div>
+            <div class="how-col right number-side">
+              <div class="step-number" aria-hidden="true">4</div>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="label"><strong>So & Feiertag</strong></div>
-          <div class="time">Geschlossen</div>
+
+  <div class="how-details-cta">
+          <p>Wie es im Detail funktioniert, könnt ihr hier nachlesen:</p>
+          <!-- PDF placeholder -->
+          <a class="sg-btn sg-btn--verkauf" href="assets/verkaufsablauf.pdf" target="_blank" rel="noopener" aria-label="PDF Verkaufsablauf öffnen">
+            <span class="sg-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 21 26" xmlns="http://www.w3.org/2000/svg" fill="none"><path fill="currentColor" d="M2.625 0C1.18879 0 0 1.17747 0 2.6V23.4C0 24.8225 1.18879 26 2.625 26H18.375C19.8112 26 21 24.8225 21 23.4V7.8L13.125 0H2.625ZM2.625 2.6H11.8125V9.1H18.375V23.4H2.625V2.6ZM5.25 13V15.6H15.75V13H5.25ZM5.25 18.2V20.8H15.75V18.2H5.25Z"/></svg>
+            </span>
+            <span class="sg-btn__text">Verkaufsablauf</span>
+          </a>
         </div>
-        <!-- Continue for the rest of the days -->
       </div>
     </section>
-
-    <section class="contact-info" id="contact">
-      <a href="tel:+49 176 9830 6373" class="contact-item">
-        <span class="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M1.277,8.858C2.606,14.138,9.863,21.4,15.142,22.723a8.938,8.938,0,0,0,2.18.274,8.54,8.54,0,0,0,4.006-1,3.11,3.11,0,0,0,.764-4.951h0L20.006,14.96a3.111,3.111,0,0,0-3.444-.651,4.859,4.859,0,0,0-1.471.987c-.178.177-.506.205-.977.077A9.981,9.981,0,0,1,8.626,9.886c-.126-.471-.1-.8.078-.977a4.864,4.864,0,0,0,.988-1.473,3.112,3.112,0,0,0-.651-3.442L6.955,1.909A3.065,3.065,0,0,0,4.3,1.035,3.1,3.1,0,0,0,2,2.672,8.58,8.58,0,0,0,1.277,8.858ZM3.773,3.6A1.115,1.115,0,0,1,4.6,3.013,1.044,1.044,0,0,1,4.767,3a1.088,1.088,0,0,1,.774.323L7.626,5.408a1.1,1.1,0,0,1,.239,1.213A2.9,2.9,0,0,1,7.29,7.5,2.817,2.817,0,0,0,6.7,10.4c.722,2.7,4.205,6.179,6.9,6.9a2.821,2.821,0,0,0,2.907-.6,2.906,2.906,0,0,1,.874-.576,1.1,1.1,0,0,1,1.214.239l2.085,2.085a1.089,1.089,0,0,1,.31.942,1.114,1.114,0,0,1-.591.826,6.517,6.517,0,0,1-4.766.556C11.089,19.641,4.36,12.912,3.216,8.37A6.53,6.53,0,0,1,3.773,3.6Z"
-              fill="#f9f9f9"
-            />
-          </svg>
-        </span>
-        <span class="value">+49 176 9830 6373</span>
-      </a>
-      <a href="mailto:schrankgold.erding@gmail.com" class="contact-item">
-        <span class="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M20 4C21.6569 4 23 5.34315 23 7V17C23 18.6569 21.6569 20 20 20H4C2.34315 20 1 18.6569 1 17V7C1 5.34315 2.34315 4 4 4H20ZM19.2529 6H4.74718L11.3804 11.2367C11.7437 11.5236 12.2563 11.5236 12.6197 11.2367L19.2529 6ZM3 7.1688V17C3 17.5523 3.44772 18 4 18H20C20.5523 18 21 17.5523 21 17V7.16882L13.8589 12.8065C12.769 13.667 11.231 13.667 10.1411 12.8065L3 7.1688Z"
-              fill="#f9f9f9"
-            />
-          </svg>
-        </span>
-        <span class="value">schrankgold.erding@gmail.com</span>
-      </a>
-      <a href="https://www.instagram.com/_schrankgold" class="contact-item">
-        <span class="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
-              fill="#f9f9f9"
-            />
-            <path
-              d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
-              fill="#CA9921"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z"
-              fill="#f9f9f9"
-            />
-          </svg>
-        </span>
-        <span class="value">_schrankgold</span>
-      </a>
-    </section>
-
-    <footer id="footer">
-      <div class="footer-container">
-        <ul class="footer-links">
-          <li><a href="./impressum.html" target="_blank">Impressum</a></li>
-          <li>
-            <a href="./privacy.html" target="_blank">Datenschutzerklärung</a>
-          </li>
-        </ul>
-        <p>&copy; 2025 Schrankgold. Alle Rechte vorbehalten.</p>
+    <!-- Instagram / Social Updates Section -->
+    <section class="instagram-section" id="instagram">
+      <div class="instagram-inner">
+  <div class="sg-heading-block sg-heading-block--right">
+    <h2 class="instagram-heading sg-section-heading--right">NICHTS MEHR VERPASSEN</h2>
+    <span class="title-underline title-underline--right title-underline--tight" aria-hidden="true"></span>
+  </div>
+  <p class="instagram-tagline">Besucht uns auf Instagram und WhatsApp für aktuelle Infos zu unseren Neuzugängen, Events und Vieles mehr!</p>
+        <div class="instagram-actions">
+          <a class="sg-btn sg-btn--insta" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram Profil öffnen">
+            <span class="sg-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none"><path fill="currentColor" d="M7.22222 0C3.23989 0 0 3.23989 0 7.22222V18.7778C0 22.7601 3.23989 26 7.22222 26H18.7778C22.7601 26 26 22.7601 26 18.7778V7.22222C26 3.23989 22.7601 0 18.7778 0H7.22222ZM7.22222 2.88889H18.7778C21.1669 2.88889 23.1111 4.83311 23.1111 7.22222V18.7778C23.1111 21.1669 21.1669 23.1111 18.7778 23.1111H7.22222C4.83311 23.1111 2.88889 21.1669 2.88889 18.7778V7.22222C2.88889 4.83311 4.83311 2.88889 7.22222 2.88889ZM20.2222 4.33333C19.8391 4.33333 19.4717 4.48552 19.2008 4.7564C18.93 5.02729 18.7778 5.39469 18.7778 5.77778C18.7778 6.16087 18.93 6.52827 19.2008 6.79915C19.4717 7.07004 19.8391 7.22222 20.2222 7.22222C20.6053 7.22222 20.9727 7.07004 21.2436 6.79915C21.5145 6.52827 21.6667 6.16087 21.6667 5.77778C21.6667 5.39469 21.5145 5.02729 21.2436 4.7564C20.9727 4.48552 20.6053 4.33333 20.2222 4.33333ZM13 5.77778C9.01767 5.77778 5.77778 9.01767 5.77778 13C5.77778 16.9823 9.01767 20.2222 13 20.2222C16.9823 20.2222 20.2222 16.9823 20.2222 13C20.2222 9.01767 16.9823 5.77778 13 5.77778ZM13 8.66667C15.3891 8.66667 17.3333 10.6109 17.3333 13C17.3333 15.3891 15.3891 17.3333 13 17.3333C10.6109 17.3333 8.66667 15.3891 8.66667 13C8.66667 10.6109 10.6109 8.66667 13 8.66667Z"/></svg>
+            </span>
+            <span class="sg-btn__text">Instagram</span>
+          </a>
+          <a class="sg-btn sg-btn--wa" href="https://wa.me/" target="_blank" rel="noopener" aria-label="WhatsApp Chat öffnen">
+            <span class="sg-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none"><path fill="currentColor" d="M13.0165 0C5.858 0 0.0305327 5.82189 0.0279324 12.9797C0.0266323 15.2677 0.62597 17.5013 1.76228 19.4695L0 26L6.80281 24.3928C8.6997 25.4276 10.8351 25.9708 13.0089 25.9721H13.014C20.1712 25.9721 25.9961 20.1489 26 12.9924C26.0026 9.52268 24.6532 6.26045 22.2012 3.80605C19.7491 1.35295 16.4904 0.0013 13.0165 0ZM13.014 2.6C15.791 2.6013 18.4008 3.68394 20.3627 5.64434C22.3246 7.60734 23.4023 10.2156 23.3997 12.9898C23.3971 18.715 18.7398 23.3721 13.0114 23.3721C11.2784 23.3708 9.56166 22.9357 8.04961 22.1102L7.17355 21.6328L6.20607 21.8613L3.64645 22.4656L4.27112 20.1449L4.55298 19.1039L4.01465 18.1695C3.10716 16.5991 2.62689 14.8036 2.62819 12.9797C2.63079 7.25709 7.28951 2.6 13.014 2.6ZM8.42035 6.9875C8.20323 6.9875 7.85218 7.06875 7.55445 7.39375C7.25672 7.71745 6.41684 8.50145 6.41684 10.0979C6.41684 11.6943 7.57984 13.2374 7.74236 13.4545C7.90357 13.6703 9.98725 17.0498 13.2857 18.3498C16.0263 19.4301 16.583 19.2169 17.1784 19.1623C17.7739 19.109 19.0994 18.379 19.3699 17.6211C19.6403 16.8632 19.6409 16.2112 19.5603 16.0773C19.4797 15.9421 19.2632 15.8615 18.9382 15.699C18.6144 15.5365 17.0191 14.7532 16.7214 14.6453C16.4236 14.5374 16.2059 14.4828 15.99 14.8078C15.7742 15.1328 15.154 15.8615 14.9642 16.0773C14.7743 16.2944 14.5858 16.3236 14.2608 16.1611C13.9357 15.9973 12.8907 15.6538 11.6504 14.5488C10.6857 13.6895 10.0347 12.6293 9.8449 12.3043C9.65639 11.9806 9.82713 11.8028 9.98965 11.6416C10.1353 11.496 10.3121 11.2627 10.4747 11.0729C10.6359 10.8831 10.6918 10.7478 10.7997 10.532C10.9076 10.3162 10.8524 10.1258 10.7718 9.96328C10.6911 9.80078 10.0599 8.19845 9.77126 7.55625C9.52814 7.01675 9.27137 7.00422 9.03994 6.99512C8.85142 6.98732 8.63617 6.9875 8.42035 6.9875Z"/></svg>
+            </span>
+            <span class="sg-btn__text">WhatsApp</span>
+          </a>
+        </div>
+        <div class="insta-carousel" aria-label="Instagram Bilder Carousel">
+          <button class="carousel-btn prev" type="button" aria-label="Vorheriges Bild">‹</button>
+          <div class="carousel-stage" aria-live="polite">
+            <ul class="carousel-slides">
+              <li class="carousel-slide"><img src="images/image1.png" alt="Instagram Platzhalter Bild 1" loading="lazy" /></li>
+              <li class="carousel-slide"><img src="images/image2.png" alt="Instagram Platzhalter Bild 2" loading="lazy" /></li>
+              <li class="carousel-slide"><img src="images/image3.png" alt="Instagram Platzhalter Bild 3" loading="lazy" /></li>
+              <li class="carousel-slide"><img src="images/image4.png" alt="Instagram Platzhalter Bild 4" loading="lazy" /></li>
+              <li class="carousel-slide"><img src="images/image5.png" alt="Instagram Platzhalter Bild 5" loading="lazy" /></li>
+              <li class="carousel-slide"><img src="images/image6.png" alt="Instagram Platzhalter Bild 6" loading="lazy" /></li>
+            </ul>
+          </div>
+          <button class="carousel-btn next" type="button" aria-label="Nächstes Bild">›</button>
+        </div>
       </div>
-    </footer>
-
-    <!-- Main JS -->
+    </section>
+    <!-- Location Section -->
+    <section class="location-section" id="location">
+      <div class="location-inner">
+        <div class="sg-heading-block">
+          <h2 class="sg-section-heading">KOMMT'S VORBEI</h2>
+          <span class="title-underline" aria-hidden="true"></span>
+        </div>
+  <!-- MapLibre map container (provide MapTiler credentials via data attributes) -->
+  <div class="location-map" id="store-map" data-mt-url="https://api.maptiler.com/maps/01997c64-4360-7cc0-b77f-06139d15730d/style.json?key=IAwxH9Qf6uoA1zhZTKlI" data-pitch="17.9" aria-label="Karte mit Standort und Parkmöglichkeit"></div>
+      </div>
+    </section>
+  <!-- MapLibre GL JS -->
+  <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "feature": "store", "name": "SchrankGold" },
+      "geometry": { "type": "Point", "coordinates": [11.908914,48.306816] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "feature": "parking", "name": "Parkplatz" },
+      "geometry": { "type": "Polygon", "coordinates": [[
+        [11.910025,48.307952],
+        [11.912058,48.307845],
+        [11.911961,48.307485],
+        [11.910947,48.307574],
+        [11.910961,48.307283],
+        [11.910368,48.307310],
+        [11.910025,48.307952]
+      ]] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "feature": "route" },
+      "geometry": { "type": "LineString", "coordinates": [
+        [11.910210,48.307583],
+        [11.909735,48.307474],
+        [11.909786,48.307322],
+        [11.909598,48.307263],
+        [11.909563,48.307158],
+        [11.909016,48.307044],
+        [11.909048,48.306846],
+        [11.909011,48.306839]
+      ] }
+    }
+  ]
+}

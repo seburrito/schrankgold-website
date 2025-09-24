@@ -1,0 +1,47 @@
+{
+  "version": 8,
+  "name": "SchrankGold Brand Style",
+  "metadata": {
+  "description": "Brand-colored minimal style focusing on buildings, roads, parking + route overlays. If source url fails, replace 'url' with explicit 'tiles' array: https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=YOUR_KEY and add minzoom/maxzoom."
+  },
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=IAwxH9Qf6uoA1zhZTKlI",
+  "sprite": "https://api.maptiler.com/sprites/v3/light/{retina}.png?key=IAwxH9Qf6uoA1zhZTKlI",
+  "sources": {
+  "openmaptiles": { "type": "vector", "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=IAwxH9Qf6uoA1zhZTKlI" },
+    "overlays": {
+      "type": "geojson",
+      "data": "overlays.geojson"
+    }
+  },
+  "center": [11.90903, 48.30709],
+  "zoom": 16,
+  "bearing": 0,
+  "pitch": 0,
+  "layers": [
+  { "id":"background","type":"background","paint":{"background-color":"#930032"} },
+  { "id":"water","type":"fill","source":"openmaptiles","source-layer":"water","paint":{"fill-color":"#0F2233","fill-opacity":0.9} },
+  { "id":"waterway","type":"line","source":"openmaptiles","source-layer":"waterway","paint":{"line-color":"#1B3A52","line-width":["interpolate",["linear"],["zoom"],10,0.3,14,0.8,18,2],"line-opacity":0.8} },
+  { "id":"landcover","type":"fill","source":"openmaptiles","source-layer":"landcover","paint":{"fill-color":["match",["get","class"],"wood","#123924","grass","#15452B","park","#1A5034","#68102E"],"fill-opacity":["case",["in",["get","class"], ["literal", ["wood","grass","park"]]],0.55,0.35]} },
+  { "id":"landuse","type":"fill","source":"openmaptiles","source-layer":"landuse","paint":{"fill-color":["match",["get","class"],"residential","#8A193F","commercial","#7F1538","industrial","#6E0F2F","#741235"],"fill-opacity":0.55} },
+    { "id":"building","type":"fill","source":"openmaptiles","source-layer":"building","paint":{
+        "fill-color":"#5E0F2B",
+        "fill-outline-color":"#370013",
+        "fill-opacity": 0.95
+      }
+    },
+  { "id":"road-major-outline","type":"line","source":"openmaptiles","source-layer":"transportation","filter":["in","class","primary","secondary","tertiary"],"paint":{"line-color":"#340010","line-width":["interpolate",["linear"],["zoom"],10,2,12,3,14,4,16,6,18,10]} },
+  { "id":"road-major","type":"line","source":"openmaptiles","source-layer":"transportation","filter":["in","class","primary","secondary","tertiary"],"paint":{"line-color":"#CCCCCC","line-width":["interpolate",["linear"],["zoom"],10,1,12,1.5,14,2.2,16,3.2,18,6]} },
+  { "id":"road-minor","type":"line","source":"openmaptiles","source-layer":"transportation","filter":["in","class","minor","service","residential"],"paint":{"line-color":"#CCCCCC","line-width":["interpolate",["linear"],["zoom"],12,0.3,14,0.8,16,1.4,18,3]} },
+  { "id":"road-path","type":"line","source":"openmaptiles","source-layer":"transportation","filter":["in","class","path","footway","pedestrian"],"paint":{"line-color":"#CCCCCC","line-width":["interpolate",["linear"],["zoom"],12,0.25,14,0.6,16,1,18,2],"line-dasharray":[1.2,1.2]} },
+  { "id":"road-labels","type":"symbol","source":"openmaptiles","source-layer":"transportation_name","layout":{"text-field":["get","name"],"text-size":12,"symbol-placement":"line","text-font":["Open Sans Regular","Noto Sans Regular"],"text-padding":2},"paint":{"text-color":"#F0F0F0","text-halo-color":"#2B0010","text-halo-width":1} },
+    { "id":"parking-fill","type":"fill","source":"overlays","filter":["==","feature","parking"],"paint":{"fill-color":"#FFFFFF","fill-opacity":0.15} },
+    { "id":"parking-outline","type":"line","source":"overlays","filter":["==","feature","parking"],"paint":{"line-color":"#FFFFFF","line-width":2,"line-opacity":0.6} },
+  { "id":"route-line","type":"line","source":"overlays","filter":["==","feature","route"],"layout":{"line-cap":"round","line-join":"round"},"paint":{"line-color":"#FFFFFF","line-width":4,"line-dasharray":[1,1]} },
+    { "id":"store-halo","type":"circle","source":"overlays","filter":["==","feature","store"],"paint":{ "circle-radius": 34, "circle-color":"#FFFFFF","circle-opacity":0.10 } },
+    { "id":"store-core","type":"circle","source":"overlays","filter":["==","feature","store"],"paint":{ "circle-radius": 7, "circle-color":"#FFFFFF", "circle-stroke-color":"#FFFFFF", "circle-stroke-width":2 } },
+  { "id":"store-label","type":"symbol","source":"overlays","filter":["==","feature","store"],"layout":{"text-field":"SchrankGold","text-size":14,"text-font":["Open Sans Regular","Noto Sans Regular"],"text-offset":[0,1.2],"text-anchor":"top"},"paint":{"text-color":"#FFFFFF","text-halo-color":"#2B0010","text-halo-width":1} },
+  { "id":"poi-labels","type":"symbol","source":"openmaptiles","source-layer":"poi","minzoom":14,"layout":{"text-field":["get","name"],"text-size":11,"text-font":["Open Sans Regular","Noto Sans Regular"],"icon-size":1,"text-offset":[0,0.6]},"paint":{"text-color":"#E5E1E6","text-halo-color":"#2B0010","text-halo-width":1} },
+    { "id":"place-labels","type":"symbol","source":"openmaptiles","source-layer":"place","layout":{"text-field":["get","name"],"text-size":12,"text-font":["Open Sans Regular","Noto Sans Regular"],"text-offset":[0,0.4]},"paint":{"text-color":"#FFFFFF","text-halo-color":"#4D001B","text-halo-width":1} }
+  ],
+  "id": "schrankgold-brand-style"
+}

@@ -1,148 +1,98 @@
-/* ============ FONT FACES ============ */
-@font-face {
-  font-family: "Avenir Roman";
-  src: url("./fonts/AvenirLTStd-Roman.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
+/* Minimal reset (landing only) */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#990036; font-family: "Avenir Book", sans-serif; }
+html { scroll-behavior:smooth; }
+
+/* ================== GLOBAL STYLES ================== */
+:root {
+  --font-family-sans: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-heading: "Proza Libre", "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.15;
+  --line-height-base: 1.5;
+  /* Fluid sizing helpers */
+  --step--1: clamp(0.85rem, 0.75rem + 0.3vw, 0.95rem);
+  --step-0: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem); /* base paragraph */
+  --step-1: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+  --step-2: clamp(1.6rem, 1.2rem + 1.2vw, 2.6rem); /* h2 */
+  --step-3: clamp(2rem, 1.4rem + 2vw, 3.2rem); /* (reserved for h1 if needed) */
+  --text-max-width: 65ch;
+  /* Brand colors */
+  --color-red: #990036;
+  --color-dark-red: #5B0E29;
+  --color-darker-red: #4D001B;
+  --color-gold: #CA9921;
+  --color-white: #FFFFFF;
+  --color-grey: #CCCCCC;
+  --color-black: #000000;
+  /* Unified horizontal section padding (used for side gutters) */
+  /* Horizontal section padding: earlier start retained, gentler slope, smaller max for wide screens */
+  --section-x-pad: clamp(20px, calc(20px + (100vw - 720px) * 0.16), 200px);
+  /* Heading inset mirrors horizontal section padding (can offset if needed later) */
+  --heading-side-inset: var(--section-x-pad);
+  /* Responsive narrow text measure: narrow on phones, comfortable on desktops */
+  /* Wider max again (70ch) while still narrowing on small viewports */
+  /* Text width: narrow on small screens, capped but roomy on desktops.
+    90vw lets it grow quickly; it hits the max (60ch) on normal laptop widths. */
+  /* Tighter on very small screens (28ch), still grows to 60ch on desktops */
+  --section-text-narrow: 80vw; /* simple percentage-based resizing */
+  /* Unified heading / underline spacing */
+  --heading-underline-gap: 14px; /* space from h2 baseline block to top of underline */
+  --underline-bottom-gap: 32px; /* space below underline to following content */
+  --heading-stack-gap: clamp(40px, 24px + 3vw, 72px); /* fluid spacing: same feel small, larger on wide screens */
+  /* Fluid spacing below each step h4 subtitle: grows subtly on wider screens */
+  --how-step-subtitle-gap: clamp(18px, 10px + 1vw, 34px); /* min 18, mid growth, max 34 */
+  /* Unified scaling factor for HOW section (1 on small screens up to ~1.4 on large) */
+  --how-scale: clamp(1, (100vw - 420px) / 900, 1.4);
+  /* Unified body font size token (used by p and buttons, etc.) */
+  --font-size-body: clamp(14px, 0.9rem + 0.6vw, 22px);
 }
 
-@font-face {
-  font-family: "Avenir Black";
-  src: url("./fonts/AvenirLTStd-Black.otf") format("opentype");
-  font-weight: bold;
-  font-style: normal;
-}
+body { font-family: var(--font-family-sans); background: var(--color-red); color: var(--color-white); line-height: var(--line-height-base); font-size: clamp(16px, 0.95rem + 0.2vw, 18px); }
 
-@font-face {
-  font-family: "Avenir Book";
-  src: url("./fonts/AvenirLTStd-Book.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
+/* Remove default margins already zeroed by reset; reintroduce consistent rhythm */
+h2, p { margin: 0 0 1em; }
 
-/* ================== RESET + GENERAL ================== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+h2, h3 { letter-spacing: 0.02em; line-height: var(--line-height-tight); }
+h2 { font-weight: var(--font-weight-regular); }
+h3 { font-weight: var(--font-weight-semibold); }
 
-body {
-  background-color: #990036; /* Apply red background to the whole page */
-  font-family: "Avenir Book", sans-serif; /* Regular font for text */
-  font-size: 20px; /* Slightly larger paragraph size */
-  color: #333; /* Neutral dark gray */
-  line-height: 1.8; /* Improve readability */
-}
+/* Base fallback (non-section h2 if any) */
+h2 { font-size: clamp(30px, 1.4rem + 2vw, 56px); font-family: var(--font-family-heading); font-weight:400; }
+h3 { font-size: clamp(16px, 1rem + 0.7vw, 24px); font-family: var(--font-family-sans); font-weight: var(--font-weight-semibold); letter-spacing:0.02em; color: var(--color-white); margin:0 0 var(--heading-stack-gap); }
+p  { font-size: var(--font-size-body); max-width: var(--text-max-width); color: var(--color-grey); }
+/* h4 should scale exactly like h3 */
+h4 { font-size: clamp(16px, 1rem + 0.7vw, 24px); font-family: var(--font-family-sans); font-weight: var(--font-weight-semibold); letter-spacing:0.02em; color: var(--color-white); }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Title underline (shared) */
+.title-underline { display:block; width:clamp(160px, 38vw, 480px); height:auto; aspect-ratio:253/23; background:url('assets/title-underline.svg') no-repeat left / 100% 100%; margin:0 0 var(--underline-bottom-gap); transition: width .35s ease, margin .3s ease; }
+/* Tight variant (currently same) */
+.title-underline--tight { margin:0 0 var(--underline-bottom-gap); }
+.title-underline--right { transform: scaleX(-1); }
+/* Auto-mirror when preceding heading is right-aligned via container */
+/* (margins for underlines now handled later with normalized utilities) */
 
-/* ================== NAVIGATION BAR ================== */
+/* Optional emphasis tweaks */
+p strong, p b { font-weight: var(--font-weight-bold); }
+p em, p i { font-style: italic; }
 
-nav {
-  position: sticky; /* Sticks to the top of the viewport */
-  top: 0; /* Places it below the landing page */
-  left: 0;
-  width: 100%; /* Full width of the viewport */
-  background-color: #990036;
-  z-index: 1000; /* Ensures it's above other elements */
-  padding: 10px 0;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+/* Utility for centered text blocks */
+.text-center { text-align: center; }
 
-nav .hamburger-menu {
-  display: none;
-  opacity: 0; /* Start fully transparent */
-  visibility: hidden; /* Hidden from view but still occupies space */
-  pointer-events: none; /* Prevent clicks when not visible */
-  transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition for opacity and visibility */
-  background: none;
-  border: none;
-  color: white;
-  font-size: 40px;
-  cursor: pointer;
-  padding: 0 16px;
-}
-
-nav .hamburger-menu.visible {
-  visibility: visible; /* Make it visible */
-  opacity: 1; /* Fully opaque */
-  pointer-events: auto; /* Make it clickable */
-}
-
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center; /* Centers the menu items */
-  gap: 30px;
-}
-
-nav ul li {
-  display: inline;
-}
-
-nav ul li a {
-  color: white;
-  text-transform: lowercase;
-  transition: color 0.3s;
-  text-decoration: none;
-  padding: 8px 16px;
-}
-
-nav ul li a:hover {
-  color: #ca9921;
-}
-
-/* Clear fix for floated li elements (if needed) */
-nav::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive Styles for Navigation*/
-@media screen and (max-width: 850px) {
-  nav {
-    position: sticky; /* Sticks to the top of the viewport */
-  }
-  nav ul {
-    display: none; /* Hide the menu */
-    flex-direction: column;
-    background-color: #990036;
-    position: absolute;
-    top: 100%; /* Position below the navbar */
-    left: 0;
-    width: 100%; /* Full-width menu */
-    padding: 5px 0 20px 5px; /* Up Right Down Left */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  nav ul.active {
-    display: flex; /* Show the menu when active */
-    transition: all 0.3s ease-in-out; /* Smooth transition when opening */
-  }
-
-  nav .hamburger-menu {
-    display: block; /* Show hamburger button */
-  }
-
-  .empty-section {
-    display: none;
-  }
-}
+/* Constrain long-form content wrapper */
+.prose { max-width: var(--text-max-width); }
 
 /* ================== LANDING SECTION ================== */
-.landing-section {
-  position: relative;
-  /* 200vh or any large value so there's enough scroll space 
-       for the pinned container to remain until the user scrolls far enough. */
-  height: 200vh;
+.landing-section { 
+  position: relative; 
+  min-height: 100vh; /* base full-screen */
+  /* Further extended scroll span: extremely long hold after animation */
+  --landing-scroll-extra: clamp(1100px, 140vh + 46vw, 3800px);
+  padding-bottom: 0; 
 }
+.landing-scroll-spacer { height: var(--landing-scroll-extra); pointer-events:none; }
 
 /* 
      content-container: STICKY at top:0, min-height:100vh 
@@ -153,19 +103,18 @@ nav::after {
   position: sticky;
   top: 0;
   min-height: 100vh;
-
-  /* Center its children (wardrobe, brand text, subtitle) vertically + horizontally */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(40px, 5vh, 120px); /* increased spacing between wardrobe and branding */
+  gap: clamp(40px, 5vh, 120px);
 }
 
 /* ================== WARDROBE (SVG) ================== */
 /* Wardrobe sizing refined: stays larger longer on medium screens */
 .wardrobe {
-  width: clamp(340px, 40vw, 640px);
+  /* Reduced mid-range growth so it isn't oversized on tablets / small laptops */
+  width: clamp(320px, 40vw, 560px);
   height: auto;
   transition: width 0.4s ease;
 }
@@ -182,6 +131,7 @@ nav::after {
   backface-visibility: hidden;
   transform-style: preserve-3d;
   transition: transform 0.3s ease-out; /* Smooth scaling effect */
+  transform-origin: center bottom; /* Grow upward to reduce text overlap */
 }
 
 /* Doors rotate from 180deg (closed) to 0deg (open) in JS. */
@@ -213,15 +163,6 @@ nav::after {
 .schrank,
 .gold { display:none; }
 
-.schrank {
-  font-family: "Avenir Roman", sans-serif;
-  color: white;
-}
-.gold {
-  font-family: "Avenir Black", sans-serif;
-  color: #ca9921;
-}
-
 /* SVG title replacement */
 /* Unified branding scaling */
 :root {
@@ -233,11 +174,14 @@ nav::after {
   --title-base: 900; /* px at full scale */
   --subtitle-ratio: 0.55; /* subtitle = title * ratio */
   /* Fluid title width (independent of brand-scale now for better continuous shrink) */
-  --title-min: 260px;
-  --title-max: 900px;
-  /* Widen middle range so title uses more horizontal space on small screens */
-  --title-fluid: clamp(var(--title-min), 85vw, var(--title-max));
+  --title-min: 380px;
+  --title-max: 850px;
+  /* Adjusted: previous 85vw made title & subtitle too large on tablets.
+    55vw keeps phones at min, moderates tablets, still reaches max on very wide screens. */
+  --title-fluid: clamp(var(--title-min), 60vw, var(--title-max));
 }
+
+/* (Removed welcome / founder variables) */
 
 .branding-block {
   display: flex;
@@ -252,45 +196,15 @@ nav::after {
 .wardrobe { display:flex; justify-content:center; }
 .wardrobe svg { width:100%; height:auto; display:block; }
 
-/* ================== SUBTITLE TEXT ================== */
-.best-second-subtitle {
-  color: white;
-  font-family: "Avenir Book", sans-serif;
-  font-size: clamp(12px, 4vw, 75px); /* Scale subtitle text dynamically */
-  letter-spacing: clamp(4px, 1.2vw, 22px); /* Adjust letter spacing */
-  /* Start hidden off-screen */
-  transform: translateY(100%);
-  opacity: 0;
-  transition: transform 0.5s ease-out, opacity 0.5s ease-out;
-}
+/* Subtitle (landing) */
+.best-second-subtitle { color:#fff; font-family:var(--font-family-sans); font-size:clamp(12px,4vw,75px); letter-spacing:clamp(4px,1.2vw,22px); transform:translateY(100%); opacity:0; transition:transform .5s ease-out, opacity .5s ease-out; }
+.best-second-subtitle .subtitle-graphic { width: calc(var(--title-fluid) * var(--subtitle-ratio)); height:auto; display:block; }
 
-/* SVG subtitle replacement */
-.best-second-subtitle .subtitle-graphic { width: calc(var(--title-fluid) * var(--subtitle-ratio)); height: auto; display: block; }
-
-/* Fine-tune breakpoints for wardrobe so it doesn’t shrink too fast relative to branding */
-@media (max-width: 1200px) {
-  .wardrobe { width: clamp(360px, 44vw, 600px); }
-}
-@media (max-width: 900px) {
-  .wardrobe { width: clamp(340px, 55vw, 560px); }
-  :root { --brand-scale: clamp(0.62, (100vw / var(--design-vw)), 1); }
-}
-@media (max-width: 700px) {
-  .wardrobe { width: clamp(320px, 62vw, 520px); }
-  :root { --brand-scale: clamp(0.58, (100vw / var(--design-vw)), 1); }
-}
-@media (max-width: 540px) {
-  .wardrobe { width: clamp(300px, 68vw, 480px); }
-  :root { --brand-scale: clamp(0.54, (100vw / var(--design-vw)), 1); }
-}
-@media (max-width: 430px) {
-  .wardrobe { width: clamp(270px, 74vw, 440px); }
-  :root { --brand-scale: clamp(0.5, (100vw / var(--design-vw)), 1); }
-}
+/* (Removed responsive wardrobe fine-tuning breakpoints for simplification) */
 
 /* Removed fine-grained subtitle scaling; single clamp handles responsiveness */
 
-/* ================== WOBBLE ANIMATION ================== */
+/* Hook wobble animation (landing) */
 @keyframes wobble {
   0% {
     transform: rotate(0deg);
@@ -311,313 +225,483 @@ nav::after {
     transform: rotate(0deg);
   }
 }
+
+/* ================== STANDARDIZED SECTION HEADINGS ================== */
+/* Unified system: identical size, indentation & spacing across all sections */
+.sg-section-heading,
+.sg-section-heading--right { 
+  font-family: var(--font-family-heading);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 56px); /* single fluid scale */
+  line-height: var(--line-height-tight);
+  margin:0 0 var(--heading-underline-gap); /* unified gap to underline */
+  letter-spacing:0.025em;
+}
+/* Founder section larger heading scale on wide screens */
+.founder-section .sg-section-heading--right { font-size: clamp(34px, 4.4vw, 72px); }
+/* Left-aligned (default) */
+.sg-section-heading { padding-left: var(--heading-side-inset); text-align:left; }
+/* Right-aligned variant mirrors padding */
+.sg-section-heading--right { padding-right: var(--heading-side-inset); text-align:right; }
+/* Heading + underline wrapper for consistent spacing */
+.sg-heading-block { display:flex; flex-direction:column; padding-left: var(--heading-side-inset); }
+.sg-heading-block--right { display:flex; flex-direction:column; align-items:flex-end; padding-left:0; padding-right: var(--heading-side-inset); }
+/* Remove internal heading padding when inside block to avoid double inset */
+.sg-heading-block > .sg-section-heading { padding-left:0; }
+.sg-heading-block--right > .sg-section-heading--right { padding-right:0; }
+/* Inside blocks, ensure gap from h2 to underline uses variable (already set on h2 margin-bottom) */
+/* Inside heading block: remove underline bottom margin; spacing handled by sibling rule */
+.sg-heading-block .title-underline { margin:0; }
+/* Consistent spacing from underline to next h3 */
+/* Removed direct .title-underline + h3 spacing (wrapper provides control) */
+/* Underline inherits padding context (no extra horizontal margins) */
+/* Underline horizontal alignment inherits heading padding so no extra horizontal margins needed */
+/* Ensure block formatting context */
+.sg-section-heading + .title-underline,
+.sg-section-heading--right + .title-underline { display:block; }
+/* Hook wobble trigger class */
 .wobble-animation {
+  transform-origin:50% 30%;
   animation: wobble 2s ease-out forwards;
-  transform-origin: 50% 30%;
 }
 
-/* ================== GENERAL SECTION STYLES ================== */
-section {
-  padding: 120px 20px; /* More padding around each section */
-  text-align: center; /* Center-align content */
-  background-color: #f9f9f9; /* Light gray background */
+/* ================== WELCOME TEXT TYPOGRAPHY BOXES ================== */
+#welcome-text { /* structural wrapper */
+  display: block; /* simpler vertical flow for explicit margins */
+  padding: clamp(12px, 4vh, 40px) 0 clamp(32px, 6vh, 72px);
+  max-width:1400px;
+  margin: var(--welcome-content-shift, 0) auto 0;
+}
+/* Add explicit margins for internal elements following underline/h3 pattern */
+.sg-heading-block { --_after-gap: var(--underline-bottom-gap); }
+/* If the very next sibling is an h3, rely on underline-to-h3-gap rather than block gap */
+.sg-heading-block + h3 { margin-top: var(--heading-stack-gap); }
+/* If next sibling is a paragraph (no h3 in section), apply standard gap */
+.sg-heading-block + p { margin-top: var(--underline-bottom-gap); }
+
+#welcome-text h2,
+#welcome-text h3,
+#welcome-text p {
+  /* Invisible boxes: control measure without borders/background */
+  display: block;
 }
 
-h2 {
-  font-family: "Avenir Black", sans-serif; /* Bold font for section titles */
-  font-size: 42px; /* Larger title size */
-  color: #ca9921; /* Gold color for titles */
-  margin-bottom: 40px; /* Add space below titles */
-  margin-top: 0; /* Ensure no extra space above titles */
-  text-transform: uppercase; /* Capitalize titles for emphasis */
-  letter-spacing: 3px; /* Slightly more spacing between letters */
+/* H2: max 70% viewport width */
+/* (Removed #welcome-text h2 override – standardized via .sg-section-heading) */
+
+/* H3 + paragraphs: limit to center (50% width), add left padding */
+#welcome-text h3, #welcome-text p { padding-left: var(--heading-side-inset); }
+/* Make only the paragraph copy flexibly narrower on large screens for improved readability.
+  Logic: Starts capped at 52ch; as viewport widens, calc(62ch - 6vw) decreases, gently tightening measure
+  but never below 38ch. No media queries needed. */
+#welcome-text p {
+  /* Revert mobile narrowness (original ~45vw) while adding a readable max on larger screens.
+     On small screens: 45vw (narrow column beside tower).
+     On wider screens: capped by 48ch for optimal measure.
+     No media queries needed. */
+  width: min(45vw, 48ch);
+  max-width: 48ch;
+}
+/* Keep h3 aligned to exact same measure as paragraph for consistent column */
+#welcome-text h3 { width: min(45vw, 48ch); max-width:48ch; }
+
+#welcome-text p { line-height: 1.5; }
+
+/* ================== WELCOME SECTION BACKGROUND TOWER (SIMPLIFIED) ================== */
+#welcome {
+  position: relative;
+  background-image: url('assets/erding-tower.svg');
+  background-repeat: no-repeat;
+  /* Extra vertical separation: earlier gentle start then aggressive desktop ramp. */
+  /* Growth model: stays near ~48px on small screens, begins ramp ~700px, reaches large spacer on wide desktops. */
+  margin-top: clamp(48px, calc(20px + (100vw - 700px) * 0.55), 520px);
+  /* Horizontal shift (right overlap on small screens, slides inward on wide) */
+  --tower-shift: clamp(-180px, 340px - 48vw, 260px); /* more hidden on right for narrow viewports */
+  /* Vertical offset to push tower slightly further down (positive pushes base below container, cropping bottom) */
+  --tower-y-offset: 40px; /* adjust 0–80px range as needed */
+  /* Width-driven scaling only */
+  --tower-width: clamp(440px, calc(140px + 36vw), 1100px);
+  /* Intrinsic aspect ratio of SVG (651 / 489) */
+  --tower-ratio: 1.33129;
+  --tower-height: calc(var(--tower-width) * var(--tower-ratio));
+  /* Anchor BASE to bottom plus extra downward offset (may crop a bit at bottom intentionally) */
+  background-position: calc(100% + var(--tower-shift)) calc(100% + var(--tower-y-offset));
+  background-size: var(--tower-width) auto;
+  /* Maintain 1px visual overlap into next section */
+  margin-bottom: -1px;
+  /* Content vertical offset variable retained for inner layout (#welcome-text uses it) */
+  --welcome-content-shift: clamp(0px, 2vh + 1.5vw, 160px);
+  /* Horizontal padding only; no bottom padding so base is flush */
+  /* Add responsive bottom padding only on wide screens to create more gap before next section */
+  padding: 0 var(--section-x-pad) clamp(0px, (100vw - 900px) * 0.08, 180px);
+  /* Ensure full tower always visible; add extra height ONLY on very narrow screens.
+    Extra term grows as viewport shrinks below 600px, capped at 180px, zero at >=600px. */
+  --welcome-narrow-extra: clamp(0px, (600px - 100vw) * 0.6, 180px);
+  min-height: calc(var(--tower-height) + 16px + var(--welcome-narrow-extra));
 }
 
-p {
-  font-family: "Avenir Book", sans-serif; /* Regular font for text */
-  font-size: 20px; /* Slightly larger paragraph size */
-  color: #333; /* Neutral dark gray */
-  line-height: 1.8; /* Improve readability */
-  max-width: 800px; /* Limit text width for better readability */
-  margin: 0 auto; /* Center-align paragraphs with max-width */
-  padding: 0 20px; /* Add padding for mobile-friendly spacing */
+/* If stricter overlap needed, adjust margin-bottom (more negative) and add same amount to padding-bottom */
+
+/* ================== FOUNDER SECTION ================== */
+.founder-section {
+  background: var(--color-dark-red);
+  /* Remove bottom padding so image can sit flush at section bottom */
+  padding: clamp(60px, 8vh + 2vw, 200px) var(--section-x-pad) 0;
+  margin-bottom:-2px; /* tiny 2px cover by next section */
+  /* overflow removed so image can sit lower than text while still allowing upward overlap */
+}
+/* Side-by-side layout: image (gabi) LEFT, text RIGHT (row-reverse since copy is first in DOM) */
+.founder-inner { 
+  max-width:1400px; /* reverted */
+  margin:0 auto;
+  display:flex;
+  flex-direction:row-reverse;
+  align-items:flex-start; /* text column top */
+  gap: clamp(24px, 4vw, 140px);
+  /* More aggressive large-screen growth to lower the image further */
+  min-height: clamp(620px, 54vh + 38vw, 3000px);
+  justify-content:flex-start;
+  position:relative;
+  padding-bottom: 0;
+}
+/* Visual sits at bottom with a consistent gap above */
+/* Visual container: keep bottom anchoring */
+.founder-visual { 
+  position:absolute; /* take out of normal flow */
+  left:0; 
+  bottom:0; /* anchor to bottom */
+  display:flex; 
+  align-items:flex-end; 
+  justify-content:flex-start; 
+  margin:0; 
+  padding:0; 
+  min-width:0;
+  width:100%;
+  pointer-events:none; /* container only */
+}
+/* Founder image itself */
+.founder-image {
+  display:block;
+  /* Larger presence on medium & large screens */
+  width: clamp(430px, 85vw, 1100px);
+  height:auto;
+  object-fit:contain;
+  margin:0 0 0 clamp(0px, 3vw, 100px);
+  /* Overlap only after large breakpoint (~1000px) */
+  --founder-overlap-x: clamp(0px, (100vw - 1120px) * 0.09, 110px); /* reverted overlap timing */
+  /* Lift image upward on larger screens (negative Y) */
+  /* Stronger upward lift sooner (starts after ~640px width) */
+  /* Increased lift: start earlier (>=560px) and allow higher max (-520px) for very large viewports. */
+  --founder-lift-up: clamp(0px, (100vw - 560px) * -0.42, -520px);
+  transform: translateX(var(--founder-overlap-x)) translateY(var(--founder-lift-up));
+  position:relative;
+  z-index:1;
+  transition: transform .8s ease, width .6s ease;
+  pointer-events:none;
+}
+/* Text column on RIGHT */
+ .founder-copy { 
+  text-align:right; 
+  padding-right: var(--heading-side-inset); 
+  padding-left:0; 
+  /* Allow heading area to expand MUCH more on ultra-wide screens while body copy stays narrow. */
+  /* Increased mid growth (42ch -> 60ch) and higher max (150ch -> 220ch). */
+  flex:0 1 clamp(30ch, 60ch + 26vw, 220ch);
+  position:relative; 
+  z-index:2; /* above image */
+  align-self:flex-start; 
+  /* Slightly reduce text vertical lift so the image appears relatively higher after its own lift increase. */
+  --founder-lift: clamp(0px, (100vw - 1200px) * 0.18, 180px);
+  transform: translateY(calc(var(--founder-lift) * -1));
+ }
+/* Let heading & subtitle use entire container width */
+/* Give h2 more horizontal reach without affecting paragraph measure */
+/* Wider h2 on ultra-wide screens */
+ .founder-copy .sg-section-heading--right { 
+  width:100%; 
+  /* Greatly expanded max width so heading can breathe on very large displays. */
+  max-width:clamp(50ch, 90ch + 36vw, 320ch); 
+  letter-spacing:0.03em; 
+ }
+/* Subtitle much wider: allow slight extra tracking for readability when very wide */
+.founder-copy h3 { width:100%; max-width:none; letter-spacing:0.035em; }
+/* Underline scale larger proportionally */
+.founder-copy .title-underline { width: clamp(340px, 62vw, 1180px); }
+.founder-copy .sg-heading-block { align-items:flex-end; padding-left:0; padding-right:0; }
+.founder-copy h3, .founder-copy p { padding-right:0; }
+/* Paragraph measure unified */
+.founder-copy p { margin-left:auto; max-width:clamp(30ch, 25ch + 4vw, 46ch); }
+/* Allow subtitle to span the full available width */
+/* Subtitle: enforce a wider min width on large screens so difference is obvious */
+/* Subtitle width (uses max-width so it doesn't force container overflow) */
+/* Subtitle: slightly reduced large cap but still expansive */
+.founder-copy h3 { width:100%; max-width:clamp(28ch, 44ch + 26vw, 200ch); }
+
+/* ================== HOW IT WORKS SECTION ================== */
+.how-section {
+  background: var(--color-red);
+  position: relative; /* keep stacking context */
+  z-index: 2; /* sits above founder to hide exact 2px */
+  margin-top: 0; /* no large overlap */
+  padding: clamp(60px, 8vh + 2vw, 240px) var(--section-x-pad) clamp(80px, 10vh + 2vw, 300px);
+  color: var(--color-white);
 }
 
-div {
-  font-family: "Avenir Book", sans-serif; /* Regular font for text */
-  font-size: 20px; /* Slightly larger paragraph size */
-  color: #333; /* Neutral dark gray */
-  line-height: 1.8; /* Improve readability */
-}
-
-/* ================== EMPTY SECTION ================== */
-.empty-section {
-  height: 200px;
-  background-color: #990036;
-}
-
-/* ================= GALLERY STYLES ================= */
-
-.gallery-section {
-  text-align: center;
-  padding: 80px 20px;
-  background-color: #f9f9f9;
-}
-
-/* Gallery container */
-.gallery-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  max-width: 1200px;
+.how-inner {
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  position: relative;
 }
 
-/* Gallery item (acts as a frame) */
-.gallery-item {
-  width: 350px;
-  height: 435px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border: 2px solid #ddd;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+/* Restored: .how-steps is the grid container */
+.how-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr minmax(80px, 140px) 1fr;
+  /* Only adjust this: slightly reduced on small/medium, original 120px on large */
+  padding-top: clamp(70px, 42px + 4vw, 120px);
+  /* Reverted original row-gap scaling */
+  row-gap: clamp(120px, calc(5vh + 7vw), 340px);
+  /* Distance from heading block to steps group (unchanged) */
+  margin-top: clamp(48px, calc(40px + 4vh + 2vw), 160px);
+  /* Outward shift variable (unchanged) */
+  --how-number-shift: clamp(26px, calc(14px + 8.5vw), 128px);
 }
 
-/* Ensure images fit inside the frame */
-.gallery-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-/* Hover Effect */
-.gallery-item:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-@media screen and (max-width: 850px) {
-  .gallery-container {
-    gap: 10px;
-  }
-  .gallery-item {
-    width: 200px;
-    height: 250px;
-  }
-}
-
-/* ================= LIGHTBOX STYLES ================= */
-
-/* Lightbox Overlay */
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-/* Show Lightbox */
-.lightbox.active {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Lightbox Image */
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 5px;
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-  object-fit: contain;
-  cursor: pointer;
-}
-
-/* Close Lightbox when clicking outside the image */
-.lightbox:after {
-  content: "✖";
+/* Decorative S line */
+.how-line {
   position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 30px;
-  color: white;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Keep asset vertical: scale width slightly, let height auto (very tall) */
+  width: clamp(190px, 9vw + 6.5vh, 250px);
+  height: auto;
+  pointer-events: none;
+  display: block;
+  object-fit: contain;
+  z-index: 0;
 }
+
+.how-step {
+  display: contents; /* allow grid placement via children */
+}
+
+.how-step .how-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  position: relative; /* ensure sits above decorative line */
+  z-index: 1;
+}
+
+/* Allow positioning context for overlap adjustments */
+.how-step .text-side { position: relative; }
+
+.how-step .number-side { align-items: flex-end; }
+.how-step.step-2 .number-side,
+.how-step.step-4 .number-side { align-items: flex-start; }
+
+.step-number {
+  /* More aggressive scaling: mid screens ramp via vw, capped high */
+  font-size: clamp(56px, calc(40px + 10vw), 140px);
+  font-weight: var(--font-weight-regular); /* regular weight per request */
+  line-height: 1;
+  color: var(--color-gold);
+}
+
+/* Push numbers further away from center (outward) */
+.how-step.step-1 .number-side .step-number,
+.how-step.step-3 .number-side .step-number { transform: translateX(calc(var(--how-number-shift) * -1)); }
+.how-step.step-2 .number-side .step-number,
+.how-step.step-4 .number-side .step-number { transform: translateX(var(--how-number-shift)); }
+
+.step-copy {
+  /* Simple single clamp: narrow on huge screens, wider on small.
+     min: 46ch (very wide desktops), fluid middle: 40ch + 4vw, max: 58ch (phones/tablets). */
+  max-width: clamp(35ch, 20ch + 4vw, 58ch);
+}
+
+.step-subtitle { margin:0 0 var(--how-step-subtitle-gap); font-weight: var(--font-weight-semibold); letter-spacing:0.02em; }
+
+.step-copy p { margin:0; color: var(--color-grey); line-height:1.45; }
+
+/* Right column text should be right-aligned (steps 1 & 3) */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side { align-items: flex-end; text-align: right; }
+.how-step.step-1 .text-side .step-actions,
+.how-step.step-3 .text-side .step-actions { align-self: flex-end; }
+
+.step-actions { margin-top: 16px; }
+
+/* Buttons */
+.sg-btn {
+  --btn-bg: var(--color-gold);
+  --btn-color: var(--color-black);
+  --btn-border: var(--color-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: 'Roboto', var(--font-family-sans);
+  /* Match standard paragraph size */
+  font-size: var(--font-size-body);
+  font-weight: 600; /* semibold */
+  line-height: 1.1;
+  /* Use em-based padding so button height scales with text */
+  padding: 0.7em 1.4em 0.7em 1.2em; /* maintains visual proportions while scaling */
+  border-radius: 999px; /* fully rounded */
+  text-decoration: none;
+  color: var(--btn-color);
+  background: var(--btn-bg);
+  border: 2px solid var(--btn-border);
+  transition: background .25s, color .25s, transform .25s, box-shadow .25s;
+  will-change: transform;
+  white-space: nowrap;
+}
+.sg-btn:hover { transform: translateY(-2px); }
+.sg-btn:active { transform: translateY(0); }
+
+.sg-btn--outline {
+  --btn-bg: transparent;
+  --btn-color: var(--color-gold);
+  --btn-border: var(--color-gold);
+}
+.sg-btn--outline:hover { background: rgba(202,153,33,0.1); }
+
+.sg-btn--primary:hover { background: #e6b347; }
+
+/* Icon inside button */
+.sg-btn__icon { display:inline-flex; width:1.15em; height:1.15em; flex:0 0 1.15em; }
+.sg-btn__icon svg, .sg-btn__icon img { width:100%; height:100%; display:block; object-fit:contain; }
+.sg-btn__text { display:inline-block; }
+
+/* Color variants */
+.sg-btn--tel { --btn-bg: var(--color-darker-red); --btn-color: var(--color-gold); --btn-border: var(--color-darker-red); }
+.sg-btn--verkauf { --btn-bg: var(--color-gold); --btn-color: var(--color-dark-red); --btn-border: var(--color-gold); }
+.sg-btn--insta, .sg-btn--wa { --btn-bg: var(--color-red); --btn-color: var(--color-gold); --btn-border: var(--color-red); }
+
+/* Ensure icon matches text color by using currentColor fill (SVGs are white; invert via filter if needed) */
+/* Inline SVG uses fill=currentColor so no filters needed */
+
+/* Harmonize hover states using darken/lighten approximations */
+.sg-btn--tel:hover { background: #390016; }
+.sg-btn--verkauf:hover { background:#e6b347; }
+.sg-btn--insta:hover, .sg-btn--wa:hover { background:#b30244; }
+
+/* High contrast / focus */
+.sg-btn:focus-visible { outline: 3px solid #fff; outline-offset:2px; }
+
+/* Position children into grid columns */
+.how-step.step-1 .left { grid-column: 1; }
+.how-step.step-1 .right { grid-column: 3; }
+.how-step.step-2 .left { grid-column: 1; }
+.how-step.step-2 .right { grid-column: 3; }
+.how-step.step-3 .left { grid-column: 1; }
+.how-step.step-3 .right { grid-column: 3; }
+.how-step.step-4 .left { grid-column: 1; }
+.how-step.step-4 .right { grid-column: 3; }
+
+
+.how-details-cta {
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.how-details-cta p { margin:0; color: var(--color-grey); }
+
+/* (Removed .how-section h2 override – standardized via .sg-section-heading) */
+
+.how-section h3 { max-width:72ch; padding-left: var(--heading-side-inset); }
+
+/* ================== HOW IT WORKS: OVERLAP SIDE COLUMNS (only on smaller viewports) ================== */
+/* Overlap increases as viewport gets narrower; at wider (~>=900px) it resolves to 0 without media queries */
+.how-steps { --how-overlap: clamp(0px, calc((900px - 100vw) * 0.14), 64px); }
+/* Right-side text steps (1 & 3) shift left */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side { margin-left: calc(var(--how-overlap) * -1); }
+/* Left-side text steps (2 & 4) shift right */
+.how-step.step-2 .text-side,
+.how-step.step-4 .text-side { margin-right: calc(var(--how-overlap) * -1); }
+
+/* Subtle inward nudge of text blocks on large viewports (without breakpoints) */
+.how-steps { --how-inward: clamp(0px, (100vw - 1000px) * 0.35, 180px); }
+/* Inward translation affects whole text column for clearer visual shift */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side { transform: translateX(calc(var(--how-inward) * -1)); }
+.how-step.step-2 .text-side,
+.how-step.step-4 .text-side { transform: translateX(var(--how-inward)); }
+
+/* Placeholder for future list / steps styling */
+/* .how-steps: future steps / grid will be added here when content provided */
+
+/* ================== INSTAGRAM SECTION ================== */
+.instagram-section { background: var(--color-dark-red); color: var(--color-white); padding: clamp(60px, 10vh + 2vw, 220px) var(--section-x-pad) clamp(80px, 12vh + 2vw, 280px); }
+.instagram-inner { max-width: 1400px; margin:0 auto; display:flex; flex-direction:column; align-items:flex-end; }
+/* Explicit spacing for instagram stack */
+.instagram-inner .sg-heading-block--right + .instagram-tagline { margin-top: var(--heading-stack-gap); }
+.instagram-tagline + .instagram-actions { margin-top: var(--heading-stack-gap); }
+.instagram-heading { /* uses .sg-section-heading--right for standardized style */ width:100%; }
+/* legacy duplicates removed – consolidated above */
+.instagram-tagline { 
+  /* Wider again for large + ultra-wide: raise cap & growth; mobile minimum unchanged. */
+  width: min(96vw, clamp(28ch, 24ch + 24vw, 160ch));
+  max-width: clamp(28ch, 24ch + 24vw, 160ch);
+  text-align:right; 
+  padding-right: var(--heading-side-inset); 
+}
+.instagram-actions { display:flex; flex-wrap:wrap; gap:16px; justify-content:flex-end; width:100%; padding-right: var(--heading-side-inset); }
+/* Responsive multi-slide carousel (3 -> 2 -> 1) WITHOUT media queries */
+/* Instagram carousel wrapper: add horizontal gutters like headings */
+.insta-carousel { position:relative; width:100%; display:flex; align-items:center; justify-content:center; padding:0 var(--heading-side-inset); }
+/* Add vertical gap between the action buttons row and the carousel */
+.instagram-actions + .insta-carousel { margin-top: var(--heading-stack-gap); }
+.carousel-stage { flex:1; max-width:1400px; overflow:hidden; position:relative; }
+.carousel-slides { list-style:none; margin:0; padding:0; display:flex; align-items:stretch; gap:0; transition: transform .5s ease; }
+.carousel-slide { flex:0 0 auto; aspect-ratio:4/5; border-radius:0; overflow:hidden; background:#3a0f22; position:relative; }
+.carousel-slide img { width:100%; height:100%; object-fit:cover; display:block; }
+/* Improve desktop drag usability */
+.carousel-stage, .carousel-slides, .carousel-slide, .carousel-slide img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.carousel-stage { cursor:grab; }
+.carousel-stage:active { cursor:grabbing; }
+/* Navigation arrows overlayed and vertically centered relative to slides */
+.carousel-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,0.14); color:#fff; border:none; width:56px; height:56px; border-radius:50%; font-size:34px; line-height:1; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); transition: background .25s, transform .25s; z-index:5; }
+/* Overlay buttons on the inner edges of first/last visible slides (aligned with gutter) */
+.carousel-btn.prev { left: var(--heading-side-inset); }
+.carousel-btn.next { right: var(--heading-side-inset); }
+.carousel-btn:hover { background:rgba(255,255,255,0.25); transform:translateY(-50%) scale(1.05); }
+.carousel-btn:active { background:rgba(255,255,255,0.32); transform:translateY(-50%) scale(1); }
+@supports not (aspect-ratio: 4 / 5) { .carousel-slide { height:420px; } }
+@media (prefers-reduced-motion: reduce) { .carousel-slides { transition:none; } .carousel-btn { transition:none; } }
 
 /* ================== LOCATION SECTION ================== */
+.location-section { background: var(--color-red); color: var(--color-white); padding: clamp(60px, 10vh + 2vw, 240px) var(--section-x-pad) clamp(80px, 12vh + 2vw, 280px); }
+.location-inner { width:100%; margin:0; padding:0; }
+/* Reuse heading block – no extra subtitle/text */
+.location-section .sg-heading-block + * { margin-top: var(--heading-stack-gap); }
 
-/* Map Container */
-.map-container {
-  margin-top: 20px; /* Space above the map */
-  width: 100%;
-  max-width: 800px; /* Limit map width for large screens */
-  height: 450px;
-  margin-left: auto;
-  margin-right: auto; /* Center the map */
-  border: 2px solid #ddd; /* Optional border for a polished look */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  overflow: hidden; /* Prevent overflow issues */
-  border-radius: 10px; /* Rounded corners */
+/* Leaflet map: single fluid formula (no media queries). Height grows with viewport width & height */
+.location-map {
+  position:relative;
+  width:100%;
+  /* Stronger growth: base 360 + 22vw + 10vh, higher cap */
+  --map-h: clamp(360px, 260px + 22vw + 10vh, 1180px);
+  height: var(--map-h);
 }
-
-.map-container iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
+@media (max-width: 640px) {
+  .location-map { --map-h: clamp(480px, 70vh, 760px); }
 }
+/* Explicit fallback */
+#store-map, #store-map.leaflet-container { min-height: 360px; }
+/* MapLibre container fills parent */
+.location-map canvas { outline:none; }
 
-/* ================== OPENING HOURS SECTION ================== */
-.opening-hours-list {
-  display: inline-block; /* needed so that text-align on container affects positioning */
-  text-align: left; /* ensures internal text is left-aligned */
-  padding: 10px; /* optional */
-}
-
-.opening-hours-list .row {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 5px;
-}
-
-.opening-hours-list .label {
-  width: 160px; /* or whatever width fits your layout */
-  flex-shrink: 0;
-}
-
-.opening-hours-list .time {
-  flex-grow: 1;
-}
-
-/* ================== CONTACT INFO SECTION ================== */
-
-.contact-info {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 20px auto;
-  padding: 10px;
-  max-width: 900px;
-  background-color: #990036;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  margin: 10px;
-  text-decoration: none;
-  color: #f9f9f9; /* Default color */
-  transition: color 0.3s;
-}
-
-.contact-item:hover {
-  color: #ca9921; /* Hover color for both icon and text */
-}
-
-.contact-item .icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-
-.contact-item .icon svg path {
-  fill: #f9f9f9; /* Default icon color */
-  transition: fill 0.3s;
-}
-
-.contact-item:hover .icon svg path {
-  fill: #ca9921; /* Hover color for the icon */
-}
-
-/* Responsive styling for smaller screens */
-@media screen and (max-width: 850px) {
-  .contact-info {
-    display: flex; /* Use flexbox for centering */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center the entire section */
-    text-align: left; /* Ensure text inside the container is left-aligned */
-  }
-
-  .contact-item {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center; /* Align icons and text vertically */
-    margin-bottom: 10px; /* Adjust spacing between items */
-    width: 100%; /* Ensure items take full width */
-    max-width: 300px; /* Limit width for better appearance */
-  }
-
-  .contact-item .icon {
-    width: 50px; /* Reduce icon width for less spacing */
-    margin-right: 10px; /* Adjust spacing between icon and text */
-    flex-shrink: 0;
-  }
-
-  .contact-item value {
-    flex-grow: 1; /* Allow the text to take up remaining space */
-  }
-}
-
-/* ================== FOOTER ================== */
-
-/* Footer Styles */
-footer {
-  background-color: #990036; /* Match your theme */
-  color: white;
-  text-align: center;
-  padding: 0 0 20px;
-}
-
-.footer-container {
-  max-width: 800px; /* Center content with a limit */
-  margin: 0 auto; /* Center-align the footer */
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 10px 0 20px;
-  display: flex;
-  justify-content: center; /* Center the links */
-  gap: 20px; /* Spacing between links */
-}
-
-.footer-links li {
-  display: inline; /* Ensure links are inline */
-}
-
-.footer-links a {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.footer-links a:hover {
-  color: #ca9921; /* Gold hover effect */
-}
-
-.footer-container p {
-  color: #f9f9f9;
-  font-size: 16px;
-}
