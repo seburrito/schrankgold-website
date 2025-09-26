@@ -79,6 +79,130 @@ function initWardrobeAnimation() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Determine preferred map provider (Apple Maps on Apple devices, else Google Maps)
+  function getPreferredMaps(){
+    const ua = navigator.userAgent || navigator.vendor || '';
+    const isApple = /iPad|iPhone|iPod|Macintosh/.test(ua) && !window.MSStream;
+    const coords = { lat:48.306816, lon:11.908914 };
+    const addrQ = 'Am Rätschenbach 11, 85435 Erding';
+    const google = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addrQ);
+    const apple = 'https://maps.apple.com/?address=' + encodeURIComponent('Am Rätschenbach 11,85435,Erding,Germany') + '&ll=' + coords.lat + ',' + coords.lon + '&q=' + encodeURIComponent('SchrankGold');
+    return { provider: isApple ? 'apple' : 'google', url: isApple ? apple : google, google, apple };
+  }
+  // Initialize address link if present
+  (function initAddressLink(){
+    const btn = document.getElementById('store-directions-btn');
+    if(!btn) return;
+    const pref = getPreferredMaps();
+    btn.href = pref.url;
+    btn.dataset.provider = pref.provider;
+  })();
+
+  /* ================== PARALLAX FOR HOURS TOWER ================== */
+  (function initHoursParallax(){
+    const bg = document.querySelector('.hours-bg');
+    const section = document.querySelector('.hours-section');
+    if(!bg || !section) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return; // respect user preference
+    let ticking = false;
+  const MAX_SHIFT = 80; // reduced shift so tower appears more grounded
+    function compute(){
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      // Progress: when top enters viewport (0) until bottom leaves (1)
+      const total = rect.height + vh;
+      const visibleProgress = 1 - (rect.bottom / total); // 0 -> 1 as we scroll through
+      const clamped = Math.min(Math.max(visibleProgress, 0), 1);
+      // Apply easing (gentle) so movement starts subtle
+      const eased = 1 - Math.pow(1 - clamped, 2);
+      const shift = -eased * MAX_SHIFT; // negative to move slightly upward (parallax slower than scroll)
+      bg.style.setProperty('--hours-parallax', shift.toFixed(2) + 'px');
+      ticking = false;
+    }
+    function onScroll(){
+      if(!ticking){
+        ticking = true;
+        requestAnimationFrame(compute);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll, { passive:true });
+    compute();
+  })();
+  /* ================== PARALLAX FOR WELCOME TOWER ================== */
+  (function initWelcomeParallax(){
+    const bg = document.querySelector('.welcome-bg');
+    const section = document.querySelector('#welcome');
+    if(!bg || !section) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+    let ticking = false;
+    const MAX_SHIFT = 110; // stronger vertical travel (was 60) so effect is more pronounced
+    function compute(){
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      // Progress through section: when top hits top of viewport (0) until bottom passes bottom (1)
+      const total = rect.height + vh;
+      const visibleProgress = 1 - (rect.bottom / total); // 0 -> 1
+      const clamped = Math.min(Math.max(visibleProgress, 0), 1);
+      // Ease for subtle start
+      const eased = 1 - Math.pow(1 - clamped, 2);
+      // Move slower than scroll: upward (negative) or downward depending on desired effect
+      const shift = -eased * MAX_SHIFT; // negative -> slight upward drift
+      bg.style.setProperty('--welcome-parallax', shift.toFixed(2) + 'px');
+      ticking = false;
+    }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(compute); } }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll, { passive:true });
+    compute();
+  })();
+  /* ================== PARALLAX FOR FOUNDER SVG (exclude dark bottle) ================== */
+  (function initFounderParallax(){
+    const section = document.querySelector('.founder-section');
+    const svg = section && section.querySelector('.founder-image');
+    if(!section || !svg) return;
+    // Moving group: everything except #dark-bottle stays wrapped in <g id="gabi"> in inlined SVG
+    const movingGroup = svg.querySelector('#gabi');
+    const darkBottle = svg.querySelector('#dark-bottle');
+    if(!movingGroup) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return; // respect user preference
+    let ticking = false;
+    // CONFIG
+  const MAX_SHIFT = 100; // stronger upward travel for clear parallax (previous 42)
+  const BASELINE_OFFSET = 110; // keep initial grounded feel while allowing larger travel
+  const START_THRESHOLD = 0.05; // smaller dead zone so motion starts earlier
+    const DARK_BOTTLE_PIN = true; // keep dark bottle visually pinned
+    function compute(){
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const total = rect.height + vh;
+      let progress = 1 - (rect.bottom / total); // raw 0..1
+      // Dead zone at start so image sits grounded longer
+      if (progress < START_THRESHOLD) progress = 0; else progress = (progress - START_THRESHOLD) / (1 - START_THRESHOLD);
+      const clamped = Math.min(Math.max(progress, 0), 1);
+      // Ease (cubic) for gentle entry / soft finish
+      const eased = 1 - Math.pow(1 - clamped, 3);
+      const travel = eased * MAX_SHIFT; // positive scalar (0..MAX_SHIFT)
+      // movingGroup goes UP (negative translateY) from its lowered baseline
+      const movingTranslate = BASELINE_OFFSET - travel;
+      movingGroup.style.transform = `translateY(${movingTranslate.toFixed(2)}px)`;
+      if (darkBottle && DARK_BOTTLE_PIN){
+        // Counter the moving group's shift so dark bottle appears fixed in document space:
+        // Net Y = movingTranslate + bottleTranslate = 0 => bottleTranslate = -movingTranslate
+        darkBottle.style.transform = `translateY(${(-movingTranslate).toFixed(2)}px)`;
+        darkBottle.style.transformBox = 'fill-box';
+        darkBottle.style.transformOrigin = 'center';
+      }
+      ticking = false;
+    }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(compute); } }
+    window.addEventListener('scroll', onScroll, { passive:true });
+    window.addEventListener('resize', onScroll, { passive:true });
+    compute();
+  })();
   // Dynamic underline sizing to match preceding h2 width
   function sizeUnderlines(){
   const MIN = 250; // px (raised from 160 to improve small-screen size)
@@ -339,11 +463,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (/key=/.test(explicitUrl)) REMOTE_STYLE_URL = explicitUrl;
       else REMOTE_STYLE_URL = explicitUrl + (explicitUrl.includes('?') ? '&' : '?') + 'key=' + MAPTILER_KEY;
     }
-    // Fallback to local custom style if query param localStyle=1 (for dev / offline) else use remote
-    const useLocal = /[?&]localStyle=1/.test(window.location.search);
-    const STYLE_URL = useLocal ? 'map-style.json' : REMOTE_STYLE_URL;
-    if (useLocal) console.debug('[MapLibre] Using local style.json (dev override)');
-    else console.debug('[MapLibre] Using remote MapTiler style:', REMOTE_STYLE_URL);
+  // Always use remote MapTiler style (local fallback removed)
+  const STYLE_URL = REMOTE_STYLE_URL;
+  console.debug('[MapLibre] Using remote MapTiler style:', REMOTE_STYLE_URL);
     console.debug('[MapLibre] Setup start');
 
     // Utility: fit to overlays bounds once data loaded
@@ -491,8 +613,9 @@ document.addEventListener('DOMContentLoaded', () => {
           map.on('click','store-icon-layer', e => {
             if (!e.features || !e.features.length) return;
             const f = e.features[0];
-            popup.setLngLat(f.geometry.coordinates)
-        .setHTML('<strong>SchrankGold</strong><br/>Schrannenplatz 8<br/>85435 Erding<br/><em>Di–Fr 10–18, Sa 10–14</em>')
+    const pref = getPreferredMaps();
+    popup.setLngLat(f.geometry.coordinates)
+		.setHTML('<strong>SchrankGold</strong><br/>Am Rätschenbach 11<br/>85435 Erding<br/><em>Di–Fr 10–18, Sa 10–14</em><br/><small><a href="'+pref.url+'" target="_blank" rel="noopener">In '+(pref.provider==='apple'?'Apple Maps':'Google Maps')+' öffnen</a></small>')
               .addTo(map);
           });
           map.on('mouseenter','store-icon-layer', ()=> map.getCanvas().style.cursor='pointer');
@@ -680,5 +803,120 @@ document.addEventListener('DOMContentLoaded', () => {
       fallbackTimer = setTimeout(()=>{ if(!initialized) build('timeout'); }, 3000);
     }
     observe();
+  })();
+
+  /* ================== OPENING HOURS STATUS ================== */
+  (function initOpeningHours(){
+    const statusEl = document.getElementById('hours-status');
+    if (!statusEl) return;
+    const textEl = statusEl.querySelector('.hours-status__text');
+    const iconEl = statusEl.querySelector('.hours-status__icon');
+    // Hours definition (local time Europe/Berlin) using minutes from midnight
+    // Wednesday (3), Thursday (4), Friday (5), Saturday (6)
+    // For split days use array of [start,end]
+    const HOURS = {
+      3: [[10*60, 18*60]], // Wed
+      4: [[10*60, 13*60],[15*60,18*60]], // Thu
+      5: [[10*60, 13*60],[15*60,18*60]], // Fri
+      // Saturday: only first & last of month 10-13
+      6: 'special-sat'
+    };
+    function isFirstOrLastSaturday(date){
+      const d = new Date(date.getTime());
+      // First Saturday: day >=1 .. 7 and day is Saturday
+      const day = d.getDate();
+      // Last Saturday: advance to next month - go back to last Saturday
+      const nextMonth = new Date(d.getFullYear(), d.getMonth()+1, 0); // last day of month
+      const lastDate = nextMonth.getDate();
+      return (day <= 7 || day > lastDate - 7);
+    }
+    function todaysIntervals(local){
+      const dow = local.getDay(); // 0 Sun
+      if (!(dow in HOURS)) return [];
+      if (HOURS[dow] === 'special-sat'){
+        if (!isFirstOrLastSaturday(local)) return [];
+        return [[10*60,13*60]];
+      }
+      return HOURS[dow];
+    }
+    function minutesNow(local){ return local.getHours()*60 + local.getMinutes(); }
+    function classify(now){
+      // Determine next open/close transitions within coming 7 days
+      const TZ_OFFSET = now.getTimezoneOffset(); // minutes difference to UTC (ignored for relative)
+      const current = new Date(now.getTime());
+      const todayIntervals = todaysIntervals(current);
+      const mNow = minutesNow(current);
+      let isOpen = false; let minutesUntilClose = null; let minutesUntilOpen = null;
+      for (const [s,e] of todayIntervals){
+        if (mNow >= s && mNow < e){
+          isOpen = true; minutesUntilClose = e - mNow; break;
+        } else if (mNow < s){
+          if (minutesUntilOpen == null) minutesUntilOpen = s - mNow; // next open today
+        }
+      }
+      if (!isOpen && minutesUntilOpen == null){
+        // search next open day up to 14 days ahead (covers month boundary for Saturdays)
+        for (let d=1; d<=14; d++){
+          const future = new Date(now.getTime() + d*24*60*60000);
+            const intervals = todaysIntervals(future);
+            if (intervals.length){
+              minutesUntilOpen = (24*60 - mNow) + (d-1)*24*60 + (intervals[0][0]);
+              break;
+            }
+        }
+      }
+      // Determine state class
+      // Cases: open >60, open <=60, closed <=60 (until open), closed >60
+      let state = 'closed-long';
+      let message = '';
+      if (isOpen){
+        let nextCloseTime = formatTime(addMinutes(now, minutesUntilClose));
+        if (minutesUntilClose > 60) { state='open-long'; message = `Jetzt geöffnet bis ${nextCloseTime} Uhr`; }
+        else { state='open-short'; message = `Noch geöffnet bis ${nextCloseTime} Uhr`; }
+      } else if (minutesUntilOpen != null){
+        let nextOpenTime = formatTime(addMinutes(now, minutesUntilOpen));
+        if (minutesUntilOpen <= 60){ state='closed-soon'; message = `Öffnet bald um ${nextOpenTime} Uhr`; }
+        else { state='closed-long'; message = `Jetzt geschlossen bis ${nextOpenTime}`; }
+      } else {
+        message = 'Heute geschlossen';
+      }
+      return { state, message, isOpen };
+    }
+    function addMinutes(date, mins){ return new Date(date.getTime() + mins*60000); }
+    function pad(n){ return (n<10?'0':'')+n; }
+    function formatTime(d){ return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+    function formatFutureOpen(now, deltaMins){
+      const target = addMinutes(now, deltaMins);
+      const weekday = ['So','Mo','Di','Mi','Do','Fr','Sa'][target.getDay()];
+      const today = now.toDateString() === target.toDateString();
+      return (today ? 'um ' : (weekday+' ')) + formatTime(target);
+    }
+    let lastState='';
+    function update(){
+      const now = new Date();
+      const { state, message, isOpen } = classify(now);
+      if (state !== lastState){
+        statusEl.className = 'hours-status hours-status--'+state;
+        iconEl.innerHTML = '';
+        const svgPath = state.startsWith('open') ? 'assets/icons/check.svg' : 'assets/icons/cross.svg';
+        fetch(svgPath)
+          .then(r => r.text())
+          .then(svg => {
+          // Force any hard-coded fills/strokes to currentColor for brand consistency
+          svg = svg
+            .replace(/fill="(?!none)[^"]*"/gi, 'fill="currentColor"')
+            .replace(/stroke="(?!none)[^"]*"/gi, 'stroke="currentColor"');
+          iconEl.innerHTML = svg;
+          const inserted = iconEl.querySelector('svg');
+          if (inserted){ inserted.setAttribute('aria-hidden','true'); inserted.style.width='100%'; inserted.style.height='100%'; }
+          })
+          .catch(()=>{});
+        lastState = state;
+      }
+      if (textEl) textEl.textContent = message;
+    }
+    update();
+    // Refresh every minute
+    setInterval(update, 60000);
   })();
 });

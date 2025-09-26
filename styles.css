@@ -55,7 +55,7 @@ body { font-family: var(--font-family-sans); background: var(--color-red); color
 /* Remove default margins already zeroed by reset; reintroduce consistent rhythm */
 h2, p { margin: 0 0 1em; }
 
-h2, h3 { letter-spacing: 0.02em; line-height: var(--line-height-tight); }
+h2, h3 { letter-spacing: 0.02em; line-height: var(--line-height-base); }
 h2 { font-weight: var(--font-weight-regular); }
 h3 { font-weight: var(--font-weight-semibold); }
 
@@ -233,7 +233,7 @@ p em, p i { font-style: italic; }
   font-family: var(--font-family-heading);
   font-weight: 400;
   font-size: clamp(30px, 3.6vw, 56px); /* single fluid scale */
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-base); /* unified with paragraph line-height */
   margin:0 0 var(--heading-underline-gap); /* unified gap to underline */
   letter-spacing:0.025em;
 }
@@ -267,10 +267,11 @@ p em, p i { font-style: italic; }
 
 /* ================== WELCOME TEXT TYPOGRAPHY BOXES ================== */
 #welcome-text { /* structural wrapper */
-  display: block; /* simpler vertical flow for explicit margins */
+  display: block;
   padding: clamp(12px, 4vh, 40px) 0 clamp(32px, 6vh, 72px);
   max-width:1400px;
-  margin: var(--welcome-content-shift, 0) auto 0;
+  /* Content shift variable removed for simplicity */
+  margin: 0 auto 0;
 }
 /* Add explicit margins for internal elements following underline/h3 pattern */
 .sg-heading-block { --_after-gap: var(--underline-bottom-gap); }
@@ -310,43 +311,66 @@ p em, p i { font-style: italic; }
 /* ================== WELCOME SECTION BACKGROUND TOWER (SIMPLIFIED) ================== */
 #welcome {
   position: relative;
-  background-image: url('assets/erding-tower.svg');
-  background-repeat: no-repeat;
-  /* Extra vertical separation: earlier gentle start then aggressive desktop ramp. */
-  /* Growth model: stays near ~48px on small screens, begins ramp ~700px, reaches large spacer on wide desktops. */
+  /* Keep initial separation from landing; retain simple existing margin-top */
   margin-top: clamp(48px, calc(20px + (100vw - 700px) * 0.55), 520px);
-  /* Horizontal shift (right overlap on small screens, slides inward on wide) */
-  --tower-shift: clamp(-180px, 340px - 48vw, 260px); /* more hidden on right for narrow viewports */
-  /* Vertical offset to push tower slightly further down (positive pushes base below container, cropping bottom) */
-  --tower-y-offset: 40px; /* adjust 0–80px range as needed */
-  /* Width-driven scaling only */
-  --tower-width: clamp(440px, calc(140px + 36vw), 1100px);
-  /* Intrinsic aspect ratio of SVG (651 / 489) */
-  --tower-ratio: 1.33129;
-  --tower-height: calc(var(--tower-width) * var(--tower-ratio));
-  /* Anchor BASE to bottom plus extra downward offset (may crop a bit at bottom intentionally) */
-  background-position: calc(100% + var(--tower-shift)) calc(100% + var(--tower-y-offset));
-  background-size: var(--tower-width) auto;
-  /* Maintain 1px visual overlap into next section */
-  margin-bottom: -1px;
-  /* Content vertical offset variable retained for inner layout (#welcome-text uses it) */
-  --welcome-content-shift: clamp(0px, 2vh + 1.5vw, 160px);
-  /* Horizontal padding only; no bottom padding so base is flush */
-  /* Add responsive bottom padding only on wide screens to create more gap before next section */
-  padding: 0 var(--section-x-pad) clamp(0px, (100vw - 900px) * 0.08, 180px);
-  /* Ensure full tower always visible; add extra height ONLY on very narrow screens.
-    Extra term grows as viewport shrinks below 600px, capped at 180px, zero at >=600px. */
-  --welcome-narrow-extra: clamp(0px, (600px - 100vw) * 0.6, 180px);
-  min-height: calc(var(--tower-height) + 16px + var(--welcome-narrow-extra));
+  /* Simple padding model like hours section */
+  --welcome-pad-top: clamp(110px, 10vh + 2vw, 300px);
+  --welcome-pad-bottom: clamp(160px, 100px + 10vw, 420px);
+  --welcome-overlap: 80px; /* extend background below to sit behind founder */
+  padding: var(--welcome-pad-top) var(--section-x-pad) var(--welcome-pad-bottom);
+  min-height: clamp(680px, 52vh + 14vw, 1600px);
 }
+
+/* Extracted tower background for parallax */
+.welcome-bg {
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  /* Extend further so more of the lower tower stays hidden behind founder section */
+  bottom: calc(var(--welcome-overlap) * -1 - 60px); /* raise further (less hidden) */
+  /* New behavior:
+     - Starts further to the RIGHT (partially hidden) on narrow screens.
+     - Slides LEFT toward center (and slightly past original edge) as viewport widens.
+     - Simultaneously GROWS in size with width (stronger growth range).
+     Implementation:
+       --welcome-shift: monotonic decreasing function of viewport width (large + -> small -> negative).
+         Positive values = hide to the right (using negative offset in background-position via * -1).
+         Negative values = introduce inward left shift (gap on right).
+       --welcome-bg-size: height percentage growth from small phones to large desktops.
+  */
+  --welcome-shift: clamp(-140px, calc(140px - (100vw - 360px) * 0.25), 140px); /* 140px (phone) -> ~0 (mid) -> -120/-140px (wide) */
+  /* Earlier & stronger growth: start a bit larger on small phones (76%), ramp faster (18vw) hitting near-max by ~760-820px */
+  --welcome-bg-size: clamp(76%, 58% + 18vw, 102%);
+  background: url('assets/erding-tower-full.svg') right calc(var(--welcome-shift) * -1) bottom / auto var(--welcome-bg-size) no-repeat;
+  pointer-events:none;
+  z-index:-1; /* behind section content + founder */
+  /* Simple parallax vars (mirroring hours section approach) */
+  --welcome-parallax: 0px;
+  /* Raise tower overall (lower base value); still allow modest downward push on wide screens */
+  --welcome-parallax-base: clamp(14px, 4.2vh, 130px); /* unchanged vertical baseline */
+  /* Extra downward drop ONLY on narrow mobile widths (< ~480px).
+     (480px - 100vw) becomes positive below 480px, 0 at/above 480px.
+    Scales up to a max of ~34px additional translateY on very small screens (slightly more than before). */
+  --welcome-mobile-drop: clamp(0px, (560px - 100vw) * 0.285, 62px);
+  /* Horizontal transform no longer needed; handled via background-position. */
+  transform: translateY(calc(var(--welcome-parallax-base) + var(--welcome-mobile-drop) + var(--welcome-parallax)));
+  transition: transform .15s linear;
+}
+
+/* Gradient fade layer (kept separate to avoid altering SVG sizing); only visible near bottom overlap */
+/* (Fade layer removed per request) */
+
+/* Ensure founder section establishes its own stacking context above negative tower background */
+.founder-section { position:relative; z-index:0; }
 
 /* If stricter overlap needed, adjust margin-bottom (more negative) and add same amount to padding-bottom */
 
 /* ================== FOUNDER SECTION ================== */
 .founder-section {
   background: var(--color-dark-red);
-  /* Remove bottom padding so image can sit flush at section bottom */
-  padding: clamp(60px, 8vh + 2vw, 200px) var(--section-x-pad) 0;
+  /* Increased top padding (max from 200px -> 300px) for more breathing room above heading */
+  padding: clamp(80px, 10vh + 3vw, 300px) var(--section-x-pad) 0;
   margin-bottom:-2px; /* tiny 2px cover by next section */
   /* overflow removed so image can sit lower than text while still allowing upward overlap */
 }
@@ -573,7 +597,7 @@ p em, p i { font-style: italic; }
 .sg-btn--primary:hover { background: #e6b347; }
 
 /* Icon inside button */
-.sg-btn__icon { display:inline-flex; width:1.15em; height:1.15em; flex:0 0 1.15em; }
+.sg-btn__icon { display:inline-flex; width:1.55em; height:1.55em; flex:0 0 1.55em; }
 .sg-btn__icon svg, .sg-btn__icon img { width:100%; height:100%; display:block; object-fit:contain; }
 .sg-btn__text { display:inline-block; }
 
@@ -704,4 +728,227 @@ p em, p i { font-style: italic; }
 #store-map, #store-map.leaflet-container { min-height: 360px; }
 /* MapLibre container fills parent */
 .location-map canvas { outline:none; }
+
+/* Store address block below map */
+.store-address { font-style:normal; margin:0; padding-left:0; max-width:640px; }
+.store-address__heading { margin:0 0 0.35em; font: inherit; font-family: var(--font-family-sans); font-size: clamp(16px, 1rem + 0.7vw, 24px); font-weight: var(--font-weight-semibold); letter-spacing:0.02em; }
+.store-address__text { margin:0; font-size: var(--font-size-body); color: var(--color-grey); line-height:1.5; }
+.map-link { display:inline-block; margin-top:10px; color: var(--color-gold); text-decoration:none; font-weight: var(--font-weight-semibold); }
+.map-link:hover, .map-link:focus { text-decoration:underline; }
+
+/* Address row layout with button on right */
+/* Centered address + button layout */
+.store-address-row {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  justify-content:flex-start; /* no centering */
+  /* Separate horizontal and vertical spacing so vertical gap stays tiny on wrap */
+  /* Wider on large screens: raise mid slope & max; unchanged tight mobile floor */
+  column-gap: clamp(10px, 4.2vw + 6px, 200px); /* horizontal growth */
+  row-gap: clamp(2px, 0.6vh + 2px, 14px);      /* minimal vertical gap on mobile */
+  padding: 0 0 0 var(--heading-side-inset);
+  /* Left-align container: remove auto centering, keep natural flow */
+  margin: clamp(10px,4vh,70px) 0 0;
+  max-width: min(100%, 1200px);
+  text-align:left;
+}
+.store-address-row .store-address { flex:0 1 auto; min-width:168px; max-width:420px; }
+.store-address-row .sg-btn--route { flex:0 0 auto; width:auto; margin:0; align-self:center; }
+
+/* Route button variant */
+.sg-btn--route { --btn-bg: var(--color-gold); --btn-color: var(--color-dark-red); --btn-border: var(--color-gold); align-self: center; }
+.sg-btn--route:hover { background:#e6b347; }
+.sg-btn--route .route-icon { width:100%; height:100%; display:block; }
+/* Recolor white-filled icon to button text color using blend mode if supported */
+@supports (mix-blend-mode: multiply) {
+  .sg-btn--route .route-icon { filter: brightness(0) saturate(100%) invert(12%) sepia(25%) saturate(1800%) hue-rotate(310deg) brightness(90%) contrast(90%); }
+}
+
+/* ================== OPENING HOURS SECTION ================== */
+.hours-section {
+  /* Base visual styling */
+  --hours-overlap: 20px; /* requirement 1: overlap next section ~20px */
+  background: var(--color-red);
+  position: relative;
+  z-index: 2; /* sit above next section's background so overlap is clean */
+  color: var(--color-white);
+  /* Content paddings (top grows a bit, bottom grows with width - requirement 5) */
+  --hours-pad-top: clamp(120px, 12vh + 2vw, 320px);
+  padding-top: var(--hours-pad-top);
+  padding-right: var(--section-x-pad);
+  padding-left: var(--section-x-pad);
+  /* Bottom padding increases with screen width (simple formula) */
+  --hours-pad-bottom: clamp(200px, 120px + 14vw, 520px);
+  padding-bottom: var(--hours-pad-bottom);
+  /* Remove negative margin; overlap handled by background element extending downward */
+  margin-bottom: 0;
+  /* Simpler: base section height ensures some vertical presence even with little content */
+  min-height: clamp(820px, 60vh + 22vw, 1600px);
+  overflow: visible; /* allow background overlap */
+}
+
+/* Background illustration element */
+ .hours-bg {
+  position:absolute;
+  top:0;
+  left:50%;
+  bottom: calc(var(--hours-overlap) * -1); /* extend below for overlap */
+  width:100%;
+  /* Parallax offset custom property (populated by JS) */
+  --hours-parallax: 0px;
+  --hours-parallax-base: clamp(60px, 8vh, 180px); /* pushes tower further down visually */
+  /* Horizontal shift: 0 at ~900px and smaller; becomes increasingly negative on wider screens (moves image left) */
+  /* clamp(min, preferred, max) -> preferred expression goes from 0 (<=900px) down toward -300px */
+  --hours-x-shift: clamp(-300px, (100vw - 900px) * -0.45, 0px);
+  /* Base transform (center horizontally + dynamic vertical parallax) */
+  transform: translate(calc(-50% + var(--hours-x-shift)), calc(var(--hours-parallax-base) + var(--hours-parallax)));
+  /* Maintain aspect visually: full height, auto width on desktops; allow slight cover on tiny screens */
+  background: url('assets/schoener-turm.svg') center bottom / auto 100% no-repeat;
+  /* On very small screens we will override to cover to avoid narrow pillar look */
+  z-index:0;
+  pointer-events:none;
+  /* Smooth transitions */
+  transition: transform .15s linear; /* smoother parallax updates */
+}
+/* Tiny screens: allow a bit of cropping width-wise to keep visual impact */
+@media (max-width: 560px) { .hours-bg { background-size: cover; } }
+
+/* Larger viewports: reduce width sooner to create side gaps, also gently reduce illustration height */
+/* Minor refinement: reduce horizontal stretch on very wide screens */
+/* Removed scaling media queries – width now intrinsic. */
+
+/* Ensure content sits above background */
+.hours-section .hours-inner { position: relative; z-index: 1; }
+.hours-inner { max-width:1400px; margin:0 auto; display:flex; flex-direction:column; align-items:flex-end; width:100%; }
+.hours-inner .sg-heading-block--right + .hours-status { margin-top: var(--heading-stack-gap); }
+.hours-status { display:inline-flex; align-items:center; gap:10px; font-size: var(--font-size-body); font-weight:600; letter-spacing:0.02em; padding:0.75em 1.2em; border-radius: 999px; background: #0FD65B; color:#062a14; position:relative; isolation:isolate; margin-right: var(--heading-side-inset); }
+.hours-status__icon { width:1.55em; height:1.55em; display:inline-flex; align-items:center; justify-content:center; }
+.hours-status__icon svg { width:100%; height:100%; display:block; fill:currentColor; color:currentColor; }
+.hours-status__text { color:currentColor; }
+/* State colors (no shadows) */
+.hours-status--open-long { background:#0FD65B; color:#062a14; }
+.hours-status--open-long .hours-status__text { color:#062a14; }
+.hours-status--open-short { background:#F3A23A; color:#3a2104; }
+.hours-status--open-short .hours-status__text { color:#3a2104; }
+.hours-status--closing-soon { background:#F3A23A; color:#3a2104; }
+.hours-status--closing-soon .hours-status__text { color:#3a2104; }
+.hours-status--closed-soon { background:#F3A23A; color:#3a2104; }
+.hours-status--closed-soon .hours-status__text { color:#3a2104; }
+.hours-status--closed-long { background:#EA6769; color:#310404; }
+.hours-status--closed-long .hours-status__text { color:#310404; }
+
+.hours-table { display:flex; gap: clamp(40px, 9vw, 200px); margin-top: clamp(46px, 6vh, 160px); font-size: var(--font-size-body); letter-spacing:0.01em; padding-right: var(--heading-side-inset); }
+.hours-table__col { display:flex; flex-direction:column; align-items:flex-end; gap: clamp(14px, 2vh, 38px); }
+.hours-table__col--days p { color: var(--color-grey); font-weight: var(--font-weight-regular); }
+.hours-table__col--times p { color: var(--color-grey); max-width:42ch; text-align:right; }
+.hours-table__col--times p time { font-variant-numeric: tabular-nums; }
+.hours-table p { margin:0; line-height:1.65; font-size: var(--font-size-body); font-weight: var(--font-weight-regular); }
+
+/* ================== STORY SECTION ================== */
+.story-section { background: var(--color-darker-red); color: var(--color-white); padding: clamp(80px, 12vh + 3vw, 320px) var(--section-x-pad) clamp(120px, 18vh + 4vw, 420px); }
+.story-inner { max-width:1400px; margin:0 auto; }
+.story-inner .sg-heading-block + .story-subheading { margin-top: var(--heading-stack-gap); }
+.story-subheading { padding-left: var(--heading-side-inset); margin:0 0 var(--heading-stack-gap); font-size: clamp(16px, 1rem + 0.7vw, 24px); font-weight: var(--font-weight-semibold); letter-spacing:0.02em; }
+.story-copy { 
+  display:flex; 
+  flex-direction:column; 
+  gap: clamp(18px, 12px + 1.2vw, 40px); 
+  padding-left: var(--heading-side-inset); 
+  /* Wider paragraph measure: allow larger mid and max widths */
+  /* Previous: clamp(40ch, 34ch + 10vw, 86ch) */
+  max-width: clamp(46ch, 40ch + 16vw, 100ch);
+}
+.story-copy p { margin:0; line-height:1.55; color: var(--color-grey); }
+
+/* ================== FOOTER ================== */
+.site-footer { 
+  background: var(--color-dark-red); 
+  color: var(--color-grey);
+  padding: clamp(50px, 8vh + 2vw, 160px) var(--section-x-pad) clamp(40px, 6vh + 1vw, 120px);
+  position: relative;
+  z-index: 2;
+  font-size: var(--font-size-body);
+}
+
+.footer-inner { 
+  max-width:1400px; 
+  margin:0 auto; 
+  display:flex; 
+  flex-wrap:wrap; 
+  align-items:flex-start; 
+  justify-content:space-between; 
+  /* Reduced base gap so mid-width wrap looks less awkward */
+  gap: clamp(20px, 3.5vw, 80px);
+}
+
+.footer-brand { flex:0 1 260px; display:flex; align-items:flex-start; }
+.footer-logo { width: clamp(180px, 26vw, 320px); height:auto; display:block; }
+
+.footer-contact, .footer-legal { 
+  list-style:none; 
+  margin:0; 
+  padding:0; 
+  display:flex; 
+  flex-direction:column; 
+  gap: clamp(8px, 1vh, 18px);
+  min-width:180px;
+}
+
+.footer-contact li, .footer-legal li { line-height:1.35; }
+
+.footer-link { 
+  text-decoration:none; 
+  color: var(--color-grey); 
+  font-weight: var(--font-weight-regular); 
+  letter-spacing:0.01em; 
+  position:relative; 
+  transition: color .25s ease;
+}
+.footer-link--icon { display:inline-flex; align-items:center; gap:12px; }
+.footer-link__icon { width:1.4em; height:1.4em; display:inline-flex; flex:0 0 1.4em; }
+.footer-link__icon svg { width:100%; height:100%; display:block; }
+.footer-link__text { line-height:1.2; }
+.footer-link:hover, .footer-link:focus { color: var(--color-white); }
+.footer-link:focus-visible { outline: 3px solid var(--color-gold); outline-offset:3px; }
+
+.footer-bottom { 
+  max-width:1400px; 
+  margin: clamp(40px, 8vh, 120px) auto 0; 
+  padding-top: clamp(20px, 2vh, 60px); 
+  border-top:1px solid rgba(255,255,255,0.15); 
+  display:flex; 
+  justify-content:flex-start; 
+}
+.footer-copy { margin:0; font-size: clamp(12px, 0.7rem + 0.3vw, 16px); color: var(--color-grey); }
+
+/* Utility: visually hidden (keep for footer heading) */
+.visually-hidden { 
+  position:absolute !important; 
+  width:1px; 
+  height:1px; 
+  padding:0; 
+  margin:-1px; 
+  overflow:hidden; 
+  clip:rect(0 0 0 0); 
+  white-space:nowrap; 
+  border:0; 
+}
+
+/* Mid breakpoint: when three columns would start wrapping awkwardly, push brand full width */
+@media (max-width: 1180px) {
+  .footer-brand { flex: 1 0 100%; }
+  .footer-contact, .footer-legal { flex:1 1 260px; }
+  .footer-inner { justify-content:flex-start; }
+}
+
+/* Narrow: stack cleanly with tighter vertical rhythm */
+@media (max-width: 760px) {
+  .footer-inner { flex-direction:column; align-items:flex-start; gap: clamp(16px, 4vh, 36px); }
+  .footer-brand { order:-1; }
+  .footer-contact, .footer-legal { flex:0 0 auto; }
+  /* Reduce top margin before divider section to pull elements closer */
+  .footer-bottom { margin-top: clamp(24px, 5vh, 60px); }
+}
+
 
