@@ -774,12 +774,15 @@ p em, p i { font-style: italic; }
   z-index: 2; /* sit above next section's background so overlap is clean */
   color: var(--color-white);
   /* Content paddings (top grows a bit, bottom grows with width - requirement 5) */
-  --hours-pad-top: clamp(120px, 12vh + 2vw, 320px);
+  /* Increased top padding so tower + content start lower */
+  --hours-pad-top: clamp(150px, 14vh + 2vw, 360px);
   padding-top: var(--hours-pad-top);
   padding-right: var(--section-x-pad);
   padding-left: var(--section-x-pad);
   /* Bottom padding increases with screen width (simple formula) */
-  --hours-pad-bottom: clamp(200px, 120px + 14vw, 520px);
+  /* Slightly increased bottom padding to maintain visual balance after lowering start */
+  /* Add a bit more bottom space on smaller screens: raise lower bound and slope */
+  --hours-pad-bottom: clamp(280px, 200px + 16vw, 580px);
   padding-bottom: var(--hours-pad-bottom);
   /* Remove negative margin; overlap handled by background element extending downward */
   margin-bottom: 0;
@@ -797,10 +800,95 @@ p em, p i { font-style: italic; }
   width:100%;
   /* Parallax offset custom property (populated by JS) */
   --hours-parallax: 0px;
-  --hours-parallax-base: clamp(60px, 8vh, 180px); /* pushes tower further down visually */
+  /* Increased baseline so illustration sits lower overall */
+  /* Lower tower slightly (increase baseline) so more of it shows on mobile */
+  --hours-parallax-base: clamp(90px, 11vh, 200px);
   /* Horizontal shift: 0 at ~900px and smaller; becomes increasingly negative on wider screens (moves image left) */
   /* clamp(min, preferred, max) -> preferred expression goes from 0 (<=900px) down toward -300px */
-  --hours-x-shift: clamp(-300px, (100vw - 900px) * -0.45, 0px);
+  /* Revised horizontal shift logic (v2):
+     Goal: On the narrowest mobile screens, nearly half the SVG is hidden off the LEFT edge.
+     Requirements:
+       - Much larger negative shift on tiny widths (cap ~ -760px)
+       - Rapid easing to 0 as width grows; absolutely 0 from comfortable tablet / desktop upward.
+     Mechanism:
+       (600px - 100vw) is positive only below 600px; multiply for proportional negative translation.
+       At >=600px the expression <= 0 so clamp upper bound (0px) wins -> no shift on larger screens.
+     Tuning knobs:
+       * -760px  : maximum hidden amount (make more negative to hide more)
+       * 600px   : width threshold where shift finishes easing out
+       * 1.6     : intensity multiplier (raise for steeper shift curve)
+  */
+  /* Corrected horizontal shift (v3):
+    We want: very narrow -> large negative (left hidden), smoothly approach 0 by ~740px, remain 0 afterwards.
+    Using (100vw - N) * factor yields negative below N, 0 at N, positive above N (clamped to 0 upper bound).
+    Chosen N = 740px so mid phones/tablets already easing toward center.
+    At 320px: (320 - 740) * 1.3 = -546px (strong left hide)
+    At 480px: (480 - 740) * 1.3 = -338px
+    At 640px: (640 - 740) * 1.3 = -130px
+    At 740px+: >=0 -> clamped to 0 (desktop unaffected)
+    Adjust factor or clamp min for more/less hide.
+  */
+  /* Refined horizontal shift (v4):
+     Goals:
+       - Mobile: still left, but less extreme (max about -340px instead of -550+)
+       - Tablet range: smoothly approach mild left bias
+       - Desktop: retain a subtle left bias (e.g. -60px) rather than snapping to 0
+     Formula:
+       (100vw - 760px) * 0.85 gives:
+         320px: (320-760)*0.85 ≈ -374px -> clamped to -340px cap
+         480px: (480-760)*0.85 ≈ -238px
+         640px: (640-760)*0.85 ≈ -102px
+         900px: (900-760)*0.85 ≈ 119px -> upper clamp holds at -60px (desktop bias)
+     Tuning:
+       - First clamp min (-340px) controls maximum hide.
+       - Multiplier 0.85 controls slope.
+       - Pivot 760px controls where shift crosses toward desktop values.
+       - Upper clamp (-60px) sets persistent desktop bias (make 0px if you want centered on large screens).
+  */
+  /* Hybrid horizontal shift (v12): stronger tablet & desktop left, slight wide drift.
+     Adjustments from v11:
+       - Base desktop bias deepened: -200px (was -160px)
+       - Mobile extra unchanged pivot but slightly higher max: 200px
+       - Added gentle additional wide-screen drift: -(max(0, 100vw - 1400px) * 0.06) up to ~ -60px more at very wide.
+     Components:
+       extraMobile = clamp(0px, (520px - 100vw) * 0.75, 200px)
+       wideDrift   = clamp(0px, (100vw - 1400px) * 0.06, 60px)
+       desired = base(-200px) - extraMobile - wideDrift
+       Boundaries: min -420px (hard cap on extreme mobile + wide), max -200px (desktop baseline before wide drift subtracts)
+     Consolidated with nested clamps since we cannot use CSS custom calc functions directly inside another without duplication:
+       --hours-x-shift: clamp(-420px, calc(-200px - clamp(0px, (520px - 100vw) * 0.75, 200px) - clamp(0px, (100vw - 1400px) * 0.06, 60px)), -200px)
+     Sample widths:
+       320px: -200 - 200 - 0 = -400 (within min)
+       480px: -200 - 30  - 0 = -230
+       520px: -200 - 0   - 0 = -200
+       1400px: -200 - 0  - 0 = -200
+       1800px: -200 - 0  - 24 ≈ -224
+       2400px: -200 - 0  - 60 = -260 (hits wide drift cap)
+     Tuning knobs:
+       * -200px base desktop bias
+       * 200px mobile extra max
+       * 520px mobile fade pivot
+       * 0.75 mobile slope
+       * 1400px wide drift start, 0.06 slope, 60px cap
+       * -420px overall min
+  */
+  /* v12 base + mobile fine-tune (v12a): introduce a mobile soften factor that nudges tower slightly right only on narrow widths.
+     mobileSoften = clamp(0px, (480px - 100vw) * 0.25, 28px)
+       320px: (480-320)*0.25 = 40 -> clamped 28px
+       420px: (480-420)*0.25 = 15px
+       480px+: <=0 => 0
+     Effective shift = previous formula + mobileSoften (adds positive, reducing negative -> moves right slightly only on mobile)
+  */
+  --hours-x-shift: clamp(
+    -420px,
+    calc(
+      -200px
+      - clamp(0px, (520px - 100vw) * 0.75, 200px)
+      - clamp(0px, (100vw - 1400px) * 0.06, 60px)
+      + clamp(0px, (480px - 100vw) * 0.25, 28px)
+    ),
+    -200px
+  );
   /* Base transform (center horizontally + dynamic vertical parallax) */
   transform: translate(calc(-50% + var(--hours-x-shift)), calc(var(--hours-parallax-base) + var(--hours-parallax)));
   /* Maintain aspect visually: full height, auto width on desktops; allow slight cover on tiny screens */

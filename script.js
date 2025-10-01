@@ -861,23 +861,49 @@ document.addEventListener('DOMContentLoaded', () => {
             const intervals = todaysIntervals(future);
             if (intervals.length){
               minutesUntilOpen = (24*60 - mNow) + (d-1)*24*60 + (intervals[0][0]);
+              // Attach target date on helper for message composition
+              classify._nextOpenDate = future;
               break;
             }
         }
       }
-      // Determine state class
-      // Cases: open >60, open <=60, closed <=60 (until open), closed >60
+      // New message spec:
+      // 1. Jetzt geöffnet bis 16:00 Uhr.  (open > 60m until close)
+      // 2. Noch geöffnet bis 15:00 Uhr     (open <= 60m until close)
+      // 3. Öffnet bald um 15:00 Uhr        (closed, next open within 60m, same or future day)
+      // 4. Jetzt geschlossen bis 15:00 Uhr  (closed, next open later today >60m)
+      // 5. Jetzt geschlossen bis Di. 15:00 Uhr (closed, next open not today)
+      // Determine state & message mapping while preserving existing CSS state classes where sensible.
       let state = 'closed-long';
       let message = '';
+      const weekdayNames = ['So','Mo','Di','Mi','Do','Fr','Sa'];
       if (isOpen){
-        let nextCloseTime = formatTime(addMinutes(now, minutesUntilClose));
-        if (minutesUntilClose > 60) { state='open-long'; message = `Jetzt geöffnet bis ${nextCloseTime} Uhr`; }
-        else { state='open-short'; message = `Noch geöffnet bis ${nextCloseTime} Uhr`; }
+        const closeTime = formatTime(addMinutes(now, minutesUntilClose));
+        if (minutesUntilClose > 60){
+          state = 'open-long';
+          message = `Jetzt geöffnet bis ${closeTime} Uhr.`;
+        } else {
+          state = 'open-short';
+          message = `Noch geöffnet bis ${closeTime} Uhr`;
+        }
       } else if (minutesUntilOpen != null){
-        let nextOpenTime = formatTime(addMinutes(now, minutesUntilOpen));
-        if (minutesUntilOpen <= 60){ state='closed-soon'; message = `Öffnet bald um ${nextOpenTime} Uhr`; }
-        else { state='closed-long'; message = `Jetzt geschlossen bis ${nextOpenTime}`; }
+        const target = addMinutes(now, minutesUntilOpen);
+        const isSameDay = target.getDate() === now.getDate() && target.getMonth() === now.getMonth() && target.getFullYear() === now.getFullYear();
+        const openTime = formatTime(target);
+        if (minutesUntilOpen <= 60){
+          state = 'closed-soon';
+          message = `Öffnet bald um ${openTime} Uhr`;
+        } else if (isSameDay){
+          state = 'closed-long';
+          message = `Jetzt geschlossen bis ${openTime} Uhr`;
+        } else {
+          state = 'closed-long';
+          const wd = weekdayNames[target.getDay()];
+          message = `Jetzt geschlossen bis ${wd}. ${openTime} Uhr`;
+        }
       } else {
+        // No next opening found (shouldn't happen normally) retain simple fallback
+        state = 'closed-long';
         message = 'Heute geschlossen';
       }
       return { state, message, isOpen };
