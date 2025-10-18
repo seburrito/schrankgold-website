@@ -250,13 +250,51 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => { requestAnimationFrame(sizeUnderlines); }, { passive:true });
   sizeUnderlines();
   // Load wardrobe SVG then init animation
-  const container = document.getElementById('wardrobe-container');
-  if (container && container.dataset.src) {
-    fetch(container.dataset.src)
+  const wardrobeContainer = document.getElementById('wardrobe-container');
+  if (wardrobeContainer && wardrobeContainer.dataset.src) {
+    fetch(wardrobeContainer.dataset.src)
       .then(r => r.text())
-      .then(svg => { container.innerHTML = svg; initWardrobeAnimation(); })
+      .then(svg => { wardrobeContainer.innerHTML = svg; initWardrobeAnimation(); })
       .catch(initWardrobeAnimation);
   } else initWardrobeAnimation();
+
+  // Load sidebar crown icon SVG
+  const crownIconContainer = document.getElementById('sidebar-crown-icon');
+  if (crownIconContainer && crownIconContainer.dataset.src) {
+    fetch(crownIconContainer.dataset.src)
+      .then(r => r.text())
+      .then(svg => { crownIconContainer.innerHTML = svg; })
+      .catch(console.error);
+  }
+
+  // Hamburger Menu
+  (function initHamburgerMenu() {
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const sideNav = document.querySelector('.side-nav');
+    const pageOverlay = document.querySelector('.page-overlay');
+    const navLinks = document.querySelectorAll('.side-nav-links a');
+    const logoLink = document.querySelector('.side-nav-logo-link');
+
+    function toggleMenu() {
+      const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+      hamburgerBtn.setAttribute('aria-expanded', !isOpen);
+      document.body.classList.toggle('nav-open', !isOpen);
+    }
+
+    function closeMenu() {
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }
+
+    hamburgerBtn.addEventListener('click', toggleMenu);
+    pageOverlay.addEventListener('click', closeMenu);
+    navLinks.forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+    if (logoLink) {
+      logoLink.addEventListener('click', closeMenu);
+    }
+  })();
 
   // Infinite carousel (rondell) shifting one slide per click
   (function initInfiniteCarousel(){

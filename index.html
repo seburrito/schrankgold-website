@@ -15,6 +15,26 @@
   <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
   </head>
   <body>
+    <button class="hamburger-btn" aria-label="Menü öffnen" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
+    <nav class="side-nav">
+      <a href="#landing" class="side-nav-logo-link">
+        <div id="sidebar-crown-icon" data-src="assets/sidebar-crown-icon.svg"></div>
+      </a>
+      <ul class="side-nav-links">
+        <li><a href="#welcome">Willkommen</a></li>
+        <li><a href="#gabi">Über Uns</a></li>
+        <li><a href="#so-funktionierts">Warenannahme</a></li>
+        <li><a href="#instagram">Neuigkeiten</a></li>
+        <li><a href="#location">Besuche Uns</a></li>
+        <li><a href="#story">Unsere Geschichte</a></li>
+        <li><a href="#contact">Kontakt</a></li>
+      </ul>
+    </nav>
+    <div class="page-overlay"></div>
     <div class="landing-section" id="landing">
       <div class="content-container">
         <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"></div>
@@ -294,7 +314,7 @@
         </div>
       </div>
     </section>
-    <footer class="site-footer" aria-labelledby="footer-heading">
+    <footer class="site-footer" id="contact" aria-labelledby="footer-heading">
     <h2 id="footer-heading" class="visually-hidden">Kontakt und Rechtliches</h2>
     <div class="footer-inner">
       <div class="footer-brand">
