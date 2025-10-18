@@ -450,12 +450,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let fallbackTimer = null;
     // Map style configuration:
     // Provide your MapTiler API key + custom style ID from MapTiler Studio.
-    // Example style URL format:
-    //   https://api.maptiler.com/maps/{YOUR_STYLE_ID}/style.json?key={YOUR_KEY}
     // Set them via data attributes on the map element for easier editing without touching JS:
     //   <div id="store-map" data-mt-key="YOUR_KEY" data-mt-style="YOUR_STYLE_ID"></div>
-    const MAPTILER_KEY = mapEl.getAttribute('data-mt-key') || 'YOUR_MAPTILER_KEY';
-    const MAPTILER_STYLE_ID = mapEl.getAttribute('data-mt-style') || 'YOUR_STYLE_ID';
+    const MAPTILER_KEY = mapEl.getAttribute('data-mt-key') || 'IAwxH9Qf6uoA1zhZTKlI';
+    const MAPTILER_STYLE_ID = mapEl.getAttribute('data-mt-style') || '0199f703-1173-7298-81df-98d97011dd27';
     const explicitUrl = mapEl.getAttribute('data-mt-url');
     let REMOTE_STYLE_URL = `https://api.maptiler.com/maps/${MAPTILER_STYLE_ID}/style.json?key=${MAPTILER_KEY}`;
     if (explicitUrl) {
@@ -463,54 +461,28 @@ document.addEventListener('DOMContentLoaded', () => {
       if (/key=/.test(explicitUrl)) REMOTE_STYLE_URL = explicitUrl;
       else REMOTE_STYLE_URL = explicitUrl + (explicitUrl.includes('?') ? '&' : '?') + 'key=' + MAPTILER_KEY;
     }
-  // Always use remote MapTiler style (local fallback removed)
-  const STYLE_URL = REMOTE_STYLE_URL;
-  console.debug('[MapLibre] Using remote MapTiler style:', REMOTE_STYLE_URL);
-    console.debug('[MapLibre] Setup start');
-
-    // Utility: fit to overlays bounds once data loaded
-    async function fitToOverlays(map){
-      try {
-        const res = await fetch('overlays.geojson');
-        const gj = await res.json();
-        let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-        function expand(coord){ const [x,y]=coord; if(x<minX)minX=x; if(y<minY)minY=y; if(x>maxX)maxX=x; if(y>maxY)maxY=y; }
-        for (const f of gj.features){
-          if (f.geometry.type === 'Point'){ expand(f.geometry.coordinates); }
-          else if (f.geometry.type === 'LineString'){ f.geometry.coordinates.forEach(expand); }
-          else if (f.geometry.type === 'Polygon'){ f.geometry.coordinates.forEach(ring => ring.forEach(expand)); }
-        }
-        if (minX < Infinity){ map.fitBounds([[minX,minY],[maxX,maxY]], { padding: 60, duration: 800 }); }
-      } catch(e){ console.warn('[MapLibre] fit bounds failed', e); }
-    }
+    const STYLE_URL = REMOTE_STYLE_URL;
 
     function build(reason){
       if(initialized) return; initialized = true;
       if(fallbackTimer){ clearTimeout(fallbackTimer); fallbackTimer=null; }
-      console.debug('[MapLibre] Initializing. Reason:', reason||'');
-      const initialPitch = parseFloat(mapEl.getAttribute('data-pitch')) || 17.9;
-      // Pre-fetch overlays quickly to derive a stable starting view (avoids world flash)
-      let startCenter = [11.90903, 48.30709];
-      let startZoom = 16.2;
-      try {
-        // Synchronous start values computed from stored last view (could extend with localStorage later)
-        // Fetch asynchronously but we won't delay map creation > one event loop tick
-        // Use navigator.connection?.saveData to skip if extreme data saver (not critical)
-      } catch(e){}
+      console.log('[MapLibre] Initializing. Reason:', reason||'');
+      
       const map = new maplibregl.Map({
         container: mapEl,
         style: STYLE_URL,
         attributionControl: true,
         interactive: true,
-        pitch: initialPitch,
-        center: startCenter,
-        zoom: startZoom,
+        pitch: parseFloat(mapEl.getAttribute('data-pitch')) || 15,
+        center: [11.90903, 48.30709], // Default center, will be updated by fitBounds
+        zoom: 15, // Default zoom
         bearing: 20
       });
       window._sgMap = map; // expose for console debugging
       map.addControl(new maplibregl.NavigationControl({ showCompass:false }), 'top-right');
+
       map.once('load', () => {
-        console.debug('[MapLibre] map load event');
+        console.log('[MapLibre] map load event');
         // Inject custom GeoJSON overlays (store, parking, route) into remote style
         try {
           if (!map.getSource('overlays')) {
@@ -532,16 +504,16 @@ document.addEventListener('DOMContentLoaded', () => {
             type:'fill',
             source:'overlays',
             filter:['==','feature','parking'],
-            paint:{ 'fill-color':'#CA9921', 'fill-opacity':0.08 }
+            paint:{ 'fill-color':'#CA9921', 'fill-opacity':0.15 }
           }, beforeSymbolId);
           // Parking outline
-            safeAddLayer({
-              id:'parking-outline',
-              type:'line',
-              source:'overlays',
-              filter:['==','feature','parking'],
-              paint:{ 'line-color':'#CA9921', 'line-width':2.2, 'line-opacity':0.9 }
-            }, beforeSymbolId);
+          safeAddLayer({
+            id:'parking-outline',
+            type:'line',
+            source:'overlays',
+            filter:['==','feature','parking'],
+            paint:{ 'line-color':'#CA9921', 'line-width':2, 'line-opacity':0.8 }
+          }, beforeSymbolId);
           // Route dashed line
           safeAddLayer({
             id:'route-line',
@@ -549,63 +521,9 @@ document.addEventListener('DOMContentLoaded', () => {
             source:'overlays',
             filter:['==','feature','route'],
             layout:{ 'line-cap':'round', 'line-join':'round' },
-            paint:{ 'line-color':'#CA9921', 'line-width':4, 'line-dasharray':[1,1] }
+            paint:{ 'line-color':'#CA9921', 'line-width':4, 'line-dasharray':[1,1.5] }
           }, beforeSymbolId);
-          // Store halo + core + label (label before icons so insertion works later)
-          safeAddLayer({
-            id:'store-halo',
-            type:'circle',
-            source:'overlays',
-            filter:['==','feature','store'],
-            paint:{ 'circle-radius':34, 'circle-color':'#5B0E29', 'circle-opacity':0.18 }
-          }, beforeSymbolId);
-          safeAddLayer({
-            id:'store-core',
-            type:'circle',
-            source:'overlays',
-            filter:['==','feature','store'],
-            paint:{ 'circle-radius':7, 'circle-color':'#5B0E29', 'circle-stroke-color':'#CA9921', 'circle-stroke-width':2 }
-          }, beforeSymbolId);
-          // Removed textual / SVG title label layer per latest requirement.
         } catch(layerErr){ console.warn('[MapLibre] overlay layer setup failed', layerErr); }
-  // We will compute a final viewport shortly; skip initial world view.
-        // Add animated pulsing halo (separate layer) using manual frame updates
-        try {
-          if (!map.getLayer('store-pulse')) {
-            map.addLayer({
-              id:'store-pulse',
-              type:'circle',
-              source:'overlays',
-              filter:['==','feature','store'],
-              paint:{
-                'circle-radius':[ 'interpolate', ['linear'], ['number',['get','_pulse']], 0, 10, 1, 40 ],
-                'circle-opacity':[ 'interpolate', ['linear'], ['number',['get','_pulse']], 0, 0.45, 1, 0 ],
-                'circle-color':'#CA9921'
-              }
-            }, 'store-icon-layer');
-          }
-          // Animate by updating feature state data
-          let pulseT = 0;
-          const animatePulse = async () => {
-            try {
-              const src = map.getSource('overlays');
-              if (!src || src.type !== 'geojson') return;
-              // Fetch original data only once
-              if (!window._sgOriginalOverlay){
-                const res = await fetch('overlays.geojson');
-                window._sgOriginalOverlay = await res.json();
-              }
-              const clone = JSON.parse(JSON.stringify(window._sgOriginalOverlay));
-              pulseT += 0.012; // speed
-              const cyc = (pulseT % 1);
-              // Set _pulse property for store feature
-              clone.features.forEach(f => { if (f.properties && f.properties.feature==='store') f.properties._pulse = cyc; });
-              src.setData(clone);
-              if (!window._sgStopOrbit) requestAnimationFrame(animatePulse);
-            } catch(e){}
-          };
-          requestAnimationFrame(animatePulse);
-        } catch(e) { console.warn('[MapLibre] pulse setup failed', e); }
 
         // Add popup on store click
         try {
@@ -613,99 +531,46 @@ document.addEventListener('DOMContentLoaded', () => {
           map.on('click','store-icon-layer', e => {
             if (!e.features || !e.features.length) return;
             const f = e.features[0];
-    const pref = getPreferredMaps();
-    popup.setLngLat(f.geometry.coordinates)
-		.setHTML('<strong>SchrankGold</strong><br/>Am Rätschenbach 11<br/>85435 Erding<br/><em>Di–Fr 10–18, Sa 10–14</em><br/><small><a href="'+pref.url+'" target="_blank" rel="noopener">In '+(pref.provider==='apple'?'Apple Maps':'Google Maps')+' öffnen</a></small>')
+            const pref = getPreferredMaps();
+            popup.setLngLat(f.geometry.coordinates)
+              .setHTML('<strong>SchrankGold</strong><br/>Am Rätschenbach 11<br/>85435 Erding<br/><em>Di–Fr 10–18, Sa 10–14</em><br/><small><a href="'+pref.url+'" target="_blank" rel="noopener">In '+(pref.provider==='apple'?'Apple Maps':'Google Maps')+' öffnen</a></small>')
               .addTo(map);
           });
           map.on('mouseenter','store-icon-layer', ()=> map.getCanvas().style.cursor='pointer');
           map.on('mouseleave','store-icon-layer', ()=> map.getCanvas().style.cursor='');
         } catch(e){ console.warn('[MapLibre] popup failed', e); }
 
-        // Parking stripes pattern (diagonal hatch) layer
-        try {
-          if (!map.hasImage('parking-stripes')) {
-            const size = 64; // larger for crisp scaling
-            const canvas = document.createElement('canvas');
-            canvas.width = canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            ctx.strokeStyle = 'rgba(202,153,33,0.55)';
-            ctx.lineWidth = 6;
-            // Draw diagonal lines across tile
-            for (let i=-size; i<size*2; i+=20){
-              ctx.beginPath();
-              ctx.moveTo(i, 0);
-              ctx.lineTo(i+size, size);
-              ctx.stroke();
-            }
-            map.addImage('parking-stripes', canvas, { pixelRatio:2 });
-          }
-          if (!map.getLayer('parking-stripes-fill')) {
-            map.addLayer({
-              id:'parking-stripes-fill',
-              type:'fill',
-              source:'overlays',
-              filter:['==','feature','parking'],
-              paint:{
-                'fill-pattern':'parking-stripes',
-                'fill-opacity':0.55
-              }
-            }, 'parking-outline');
-          }
-        } catch(e){ console.warn('[MapLibre] parking stripes failed', e); }
-
-        // Gentle auto-orbit until user interacts
-        try {
-          let bearing = map.getBearing();
-          let lastTime = performance.now();
-          const ORBIT_SPEED = 1.2; // degrees per second
-          const orbit = (now) => {
-            if (window._sgStopOrbit) return;
-            const dt = (now - lastTime)/1000;
-            lastTime = now;
-            bearing += ORBIT_SPEED * dt;
-            map.setBearing(bearing % 360, { animate:false });
-            requestAnimationFrame(orbit);
-          };
-          requestAnimationFrame(orbit);
-          const stop = () => { window._sgStopOrbit = true; };
-          ['dragstart','zoomstart','pitchstart','rotatestart','mousedown','touchstart','wheel'].forEach(ev => map.on(ev, stop));
-        } catch(e){ console.warn('[MapLibre] orbit failed', e); }
-        // Fly to store feature (if exists) with bearing/pitch animation
-        let postAnimViewportApplied = false;
+        // Fit view to the essential features
         (async () => {
           try {
             const res = await fetch('overlays.geojson');
             const gj = await res.json();
             const store = gj.features.find(f => f.properties && f.properties.feature === 'store' && f.geometry.type === 'Point');
-            const parkingFeatures = gj.features.filter(f => f.properties && f.properties.feature === 'parking');
-            let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
-            function expand(x,y){ if(x<minX)minX=x; if(y<minY)minY=y; if(x>maxX)maxX=x; if(y>maxY)maxY=y; }
-            if (store) expand(store.geometry.coordinates[0], store.geometry.coordinates[1]);
-            parkingFeatures.forEach(p => {
-              if (p.geometry.type === 'Polygon') p.geometry.coordinates.forEach(r => r.forEach(([x,y])=>expand(x,y)));
-              if (p.geometry.type === 'Point') expand(p.geometry.coordinates[0], p.geometry.coordinates[1]);
-            });
-            const isMobile = window.matchMedia('(max-width: 640px)').matches;
-            // Apply bounds quickly after load (small delay so style fully rendered)
-            setTimeout(() => {
-              if (postAnimViewportApplied) return; postAnimViewportApplied = true;
-              if (minX < Infinity){
-                const padding = isMobile ? { top: 50, bottom: 80, left: 40, right: 40 } : { top: 70, bottom: 100, left: 110, right: 110 };
-                try { map.fitBounds([[minX,minY],[maxX,maxY]], { padding, duration: 900, maxZoom: isMobile ? 16.3 : 17.0 }); } catch(e){}
-              }
-            }, 700);
-          } catch(e){}
+            const parking = gj.features.find(f => f.properties && f.properties.feature === 'parking' && f.geometry.type === 'Polygon');
+            
+            if (store && parking) {
+              let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+              function expand(coord){ const [x,y]=coord; if(x<minX)minX=x; if(y<minY)minY=y; if(x>maxX)maxX=x; if(y>maxY)maxY=y; }
+              
+              expand(store.geometry.coordinates);
+              parking.geometry.coordinates.forEach(ring => ring.forEach(expand));
+
+              const isMobile = window.matchMedia('(max-width: 640px)').matches;
+              const padding = isMobile ? { top: 50, bottom: 80, left: 40, right: 40 } : { top: 70, bottom: 100, left: 110, right: 110 };
+              map.fitBounds([[minX,minY],[maxX,maxY]], { padding, duration: 900, maxZoom: isMobile ? 16.3 : 17.0 });
+            }
+          } catch(e){
+            console.warn('[MapLibre] fitBounds to features failed', e);
+          }
         })();
-        // Replace circle store marker with favicon image symbol if possible
+
+        // Replace circle store marker with favicon image symbol
         fetch('favicon.svg')
           .then(r=>r.text())
           .then(svg=>{
-            // Recolor black fills (outline + dots) using CSS variable --color-darker-red (fallback to #4D001B)
             try {
               const cssDarkerRed = getComputedStyle(document.documentElement).getPropertyValue('--color-darker-red').trim() || '#4D001B';
-              const safeDarkerRed = cssDarkerRed || '#4D001B';
-              svg = svg.replace(/fill=\"black\"/g, `fill="${safeDarkerRed}"`);
+              svg = svg.replace(/fill="black"/g, `fill="${cssDarkerRed}"`);
             } catch(e){}
             const blob = new Blob([svg], { type:'image/svg+xml' });
             const url = URL.createObjectURL(blob);
@@ -721,17 +586,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     filter:['==','feature','store'],
                     layout:{
                       'icon-image':'store-icon',
-                      // Larger icon with zoom scaling
-                      'icon-size':["interpolate", ["linear"], ["zoom"], 10, 0.95, 14, 1.35, 18, 1.95],
+                      'icon-size':["interpolate", ["linear"], ["zoom"], 10, 0.9, 18, 1.8],
                       'icon-anchor':'bottom',
                       'icon-offset':[0,-4],
                       'icon-allow-overlap': true,
                       'icon-ignore-placement': true
                     }
-                  }, undefined); // add on top
-                  // Optionally hide original circle layers
-                  if (map.getLayer('store-core')) map.setLayoutProperty('store-core','visibility','none');
-                  if (map.getLayer('store-halo')) map.setLayoutProperty('store-halo','visibility','none');
+                  });
                 }
               } catch(e){ console.warn('[MapLibre] favicon marker failed', e); }
               URL.revokeObjectURL(url);
@@ -769,29 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
           .catch(()=>{});
       });
       mapEl.setAttribute('tabindex','0');
-      // Title SVG layer intentionally omitted (removed per requirement)
-
-      // Responsive sizing logic for icon + title
-      function responsiveScale(base){
-        // Base grows up to viewport 1400px; below 400px shrink further
-        const vw = Math.max(320, Math.min(window.innerWidth, 1400));
-        const t = (vw - 320) / (1400 - 320); // 0..1
-        const scale = base.min + (base.max - base.min) * t;
-        return Math.min(base.max, Math.max(base.min * 0.85, scale));
-      }
-      function updateResponsiveMarkerSizes(){
-        if (!window._sgMap) return;
-        const m = window._sgMap;
-        // Determine dynamic sizes
-        const iconBase = { min: 0.75, max: 1.95 }; // previous max ~1.95
-        const iconSize = responsiveScale(iconBase);
-        try {
-          if (m.getLayer('store-icon-layer')) m.setLayoutProperty('store-icon-layer','icon-size', iconSize);
-        } catch(e){}
-      }
-      window.addEventListener('resize', () => { updateResponsiveMarkerSizes(); });
-      // Expose for console tweaking
-      window._sgUpdateMarkerSizes = updateResponsiveMarkerSizes;
     }
 
     function observe(){
