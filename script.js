@@ -821,4 +821,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Refresh every minute
     setInterval(update, 60000);
   })();
+
+  /* ================== SCROLL ANIMATIONS ================== */
+  // Intersection Observer to trigger animations when elements scroll into view
+  (function initScrollAnimations() {
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    // Get all elements with data-animate attribute
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    if (!animatedElements.length) return;
+
+    // Create Intersection Observer with threshold for when animation should trigger
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: '0px 0px -10% 0px', // trigger when element is 10% from bottom of viewport
+      threshold: 0.15 // trigger when at least 15% of element is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // When element enters viewport, add the animate-in class
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          // Optional: Stop observing after animation to prevent re-triggering
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    animatedElements.forEach(el => observer.observe(el));
+  })();
 });
+
