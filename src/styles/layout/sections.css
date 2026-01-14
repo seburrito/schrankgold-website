@@ -384,9 +384,8 @@
 }
 
 .step-copy {
-    /* Simple single clamp: narrow on huge screens, wider on small.
-     min: 46ch (very wide desktops), fluid middle: 40ch + 4vw, max: 58ch (phones/tablets). */
-    max-width: clamp(35ch, 20ch + 4vw, 58ch);
+    /* Narrower on desktop screens, wider on small screens */
+    max-width: clamp(23ch, 14ch + 4vw, 58ch);
 }
 
 .step-subtitle {
@@ -651,7 +650,7 @@
 }
 
 .hours-inner .sg-heading-block--right+.hours-status {
-    margin-top: var(--heading-stack-gap);
+    margin-top: clamp(12px, 8px + 1vw, 20px);
 }
 
 .hours-status {
@@ -692,48 +691,48 @@
 
 /* State colors (no shadows) */
 .hours-status--open-long {
-    background: #0FD65B;
-    color: #062a14;
+    background: #8FA87B;
+    color: #1f2817;
 }
 
 .hours-status--open-long .hours-status__text {
-    color: #062a14;
+    color: #1f2817;
 }
 
 .hours-status--open-short {
-    background: #F3A23A;
-    color: #3a2104;
+    background: #E8925C;
+    color: #2a1808;
 }
 
 .hours-status--open-short .hours-status__text {
-    color: #3a2104;
+    color: #2a1808;
 }
 
 .hours-status--closing-soon {
-    background: #F3A23A;
-    color: #3a2104;
+    background: #D4874B;
+    color: #2a1808;
 }
 
 .hours-status--closing-soon .hours-status__text {
-    color: #3a2104;
+    color: #2a1808;
 }
 
 .hours-status--closed-soon {
-    background: #F3A23A;
-    color: #3a2104;
+    background: #D4874B;
+    color: #2a1808;
 }
 
 .hours-status--closed-soon .hours-status__text {
-    color: #3a2104;
+    color: #2a1808;
 }
 
 .hours-status--closed-long {
-    background: #EA6769;
-    color: #310404;
+    background: #8B3A3D;
+    color: #fef5f5;
 }
 
 .hours-status--closed-long .hours-status__text {
-    color: #310404;
+    color: #fef5f5;
 }
 
 .hours-table {

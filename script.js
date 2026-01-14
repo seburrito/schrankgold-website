@@ -757,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const closeTime = formatTime(addMinutes(now, minutesUntilClose));
         if (minutesUntilClose > 60){
           state = 'open-long';
-          message = `Jetzt geöffnet bis ${closeTime} Uhr.`;
+          message = `Jetzt geöffnet bis ${closeTime} Uhr`;
         } else {
           state = 'open-short';
           message = `Noch geöffnet bis ${closeTime} Uhr`;
