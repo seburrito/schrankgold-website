@@ -1,0 +1,138 @@
+/* Buttons */
+.sg-btn {
+    --btn-bg: var(--color-gold);
+    --btn-color: var(--color-black);
+    --btn-border: var(--color-gold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Roboto', var(--font-family-sans);
+    /* Match standard paragraph size */
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    /* semibold */
+    line-height: 1.1;
+    /* Use em-based padding so button height scales with text */
+    padding: 0.7em 1.4em 0.7em 1.2em;
+    /* maintains visual proportions while scaling */
+    border-radius: 999px;
+    /* fully rounded */
+    text-decoration: none;
+    color: var(--btn-color);
+    background: var(--btn-bg);
+    border: 2px solid var(--btn-border);
+    transition: background .25s, color .25s, transform .25s, box-shadow .25s;
+    will-change: transform;
+    white-space: nowrap;
+}
+
+.sg-btn:hover {
+    transform: translateY(-2px);
+}
+
+.sg-btn:active {
+    transform: translateY(0);
+}
+
+.sg-btn--outline {
+    --btn-bg: transparent;
+    --btn-color: var(--color-gold);
+    --btn-border: var(--color-gold);
+}
+
+.sg-btn--outline:hover {
+    background: rgba(202, 153, 33, 0.1);
+}
+
+.sg-btn--primary:hover {
+    background: #e6b347;
+}
+
+/* Icon inside button */
+.sg-btn__icon {
+    display: inline-flex;
+    width: 1.55em;
+    height: 1.55em;
+    flex: 0 0 1.55em;
+}
+
+.sg-btn__icon svg,
+.sg-btn__icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.sg-btn__text {
+    display: inline-block;
+}
+
+/* Color variants */
+.sg-btn--tel {
+    --btn-bg: var(--color-darker-red);
+    --btn-color: var(--color-gold);
+    --btn-border: var(--color-darker-red);
+}
+
+.sg-btn--verkauf {
+    --btn-bg: var(--color-gold);
+    --btn-color: var(--color-dark-red);
+    --btn-border: var(--color-gold);
+}
+
+.sg-btn--insta,
+.sg-btn--wa {
+    --btn-bg: var(--color-red);
+    --btn-color: var(--color-gold);
+    --btn-border: var(--color-red);
+}
+
+/* Ensure icon matches text color by using currentColor fill (SVGs are white; invert via filter if needed) */
+/* Inline SVG uses fill=currentColor so no filters needed */
+
+/* Harmonize hover states using darken/lighten approximations */
+.sg-btn--tel:hover {
+    background: #390016;
+}
+
+.sg-btn--verkauf:hover {
+    background: #e6b347;
+}
+
+.sg-btn--insta:hover,
+.sg-btn--wa:hover {
+    background: #b30244;
+}
+
+/* High contrast / focus */
+.sg-btn:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+}
+
+/* Route button variant */
+.sg-btn--route {
+    --btn-bg: var(--color-gold);
+    --btn-color: var(--color-dark-red);
+    --btn-border: var(--color-gold);
+    align-self: center;
+}
+
+.sg-btn--route:hover {
+    background: #e6b347;
+}
+
+.sg-btn--route .route-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Recolor white-filled icon to button text color using blend mode if supported */
+@supports (mix-blend-mode: multiply) {
+    .sg-btn--route .route-icon {
+        filter: brightness(0) saturate(100%) invert(12%) sepia(25%) saturate(1800%) hue-rotate(310deg) brightness(90%) contrast(90%);
+    }
+}

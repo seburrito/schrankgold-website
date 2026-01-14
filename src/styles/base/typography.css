@@ -1,0 +1,113 @@
+/* ================== GENERAL TYPOGRAPHY ================== */
+h1,
+h2,
+h3,
+h4,
+p {
+    margin: 0;
+    /* Remove default margins */
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-tight);
+    letter-spacing: 0.02em;
+    color: var(--color-white);
+}
+
+h1 {
+    font-size: clamp(32px, 2rem + 2.5vw, 64px);
+    margin-bottom: 0.75em;
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    line-height: var(--line-height-base);
+    letter-spacing: 0.025em;
+    /* Default to the large gap for all h2s */
+    margin-bottom: var(--heading-stack-gap);
+}
+
+/* When an h2 is inside a heading-block, it has an underline.
+   In this case, the gap between h2 and the underline should be small. */
+.sg-heading-block h2 {
+    margin-bottom: var(--heading-underline-gap);
+}
+
+h3 {
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--heading-stack-gap);
+}
+
+h4 {
+    font-family: var(--font-family-sans);
+    font-size: clamp(16px, 1rem + 0.7vw, 24px);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Add consistent spacing for paragraphs */
+p+p {
+    margin-top: 1.25em;
+}
+
+h2,
+h3 {
+    letter-spacing: 0.02em;
+    line-height: var(--line-height-base);
+}
+
+h2 {
+    font-weight: var(--font-weight-regular);
+}
+
+h3 {
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Title underline (shared) */
+.title-underline {
+    display: block;
+    width: clamp(160px, 38vw, 480px);
+    height: auto;
+    aspect-ratio: 253/23;
+    background: url('/assets/title-underline.svg') no-repeat left / 100% 100%;
+    margin: 0;
+    transition: width .35s ease, margin .3s ease;
+    margin-bottom: var(--heading-stack-gap);
+}
+
+/* Tight variant (currently same) */
+.title-underline--tight {
+    margin: 0;
+}
+
+.title-underline--right {
+    transform: scaleX(-1);
+}
+
+/* Optional emphasis tweaks */
+p strong,
+p b {
+    font-weight: var(--font-weight-bold);
+}
+
+p em,
+p i {
+    font-style: italic;
+}
+
+/* Utility for centered text blocks */
+.text-center {
+    text-align: center;
+}
+
+/* Constrain long-form content wrapper */
+.prose {
+    max-width: var(--text-max-width);
+}

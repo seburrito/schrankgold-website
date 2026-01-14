@@ -1,0 +1,94 @@
+/* ================== LANDING SECTION ================== */
+.landing-section {
+    position: relative;
+    min-height: 100vh;
+    /* base full-screen */
+    /* Further extended scroll span: extremely long hold after animation */
+    --landing-scroll-extra: clamp(1100px, 140vh + 46vw, 3800px);
+    padding-bottom: 0;
+}
+
+.landing-scroll-spacer {
+    height: var(--landing-scroll-extra);
+    pointer-events: none;
+}
+
+/* 
+     content-container: STICKY at top:0, min-height:100vh 
+     so it remains pinned for exactly 100vh of scrolling. 
+     Then it naturally scrolls off.
+  */
+.content-container {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(40px, 5vh, 120px);
+}
+
+/* ================== BRAND TEXT ================== */
+.schrankgold-title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    /* Adjusted since we use a single SVG now */
+}
+
+/* Legacy text classes kept in case of fallback; not used now */
+.schrank,
+.gold {
+    display: none;
+}
+
+/* SVG title replacement */
+/* Unified branding scaling */
+:root {
+    /* Base viewport width reference (design assumption) */
+    --design-vw: 1440;
+    /* Scale factor (smooth between 480px and 1440px) */
+    --brand-scale: clamp(0.55, (100vw / var(--design-vw)), 1);
+    /* Title base width and ratio to subtitle */
+    --title-base: 900;
+    /* px at full scale */
+    --subtitle-ratio: 0.55;
+    /* subtitle = title * ratio */
+    /* Fluid title width (independent of brand-scale now for better continuous shrink) */
+    --title-min: 380px;
+    --title-max: 850px;
+    /* Adjusted: previous 85vw made title & subtitle too large on tablets.
+    55vw keeps phones at min, moderates tablets, still reaches max on very wide screens. */
+    --title-fluid: clamp(var(--title-min), 60vw, var(--title-max));
+}
+
+.branding-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.5vh, 24px);
+}
+
+.schrankgold-title .title-graphic {
+    width: var(--title-fluid);
+    height: auto;
+    display: block;
+}
+
+/* Subtitle (landing) */
+.best-second-subtitle {
+    color: #fff;
+    font-family: var(--font-family-sans);
+    font-size: clamp(12px, 4vw, 75px);
+    letter-spacing: clamp(4px, 1.2vw, 22px);
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform .5s ease-out, opacity .5s ease-out;
+}
+
+.best-second-subtitle .subtitle-graphic {
+    width: calc(var(--title-fluid) * var(--subtitle-ratio));
+    height: auto;
+    display: block;
+}

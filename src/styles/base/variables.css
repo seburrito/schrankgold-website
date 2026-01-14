@@ -1,0 +1,58 @@
+:root {
+    --font-family-sans: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-heading: "Proza Libre", "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --line-height-tight: 1.15;
+    --line-height-base: 1.5;
+    /* Fluid sizing helpers */
+    --step--1: clamp(0.85rem, 0.75rem + 0.3vw, 0.95rem);
+    --step-0: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+    /* base paragraph */
+    --step-1: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+    --step-2: clamp(1.6rem, 1.2rem + 1.2vw, 2.6rem);
+    /* h2 */
+    --step-3: clamp(2rem, 1.4rem + 2vw, 3.2rem);
+    /* (reserved for h1 if needed) */
+    --text-max-width: 65ch;
+    /* Brand colors */
+    --color-red: #990036;
+    --color-dark-red: #5B0E29;
+    --color-darker-red: #4D001B;
+    --color-gold: #CA9921;
+    --color-white: #FFFFFF;
+    --color-grey: #CCCCCC;
+    --color-black: #000000;
+    /* Unified horizontal section padding (used for side gutters) */
+    /* Horizontal section padding: earlier start retained, gentler slope, smaller max for wide screens */
+    --section-x-pad: clamp(20px, calc(20px + (100vw - 720px) * 0.16), 200px);
+    /* Heading inset mirrors horizontal section padding (can offset if needed later) */
+    --heading-side-inset: var(--section-x-pad);
+    /* Responsive narrow text measure: narrow on phones, comfortable on desktops */
+    /* Wider max again (70ch) while still narrowing on small viewports */
+    /* Text width: narrow on small screens, capped but roomy on desktops.
+    90vw lets it grow quickly; it hits the max (60ch) on normal laptop widths. */
+    /* Tighter on very small screens (28ch), still grows to 60ch on desktops */
+    --section-text-narrow: 80vw;
+    /* simple percentage-based resizing */
+    --section-pad-top: clamp(80px, 10vh + 2vw, 240px);
+    /* Unified heading / underline spacing */
+    --heading-underline-gap: 14px;
+    /* space from h2 baseline block to top of underline */
+    --underline-bottom-gap: 32px;
+    /* space below underline to following content */
+    --heading-stack-gap: clamp(40px, 24px + 3vw, 72px);
+    /* fluid spacing: same feel small, larger on wide screens */
+    /* Fluid spacing below each step h4 subtitle: grows subtly on wider screens */
+    --how-step-subtitle-gap: clamp(18px, 10px + 1vw, 34px);
+    /* min 18, mid growth, max 34 */
+    /* Unified scaling factor for HOW section (1 on small screens up to ~1.4 on large) */
+    --how-scale: clamp(1, (100vw - 420px) / 900, 1.4);
+    /* Unified body font size token (used by p and buttons, etc.) */
+    --font-size-body: clamp(14px, 0.9rem + 0.6vw, 22px);
+    /* Standardized, responsive font sizes */
+    --font-size-h2: clamp(30px, 3.6vw, 56px);
+    --font-size-h3: clamp(18px, 1rem + 0.8vw, 26px);
+    --font-size-p: clamp(18px, 1rem + 0.8vw, 26px);
+}
