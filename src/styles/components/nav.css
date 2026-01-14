@@ -69,25 +69,84 @@ body.nav-open .side-nav {
     padding: 0;
     margin: 0;
     text-align: left;
+    flex: 1;
 }
 
 .side-nav-links li {
-    margin: 50px 0;
+    margin: 36px 0;
 }
 
 .side-nav-links a {
     font-family: var(--font-family-sans);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--color-grey);
-    /* Grey font color */
     text-decoration: none;
     text-transform: uppercase;
-    /* Uppercase text */
     transition: color 0.3s ease;
 }
 
 .side-nav-links a:hover {
     color: var(--color-gold);
+}
+
+/* Footer section with social icons and legal links */
+.side-nav-footer {
+    margin-top: auto;
+    padding-top: 30px;
+    border-top: 1px solid rgba(204, 204, 204, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.side-nav-social {
+    display: flex;
+    gap: 24px;
+    justify-content: flex-start;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-grey);
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-icon:hover {
+    color: var(--color-gold);
+    transform: scale(1.1);
+}
+
+.social-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.side-nav-legal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+
+.side-nav-legal a {
+    color: var(--color-grey);
+    text-decoration: none;
+    text-transform: none;
+    font-family: var(--font-family-sans);
+    transition: color 0.3s ease;
+}
+
+.side-nav-legal a:hover {
+    color: var(--color-gold);
+}
+
+.legal-separator {
+    color: var(--color-grey);
+    opacity: 0.5;
 }
 
 .page-overlay {
@@ -115,8 +174,8 @@ body.nav-open .page-overlay {
 
 .side-nav-logo-link {
     display: block;
-    margin-top: 70px;
-    margin-bottom: 30px;
+    margin-top: 45px;
+    margin-bottom: 25px;
     text-align: center;
 }
 

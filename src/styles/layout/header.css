@@ -57,10 +57,9 @@
     /* subtitle = title * ratio */
     /* Fluid title width (independent of brand-scale now for better continuous shrink) */
     --title-min: 380px;
-    --title-max: 850px;
-    /* Adjusted: previous 85vw made title & subtitle too large on tablets.
-    55vw keeps phones at min, moderates tablets, still reaches max on very wide screens. */
-    --title-fluid: clamp(var(--title-min), 60vw, var(--title-max));
+    --title-max: 900px;
+    /* Increased from 60vw to 68vw for larger presence on tablets */
+    --title-fluid: clamp(var(--title-min), 68vw, var(--title-max));
 }
 
 .branding-block {

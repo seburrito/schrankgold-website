@@ -1,8 +1,8 @@
 /* ================== WARDROBE (SVG) ================== */
 /* Wardrobe sizing refined: stays larger longer on medium screens */
 .wardrobe {
-    /* Reduced mid-range growth so it isn't oversized on tablets / small laptops */
-    width: clamp(320px, 40vw, 560px);
+    /* Increased mid-range growth for larger presence on tablets */
+    width: clamp(320px, 50vw, 580px);
     height: auto;
     transition: width 0.4s ease;
 }

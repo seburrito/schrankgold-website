@@ -1,3 +1,91 @@
+// Load shared navigation template
+async function loadNavigation() {
+  try {
+    const response = await fetch('assets/templates/nav.html');
+    if (!response.ok) throw new Error('Failed to load navigation');
+    const html = await response.text();
+    
+    // Insert navigation at the beginning of body
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    
+    // Adjust links if we're on the index page
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname === '/' ||
+                        window.location.pathname.endsWith('/');
+    
+    if (isIndexPage) {
+      // Convert index.html#anchor links to just #anchor for smoother navigation
+      const navLinks = tempDiv.querySelectorAll('.side-nav-links a, .side-nav-logo-link');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('index.html#')) {
+          link.setAttribute('href', href.replace('index.html', ''));
+        } else if (href === 'index.html#landing') {
+          link.setAttribute('href', '#landing');
+        }
+      });
+    }
+    
+    // Insert all children from the template
+    while (tempDiv.firstChild) {
+      document.body.insertBefore(tempDiv.firstChild, document.body.firstChild);
+    }
+    
+    // Initialize navigation after loading
+    initHamburgerMenu();
+    
+    // Load the crown icon SVG
+    const crownIconContainer = document.getElementById('sidebar-crown-icon');
+    if (crownIconContainer && crownIconContainer.dataset.src) {
+      fetch(crownIconContainer.dataset.src)
+        .then(r => r.text())
+        .then(svg => { crownIconContainer.innerHTML = svg; })
+        .catch(console.error);
+    }
+  } catch (error) {
+    console.error('Error loading navigation:', error);
+  }
+}
+
+// Hamburger Menu initialization
+function initHamburgerMenu() {
+  const hamburgerBtn = document.querySelector('.hamburger-btn');
+  const sideNav = document.querySelector('.side-nav');
+  const pageOverlay = document.querySelector('.page-overlay');
+  const navLinks = document.querySelectorAll('.side-nav-links a');
+  const logoLink = document.querySelector('.side-nav-logo-link');
+
+  if (!hamburgerBtn || !sideNav || !pageOverlay) return;
+
+  function toggleMenu() {
+    const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
+    hamburgerBtn.setAttribute('aria-expanded', !isOpen);
+    document.body.classList.toggle('nav-open', !isOpen);
+  }
+
+  function closeMenu() {
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }
+
+  hamburgerBtn.addEventListener('click', toggleMenu);
+  pageOverlay.addEventListener('click', closeMenu);
+  navLinks.forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+  if (logoLink) {
+    logoLink.addEventListener('click', closeMenu);
+  }
+}
+
+// Call loadNavigation when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadNavigation);
+} else {
+  loadNavigation();
+}
+
 // Wardrobe + subtitle scroll animation
 function initWardrobeAnimation() {
   const landingSection = document.querySelector('.landing-section');
@@ -266,35 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(svg => { crownIconContainer.innerHTML = svg; })
       .catch(console.error);
   }
-
-  // Hamburger Menu
-  (function initHamburgerMenu() {
-    const hamburgerBtn = document.querySelector('.hamburger-btn');
-    const sideNav = document.querySelector('.side-nav');
-    const pageOverlay = document.querySelector('.page-overlay');
-    const navLinks = document.querySelectorAll('.side-nav-links a');
-    const logoLink = document.querySelector('.side-nav-logo-link');
-
-    function toggleMenu() {
-      const isOpen = hamburgerBtn.getAttribute('aria-expanded') === 'true';
-      hamburgerBtn.setAttribute('aria-expanded', !isOpen);
-      document.body.classList.toggle('nav-open', !isOpen);
-    }
-
-    function closeMenu() {
-      hamburgerBtn.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('nav-open');
-    }
-
-    hamburgerBtn.addEventListener('click', toggleMenu);
-    pageOverlay.addEventListener('click', closeMenu);
-    navLinks.forEach(link => {
-      link.addEventListener('click', closeMenu);
-    });
-    if (logoLink) {
-      logoLink.addEventListener('click', closeMenu);
-    }
-  })();
 
   // Infinite carousel (rondell) shifting one slide per click
   (function initInfiniteCarousel(){

@@ -19,26 +19,7 @@
 </head>
 
 <body>
-  <button class="hamburger-btn" aria-label="Menü öffnen" aria-expanded="false">
-    <span class="hamburger-line"></span>
-    <span class="hamburger-line"></span>
-  </button>
-
-  <nav class="side-nav">
-    <a href="#landing" class="side-nav-logo-link">
-      <div id="sidebar-crown-icon" data-src="assets/sidebar-crown-icon.svg"></div>
-    </a>
-    <ul class="side-nav-links">
-      <li><a href="#welcome">Willkommen</a></li>
-      <li><a href="#gabi">Über Uns</a></li>
-      <li><a href="#so-funktionierts">Warenannahme</a></li>
-      <li><a href="#instagram">Neuigkeiten</a></li>
-      <li><a href="#location">Besuche Uns</a></li>
-      <li><a href="#story">Unsere Geschichte</a></li>
-      <li><a href="#contact">Kontakt</a></li>
-    </ul>
-  </nav>
-  <div class="page-overlay"></div>
+  <!-- Navigation loaded dynamically from assets/templates/nav.html -->
   <div class="landing-section" id="landing">
     <div class="content-container">
       <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"></div>
@@ -189,18 +170,17 @@
         <img src="assets/selling-line.svg" alt="" aria-hidden="true" class="how-line" />
 
         <!-- STEP 1 -->
-        <div class="how-step step-1" data-step="1" data-animate="fade-left" data-animate-delay="100">
-          <div class="how-col left number-side">
+        <div class="how-step step-1" data-step="1">
+          <div class="how-col left number-side" data-animate="fade-left" data-animate-delay="100">
             <div class="step-number" aria-hidden="true">1</div>
           </div>
-          <div class="how-col right text-side">
+          <div class="how-col right text-side" data-animate="fade-right" data-animate-delay="100">
             <div class="step-copy">
               <h4 class="step-subtitle">Dein Termin bei mir</h4>
               <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich
                 telefonisch oder über Whatsapp.</p>
               <div class="step-actions">
-                <!-- TODO: Insert echte Telefonnummer -->
-                <a class="sg-btn sg-btn--tel" href="tel:" aria-label="Jetzt anrufen">
+                <a class="sg-btn sg-btn--tel" href="tel:+4917698306373" aria-label="Jetzt anrufen">
                   <span class="sg-btn__icon" aria-hidden="true">
                     <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
                       <path fill="currentColor"
@@ -215,24 +195,24 @@
         </div>
 
         <!-- STEP 2 -->
-        <div class="how-step step-2" data-step="2" data-animate="fade-right" data-animate-delay="200">
-          <div class="how-col left text-side">
+        <div class="how-step step-2" data-step="2">
+          <div class="how-col left text-side" data-animate="fade-left" data-animate-delay="200">
             <div class="step-copy">
               <h4 class="step-subtitle">Was wir lieben</h4>
               <p>Ich freue mich auf eure aktuelle Markenware. Bitte achte auf einen Top-Zustand.</p>
             </div>
           </div>
-          <div class="how-col right number-side">
+          <div class="how-col right number-side" data-animate="fade-right" data-animate-delay="200">
             <div class="step-number" aria-hidden="true">2</div>
           </div>
         </div>
 
         <!-- STEP 3 -->
-        <div class="how-step step-3" data-step="3" data-animate="fade-left" data-animate-delay="300">
-          <div class="how-col left number-side">
+        <div class="how-step step-3" data-step="3">
+          <div class="how-col left number-side" data-animate="fade-left" data-animate-delay="300">
             <div class="step-number" aria-hidden="true">3</div>
           </div>
-          <div class="how-col right text-side">
+          <div class="how-col right text-side" data-animate="fade-right" data-animate-delay="300">
             <div class="step-copy">
               <h4 class="step-subtitle">Zeit zum Verkaufen</h4>
               <p>Deine schönen Stücke bleiben für etwa 2–3 Monate im SchrankGold.</p>
@@ -241,20 +221,20 @@
         </div>
 
         <!-- STEP 4 -->
-        <div class="how-step step-4" data-step="4" data-animate="fade-right" data-animate-delay="400">
-          <div class="how-col left text-side">
+        <div class="how-step step-4" data-step="4">
+          <div class="how-col left text-side" data-animate="fade-left" data-animate-delay="400">
             <div class="step-copy">
               <h4 class="step-subtitle">Faire Auszahlung oder Rückgabe</h4>
               <p>Bei Verkauf erhältst du 40% des Erlöses. Nicht verkaufte Artikel werden zurückgegeben.</p>
             </div>
           </div>
-          <div class="how-col right number-side">
+          <div class="how-col right number-side" data-animate="fade-right" data-animate-delay="400">
             <div class="step-number" aria-hidden="true">4</div>
           </div>
         </div>
       </div>
 
-      <div class="how-details-cta" data-animate="fade" data-animate-delay="500">
+      <div class="how-details-cta" data-animate="fade-up" data-animate-delay="500">
         <p>Wie es im Detail funktioniert, könnt ihr hier nachlesen:</p>
         <!-- PDF placeholder -->
         <a class="sg-btn sg-btn--verkauf" href="assets/lieferanten.pdf" target="_blank" rel="noopener"
@@ -290,7 +270,7 @@
           </span>
           <span class="sg-btn__text">Instagram</span>
         </a>
-        <a class="sg-btn sg-btn--wa" href="https://wa.me/" target="_blank" rel="noopener"
+        <a class="sg-btn sg-btn--wa" href="https://wa.me/4917698306373" target="_blank" rel="noopener"
           aria-label="WhatsApp Chat öffnen">
           <span class="sg-btn__icon" aria-hidden="true">
             <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -333,9 +313,9 @@
       <!-- MapLibre map container (provide MapTiler credentials via data attributes) -->
       <div class="location-map" id="store-map"
         data-mt-url="https://api.maptiler.com/maps/0199f703-1173-7298-81df-98d97011dd27/style.json?key=IAwxH9Qf6uoA1zhZTKlI"
-        data-pitch="17.9" aria-label="Karte mit Standort und Parkmöglichkeit"></div>
+        data-pitch="17.9" aria-label="Karte mit Standort und Parkmöglichkeit" data-animate="fade" data-animate-delay="200"></div>
       <div class="store-address-row">
-        <address class="store-address" aria-label="Adresse SchrankGold" translate="no">
+        <address class="store-address" aria-label="Adresse SchrankGold" translate="no" data-animate="fade-left" data-animate-delay="300">
           <h3 class="store-address__heading">SchrankGold</h3>
           <p class="store-address__text">
             Am Rätschenbach 11<br />
@@ -343,7 +323,7 @@
           </p>
         </address>
         <a id="store-directions-btn" href="#" target="_blank" rel="noopener" class="sg-btn sg-btn--route"
-          data-provider="auto" aria-label="Route öffnen">
+          data-provider="auto" aria-label="Route öffnen" data-animate="fade" data-animate-delay="400">
           <span class="sg-btn__icon" aria-hidden="true">
             <img src="assets/icons/location.svg" alt="" class="route-icon" />
           </span>
@@ -364,7 +344,7 @@
         <span class="hours-status__icon" aria-hidden="true"></span>
         <span class="hours-status__text">Öffnungsstatus wird geladen…</span>
       </div>
-      <div class="hours-table" aria-describedby="hours-heading">
+      <div class="hours-table" aria-describedby="hours-heading" data-animate="fade-right" data-animate-delay="300">
         <div class="hours-table__col hours-table__col--days" aria-hidden="true">
           <p>MI</p>
           <p>DO</p>

@@ -50,9 +50,9 @@
     /* Unified scaling factor for HOW section (1 on small screens up to ~1.4 on large) */
     --how-scale: clamp(1, (100vw - 420px) / 900, 1.4);
     /* Unified body font size token (used by p and buttons, etc.) */
-    --font-size-body: clamp(14px, 0.9rem + 0.6vw, 22px);
+    --font-size-body: clamp(14px, 0.9rem + 0.4vw, 19px);
     /* Standardized, responsive font sizes */
-    --font-size-h2: clamp(30px, 3.6vw, 56px);
-    --font-size-h3: clamp(18px, 1rem + 0.8vw, 26px);
-    --font-size-p: clamp(18px, 1rem + 0.8vw, 26px);
+    --font-size-h2: clamp(30px, 3.6vw, 50px);
+    --font-size-h3: clamp(16px, 1rem + 0.6vw, 23px);
+    --font-size-p: clamp(16px, 1rem + 0.6vw, 23px);
 }
