@@ -1,0 +1,117 @@
+/* ================== WARDROBE (SVG) ================== */
+/* Wardrobe sizing refined: stays larger longer on medium screens */
+.wardrobe {
+    /* Increased mid-range growth for larger presence on tablets */
+    width: clamp(320px, 50vw, 580px);
+    height: auto;
+    transition: width 0.4s ease;
+}
+
+/* If you like a 3D transform on the doors, the parent's perspective can remain:
+     If so, you could do: 
+     .landing-section { perspective: 1000px; } 
+     Then #door-left-group, #door-right-group rotate in 3D. 
+  */
+#wardrobe-svg {
+    width: 100%;
+    height: auto;
+    shape-rendering: geometricPrecision;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    /* Smooth scaling effect */
+    transform-origin: center bottom;
+    /* Grow upward to reduce text overlap */
+}
+
+/* Doors rotate from 180deg (closed) to 0deg (open) in JS. */
+#door-left-group,
+#door-right-group {
+    will-change: transform;
+    /* Suggest GPU optimization */
+    transform-origin: center;
+    /* Ensure smooth transformations */
+    transform-box: fill-box;
+    transform: translateZ(0);
+    /* Force hardware acceleration */
+    transition: transform 0.4s linear;
+}
+
+#door-left-group {
+    transform-origin: right center;
+    transform-box: fill-box;
+}
+
+#door-right-group {
+    transform-origin: left center;
+    transform-box: fill-box;
+}
+
+/* Center injected wardrobe SVG */
+.wardrobe {
+    display: flex;
+    justify-content: center;
+}
+
+.wardrobe svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Hook wobble animation (landing) */
+@keyframes wobble {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(11deg);
+    }
+
+    40% {
+        transform: rotate(-6deg);
+    }
+
+    60% {
+        transform: rotate(3deg);
+    }
+
+    80% {
+        transform: rotate(-2deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes jump {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.side-nav-logo-link:hover #dot1 {
+    animation: jump 0.5s ease-in-out;
+}
+
+.side-nav-logo-link:hover #dot2 {
+    animation: jump 0.5s ease-in-out 0.1s;
+}
+
+.side-nav-logo-link:hover #dot3 {
+    animation: jump 0.5s ease-in-out 0.2s;
+}
+
+/* Hook wobble trigger class */
+.wobble-animation {
+    transform-origin: 50% 30%;
+    animation: wobble 2s ease-out forwards;
+}

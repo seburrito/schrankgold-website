@@ -1,0 +1,96 @@
+/* Leaflet map: single fluid formula (no media queries). Height grows with viewport width & height */
+.location-map {
+    position: relative;
+    width: 100%;
+    /* Stronger growth: base 360 + 22vw + 10vh, higher cap */
+    --map-h: clamp(360px, 260px + 22vw + 10vh, 1180px);
+    height: var(--map-h);
+}
+
+@media (max-width: 640px) {
+    .location-map {
+        --map-h: clamp(480px, 70vh, 760px);
+    }
+}
+
+/* Explicit fallback */
+#store-map,
+#store-map.leaflet-container {
+    min-height: 360px;
+}
+
+/* MapLibre container fills parent */
+.location-map canvas {
+    outline: none;
+}
+
+/* Store address block below map */
+.store-address {
+    font-style: normal;
+    margin: 0;
+    padding-left: 0;
+    max-width: 640px;
+}
+
+.store-address__heading {
+    margin: 0 0 0.35em;
+    font: inherit;
+    font-family: var(--font-family-sans);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+}
+
+.store-address__text {
+    margin: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-grey);
+    line-height: 1.5;
+}
+
+.map-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--color-gold);
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+}
+
+.map-link:hover,
+.map-link:focus {
+    text-decoration: underline;
+}
+
+/* Address row layout with button on right */
+/* Centered address + button layout */
+.store-address-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* no centering */
+    /* Separate horizontal and vertical spacing so vertical gap stays tiny on wrap */
+    /* Wider on large screens: raise mid slope & max; unchanged tight mobile floor */
+    column-gap: clamp(10px, 4.2vw + 6px, 200px);
+    /* horizontal growth */
+    row-gap: clamp(2px, 0.6vh + 2px, 14px);
+    /* minimal vertical gap on mobile */
+    padding: 0 0 0 var(--heading-side-inset);
+    /* Left-align container: remove auto centering, keep natural flow */
+    margin: clamp(10px, 4vh, 70px) 0 0;
+    max-width: min(100%, 1200px);
+    text-align: left;
+}
+
+.store-address-row .store-address {
+    flex: 0 1 auto;
+    min-width: 168px;
+    max-width: 420px;
+}
+
+.store-address-row .sg-btn--route {
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+    align-self: center;
+}

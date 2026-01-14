@@ -1,0 +1,166 @@
+/* ================== SCROLL ANIMATIONS ================== */
+/* Professional, subtle animations for text and headers that trigger on scroll */
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Base state for all animated elements - hidden until triggered */
+[data-animate] {
+  opacity: 0;
+}
+
+/* Animated state - added by JavaScript when element enters viewport */
+[data-animate].animate-in {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* ease-out-quad */
+  animation-fill-mode: both;
+}
+
+/* ================== KEYFRAME ANIMATIONS ================== */
+
+/* Fade in with slight upward movement - perfect for headers */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in from left - good for alternating content */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade in from right - good for alternating content */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Simple fade in - for subtle elements */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scale fade - for emphasis elements */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================== ANIMATION VARIANTS ================== */
+
+/* Default: fade up */
+[data-animate="fade-up"].animate-in {
+  animation-name: fadeInUp;
+}
+
+/* Fade from left */
+[data-animate="fade-left"].animate-in {
+  animation-name: fadeInLeft;
+}
+
+/* Fade from right */
+[data-animate="fade-right"].animate-in {
+  animation-name: fadeInRight;
+}
+
+/* Simple fade */
+[data-animate="fade"].animate-in {
+  animation-name: fadeIn;
+}
+
+/* Scale in */
+[data-animate="scale"].animate-in {
+  animation-name: scaleIn;
+}
+
+/* ================== STAGGERED DELAYS ================== */
+/* Add delays for sequential animations */
+
+[data-animate-delay="100"].animate-in {
+  animation-delay: 0.1s;
+}
+
+[data-animate-delay="200"].animate-in {
+  animation-delay: 0.2s;
+}
+
+[data-animate-delay="300"].animate-in {
+  animation-delay: 0.3s;
+}
+
+[data-animate-delay="400"].animate-in {
+  animation-delay: 0.4s;
+}
+
+[data-animate-delay="500"].animate-in {
+  animation-delay: 0.5s;
+}
+
+[data-animate-delay="600"].animate-in {
+  animation-delay: 0.6s;
+}
+
+/* ================== SPECIAL EFFECTS ================== */
+
+/* Underline animation - grows from left to right */
+.title-underline {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-animate].animate-in .title-underline {
+  transform: scaleX(1);
+  transition-delay: 0.2s; /* Slightly delayed after heading appears */
+}
+
+/* For right-aligned underlines */
+.title-underline--right {
+  transform-origin: right center;
+}
+
+/* Slower, more dramatic timing for emphasis sections */
+[data-animate="slow"].animate-in {
+  animation-duration: 1.2s;
+}
+
+/* Faster, snappier timing for small elements */
+[data-animate-speed="fast"].animate-in {
+  animation-duration: 0.5s;
+}

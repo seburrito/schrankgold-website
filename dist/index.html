@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Schrankgold - Best Second</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon-CWY8mLRl.svg" />
+  <!-- Open-source fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Proza+Libre:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <!-- Roboto for buttons (semibold) -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- MapLibre GL CSS -->
+  <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" crossorigin href="/assets/index-Bd8KXOFQ.css">
+</head>
+
+<body>
+  <button class="hamburger-btn" aria-label="Menü öffnen" aria-expanded="false">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
+
+  <nav class="side-nav">
+    <a href="#landing" class="side-nav-logo-link">
+      <div id="sidebar-crown-icon" data-src="assets/sidebar-crown-icon.svg"></div>
+    </a>
+    <ul class="side-nav-links">
+      <li><a href="#welcome">Willkommen</a></li>
+      <li><a href="#gabi">Über Uns</a></li>
+      <li><a href="#so-funktionierts">Warenannahme</a></li>
+      <li><a href="#instagram">Neuigkeiten</a></li>
+      <li><a href="#location">Besuche Uns</a></li>
+      <li><a href="#story">Unsere Geschichte</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+    </ul>
+  </nav>
+  <div class="page-overlay"></div>
+  <div class="landing-section" id="landing">
+    <div class="content-container">
+      <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"></div>
+      <div class="branding-block">
+        <div class="schrankgold-title">
+          <img src="/assets/title-B3CKLfT5.svg" alt="Schrankgold" class="title-graphic" />
+        </div>
+        <div class="best-second-subtitle">
+          <img src="/assets/subtitle-Ddk-Wu3q.svg" alt="best second" class="subtitle-graphic" />
+        </div>
+      </div>
+    </div>
+    <!-- Extra scroll spacer to allow animation progress while content stays visually fixed -->
+    <div class="landing-scroll-spacer" aria-hidden="true"></div>
+  </div>
+  <section id="welcome">
+    <div class="welcome-bg" aria-hidden="true"></div>
+    <div id="welcome-text">
+      <div class="sg-heading-block">
+        <h2 class="sg-section-heading">WILLKOMMEN IM <br />SCHRANKGOLD</h2>
+        <span class="title-underline title-underline--tight" aria-hidden="true"></span>
+      </div>
+      <h3>Komm vorbei, wir freuen uns auf dich!</h3>
+      <p>Keine Second-HAND, sondern Second-BEST-Ware mitten in Erding.<br />
+        Nachhaltigkeit, Qualität, Mode und ein persönlicher Service stehen im Vordergrund.
+      </p>
+    </div>
+  </section>
+  <section class="founder-section" id="gabi">
+    <div class="founder-inner">
+      <div class="founder-copy">
+        <div class="sg-heading-block sg-heading-block--right">
+          <h2 class="sg-section-heading--right">MIT FREUDE DABEI</h2>
+          <span class="title-underline title-underline--right title-underline--tight" aria-hidden="true"></span>
+        </div>
+        <h3>Gabi Strobl, das bin ich!<br />Das Herz vom SchrankGold.</h3>
+        <p class="sg-text">Mit Leidenschaft für Stil und Mode wähle ich für mein SchrankGold hochwertige
+          Second-Hand-Mode und neue Lieblingsteile für euch persönlich aus.<br /><br />Ich helfe dir mit herzlicher und
+          ehrlicher Beratung, das perfekte Outfit für deinen Stil oder Anlass zu finden.</p>
+      </div>
+      <div class="founder-visual">
+        <!-- Inlined SVG for selective parallax (all except #dark-bottle moves) -->
+        <svg class="founder-image" width="367" height="226" viewBox="0 0 367 226" fill="none"
+          xmlns="http://www.w3.org/2000/svg" aria-labelledby="founderTitle" role="img">
+          <title id="founderTitle">Gabi Strobl Illustration</title>
+          <g id="gabi">
+            <g id="gabi_2">
+              <path id="Vector" fill-rule="evenodd" clip-rule="evenodd"
+                d="M180.395 126.92C180.395 126.92 144.166 111.872 135.976 110.863C135.976 110.863 132.436 106.275 131.964 104.733C129.533 96.7829 87.618 98.748 87.618 98.748C87.618 98.748 84.7742 97.5053 78.3549 107.944C78.3549 107.944 58.9786 110.018 36.2696 120.059C20.5015 127.032 0.0516444 214.057 0 225.44L213.363 225.236C213.363 225.236 195.265 170.645 193.086 155.968C190.907 141.291 184.29 128.052 180.395 126.92Z"
+                fill="#990036" />
+              <path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd"
+                d="M70.0398 71.0868C70.0398 71.0868 67.0082 74.4468 72.3008 80.7207C77.5934 86.9946 75.4984 88.4431 78.4276 93.2011C81.3568 97.959 83.457 95.0048 83.3874 94.9527C83.3178 94.9006 91.0129 93.3877 87.326 110.133C80.3091 142.004 92.5954 168.82 100.483 192.825C100.483 192.825 124.681 151.712 123.959 132.992C123.818 129.341 120.659 122.541 120.659 122.541C124.838 122.374 129.171 114.005 129.258 113.961C130.729 113.219 133.027 109.347 135.1 102.47C137.364 94.9606 141.178 89.2076 142.248 86.8512C143.319 84.4948 144.79 79.9252 143.196 74.3709C141.603 68.8165 141.789 66.2598 141.957 64.9559C142.124 63.652 142.978 36.492 142.978 36.492L120.221 24.8875L93.8904 25.0334L84.1897 39.3031L73.6137 58.8982L70.0398 71.0866V71.0868Z"
+                fill="#ECBFA2" />
+              <g id="Group">
+                <path id="Vector_3"
+                  d="M106.514 162.536C109.857 162.536 112.568 159.824 112.568 156.479C112.568 153.133 109.857 150.421 106.514 150.421C103.171 150.421 100.46 153.133 100.46 156.479C100.46 159.824 103.171 162.536 106.514 162.536Z"
+                  fill="#4D001B" />
+                <path id="Vector_4"
+                  d="M118.691 161.15C122.035 161.15 124.745 158.437 124.745 155.092C124.745 151.746 122.035 149.034 118.691 149.034C115.348 149.034 112.637 151.746 112.637 155.092C112.637 158.437 115.348 161.15 118.691 161.15Z"
+                  fill="#4D001B" />
+                <path id="Vector_5"
+                  d="M96.1808 156.625C99.5243 156.625 102.235 153.913 102.235 150.567C102.235 147.221 99.5243 144.509 96.1808 144.509C92.8374 144.509 90.127 147.221 90.127 150.567C90.127 153.913 92.8374 156.625 96.1808 156.625Z"
+                  fill="#4D001B" />
+                <path id="Vector_6"
+                  d="M86.6789 149.18C90.0223 149.18 92.7327 146.468 92.7327 143.123C92.7327 139.777 90.0223 137.065 86.6789 137.065C83.3354 137.065 80.625 139.777 80.625 143.123C80.625 146.468 83.3354 149.18 86.6789 149.18Z"
+                  fill="#4D001B" />
+                <path id="Vector_7"
+                  d="M106.825 147.657C107.947 147.657 108.857 146.746 108.857 145.624C108.857 144.501 107.947 143.591 106.825 143.591C105.703 143.591 104.793 144.501 104.793 145.624C104.793 146.746 105.703 147.657 106.825 147.657Z"
+                  fill="#4D001B" />
+                <path id="Vector_8"
+                  d="M110.693 148.158C111.815 148.158 112.724 147.248 112.724 146.126C112.724 145.003 111.815 144.093 110.693 144.093C109.571 144.093 108.661 145.003 108.661 146.126C108.661 147.248 109.571 148.158 110.693 148.158Z"
+                  fill="#4D001B" />
+                <path id="Vector_9"
+                  d="M103.081 146.094C104.203 146.094 105.112 145.183 105.112 144.061C105.112 142.938 104.203 142.028 103.081 142.028C101.958 142.028 101.049 142.938 101.049 144.061C101.049 145.183 101.958 146.094 103.081 146.094Z"
+                  fill="#4D001B" />
+                <path id="Vector_10"
+                  d="M99.5122 144.175C100.634 144.175 101.544 143.264 101.544 142.142C101.544 141.019 100.634 140.109 99.5122 140.109C98.3901 140.109 97.4805 141.019 97.4805 142.142C97.4805 143.264 98.3901 144.175 99.5122 144.175Z"
+                  fill="#4D001B" />
+                <path id="Vector_11"
+                  d="M96.1808 141.912C97.3029 141.912 98.2125 141.002 98.2125 139.879C98.2125 138.756 97.3029 137.846 96.1808 137.846C95.0588 137.846 94.1492 138.756 94.1492 139.879C94.1492 141.002 95.0588 141.912 96.1808 141.912Z"
+                  fill="#4D001B" />
+                <path id="Vector_12"
+                  d="M93.0937 139.524C94.2158 139.524 95.1254 138.614 95.1254 137.491C95.1254 136.369 94.2158 135.458 93.0937 135.458C91.9716 135.458 91.062 136.369 91.062 137.491C91.062 138.614 91.9716 139.524 93.0937 139.524Z"
+                  fill="#4D001B" />
+                <path id="Vector_13"
+                  d="M89.6655 137.481C90.7875 137.481 91.6972 136.571 91.6972 135.448C91.6972 134.325 90.7875 133.415 89.6655 133.415C88.5434 133.415 87.6338 134.325 87.6338 135.448C87.6338 136.571 88.5434 137.481 89.6655 137.481Z"
+                  fill="#4D001B" />
+                <path id="Vector_14"
+                  d="M86.2375 135.448C87.3596 135.448 88.2692 134.538 88.2692 133.415C88.2692 132.293 87.3596 131.382 86.2375 131.382C85.1154 131.382 84.2058 132.293 84.2058 133.415C84.2058 134.538 85.1154 135.448 86.2375 135.448Z"
+                  fill="#4D001B" />
+                <path id="Vector_15"
+                  d="M114.61 147.626C115.732 147.626 116.642 146.716 116.642 145.594C116.642 144.471 115.732 143.561 114.61 143.561C113.488 143.561 112.579 144.471 112.579 145.594C112.579 146.716 113.488 147.626 114.61 147.626Z"
+                  fill="#4D001B" />
+                <path id="Vector_16"
+                  d="M118.601 146.896C119.723 146.896 120.632 145.986 120.632 144.863C120.632 143.741 119.723 142.83 118.601 142.83C117.479 142.83 116.569 143.741 116.569 144.863C116.569 145.986 117.479 146.896 118.601 146.896Z"
+                  fill="#4D001B" />
+                <path id="Vector_17"
+                  d="M122.466 145.802C123.588 145.802 124.498 144.892 124.498 143.769C124.498 142.646 123.588 141.736 122.466 141.736C121.344 141.736 120.435 142.646 120.435 143.769C120.435 144.892 121.344 145.802 122.466 145.802Z"
+                  fill="#4D001B" />
+              </g>
+              <path id="Vector_18" fill-rule="evenodd" clip-rule="evenodd"
+                d="M152.3 61.2831C152.124 59.863 140.472 66.7083 147.121 71.8658C147.121 71.8658 151.074 75.9378 158.718 67.3408C163.161 62.3448 155.144 58.1448 155.144 58.1448C160.251 65.3745 156.256 65.4044 155.222 65.1767C154.006 64.9091 152.653 64.1459 152.3 61.2831Z"
+                fill="#CBA250" />
+              <path id="Vector_19" fill-rule="evenodd" clip-rule="evenodd"
+                d="M106.29 32.9891C106.29 32.9891 116.321 37.6125 125.254 35.9085C134.186 34.2044 139.546 37.212 140.862 53.7896C142.178 70.3673 143.039 68.1981 144.217 70.5031C145.396 72.808 150.769 72.9911 151.438 71.7438C152.107 70.4966 159.088 23.6761 132.766 13.867C118.302 8.47718 116.381 9.59649 111.395 5.83877C108.031 3.30266 107.002 0.00890947 97.9747 6.01742e-06C88.9475 -0.00889743 88.1855 9.86478 86.3047 14.013C84.4238 18.1612 60.6211 22.2965 69.1753 68.1675C69.915 72.1343 68.7537 66.4998 77.5244 77.9527C79.6658 80.749 81.2943 73.7061 80.6155 73.2034C77.1771 70.6573 89.6161 55.7492 91.2834 45.4353C91.3635 44.9399 91.6291 44.7395 91.6291 44.7395C98.8769 44.3542 106.29 32.989 106.29 32.989V32.9891Z"
+                fill="#CBA250" />
+              <path id="Vector_20" fill-rule="evenodd" clip-rule="evenodd"
+                d="M82.2933 73.7872L78.7923 68.3134C78.7923 68.3134 78.384 70.8901 78.4276 71.3787C78.4794 71.9608 79.006 73.1839 80.6157 75.9768C81.9858 78.3538 83.1571 78.5202 87.5212 79.14C88.0818 79.2197 88.6951 79.3068 89.3683 79.407C90.5306 79.5801 91.2261 79.8391 91.6293 80.7937C92.0326 81.7484 93.5308 84.3992 94.9115 85.0998C96.2923 85.8004 101.36 87.521 106.144 87.2163C110.928 86.9117 113.426 84.0736 115.553 81.0127C116.389 79.8102 117.344 77.9395 118.229 76.2038C119.126 74.447 119.952 72.8286 120.513 72.1816C121.627 70.8953 123.431 70.8499 124.524 73.0574C125.176 74.3737 125.443 75.7936 125.689 77.1049C125.856 77.9926 126.014 78.8306 126.275 79.553C126.922 81.3425 129.581 85.8443 132.985 86.5595C136.319 87.2599 138.618 86.816 140.934 86.3689C140.983 86.3595 141.032 86.35 141.081 86.3405C143.447 85.8844 147.879 83.6939 148.375 81.3046C148.856 78.9899 151.438 79.407 151.438 79.407C151.868 78.4052 151.949 76.4146 151.949 76.4146C151.949 76.4146 150.901 76.2134 150.855 76.1957C150.724 76.1459 150.606 76.1153 150.501 76.0883C150.046 75.971 149.86 75.923 150.126 74.663C150.669 72.0823 150.314 68.803 149.542 64.0073C148.878 59.8845 146.717 59.6807 144.429 59.4651C144.044 59.4287 143.655 59.3921 143.269 59.3363C141.899 59.1381 134.022 59.331 131.453 60.65C130.877 60.9461 130.38 61.1657 129.926 61.3664C128.301 62.0842 127.222 62.5612 125.003 65.4297C124.981 65.4587 124.962 65.467 124.962 65.467C122.942 69.3928 122.102 68.3238 120.662 66.4921C120.477 66.2572 120.283 66.0099 120.075 65.7589C119.639 65.2332 119.305 64.7483 118.988 64.2886C117.973 62.8171 117.136 61.6044 113.729 60.1391C109.259 58.2162 102.492 58.2844 98.9961 58.5335C95.5005 58.7825 95.0422 59.2084 93.8175 61.7448C92.3937 64.6933 91.7633 69.8145 91.4834 72.6195C91.2036 75.4244 89.5871 75.4659 89.5871 75.4659C89.5871 75.4659 86.8707 75.6748 84.919 75.4659C82.9674 75.2569 82.2933 73.7872 82.2933 73.7872ZM141.003 84.8265C144.513 84.2415 147.037 82.0429 147.439 80.7315C149.228 74.8938 149.28 71.5399 148.024 65.467C146.862 62.6559 145.799 61.8518 143.343 61.4261C138.21 60.7681 135.99 60.9322 132.985 62.0111C130.414 62.9512 129.388 63.7205 128.131 65.4297C126.286 67.8191 125.873 69.3371 125.988 72.1816C126.46 75.1029 126.91 76.676 127.904 79.407C129.199 82.368 130.125 83.5218 132.227 84.8265C134.629 85.9921 136.588 85.964 141.003 84.8265Z"
+                fill="black" />
+              <path id="Vector_21" fill-rule="evenodd" clip-rule="evenodd"
+                d="M92.8695 79.4801C92.8695 79.4801 91.9904 69.8517 94.6929 65.0292C97.3955 60.2066 99.2335 60.6983 101.914 60.4312C104.553 60.1681 110.79 60.965 112.49 61.5259C114.018 62.0301 116.762 62.3126 118.617 68.3865C118.617 68.3865 119.651 73.4992 114.021 81.3047C110.768 85.816 107.063 85.9458 105.561 85.9757C104.058 86.0056 100.075 86.4762 96.0058 84.2971C92.7835 82.5713 92.8695 79.4801 92.8695 79.4801Z"
+                fill="#ECBFA2" />
+              <path id="Vector_22" fill-rule="evenodd" clip-rule="evenodd"
+                d="M128.893 81.4235C128.893 81.4235 124.075 72.233 126.778 67.4105C129.48 62.5879 131.683 62.4227 134.436 61.4987C136.574 60.7812 139.671 60.9915 141.576 61.1845C141.799 61.2072 141.603 65.2221 143.196 69.0432C144.946 73.2379 145.501 80.754 143.587 84.005C143.587 84.005 139.599 85.7224 135.457 85.6735C130.782 85.6183 128.893 81.4235 128.893 81.4235Z"
+                fill="#ECBFA2" />
+              <path id="Vector_23" fill-rule="evenodd" clip-rule="evenodd"
+                d="M141.564 61.1848C141.564 61.1848 142.012 68.6345 144.218 70.5031C146.423 72.3718 148.538 72.8205 148.905 72.8295C148.905 72.8295 148.853 67.4188 147.937 65.2482C147.022 63.0777 146.371 61.5738 141.564 61.1848Z"
+                fill="#CBA250" />
+              <path id="Vector_24"
+                d="M79.5311 103.861C82.8746 103.861 85.585 101.149 85.585 97.8031C85.585 94.4575 82.8746 91.7454 79.5311 91.7454C76.1877 91.7454 73.4773 94.4575 73.4773 97.8031C73.4773 101.149 76.1877 103.861 79.5311 103.861Z"
+                fill="#4D001B" />
+              <path id="Vector_25" fill-rule="evenodd" clip-rule="evenodd"
+                d="M85.2839 131.382L87.2588 149.243L80.7618 148.951L79.9595 133.927L85.2839 131.382Z" fill="#990036" />
+              <path id="Vector_26" fill-rule="evenodd" clip-rule="evenodd"
+                d="M132.183 144.29L122.466 166.456L116.636 160.858L122.993 141.809L132.183 144.29Z" fill="#990036" />
+            </g>
+            <path id="dark-bottle" fill-rule="evenodd" clip-rule="evenodd"
+              d="M322.792 225.24V149.254C324.616 136.541 337.36 148.942 337.656 120.819H351.49C352.721 149.504 364.53 136.541 366.353 149.254V225.24H322.792Z"
+              fill="#4D001B" />
+            <path id="light-bottle" fill-rule="evenodd" clip-rule="evenodd"
+              d="M297.218 225.24V179.215C298.482 170.401 307.318 172.773 307.524 153.273H317.116C317.97 173.162 326.158 170.401 327.422 179.215V225.24H297.218Z"
+              fill="#990036" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+  <!-- So Funktioniert's Section (scaffold) -->
+  <section class="how-section" id="so-funktionierts">
+    <div class="how-inner">
+      <div class="sg-heading-block">
+        <h2 class="sg-section-heading">SO FUNKTIONIERT'S</h2>
+        <span class="title-underline" aria-hidden="true"></span>
+      </div>
+      <h3>Wenn ihr was zum Abgeben habt</h3>
+      <div class="how-steps" aria-label="Ablauf Verkaufsschritte">
+        <!-- Decorative S line asset -->
+        <img src="/assets/selling-line-D-2G7qnc.svg" alt="" aria-hidden="true" class="how-line" />
+
+        <!-- STEP 1 -->
+        <div class="how-step step-1" data-step="1">
+          <div class="how-col left number-side">
+            <div class="step-number" aria-hidden="true">1</div>
+          </div>
+          <div class="how-col right text-side">
+            <div class="step-copy">
+              <h4 class="step-subtitle">Dein Termin bei mir</h4>
+              <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich
+                telefonisch oder über Whatsapp.</p>
+              <div class="step-actions">
+                <!-- TODO: Insert echte Telefonnummer -->
+                <a class="sg-btn sg-btn--tel" href="tel:" aria-label="Jetzt anrufen">
+                  <span class="sg-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+                      <path fill="currentColor"
+                        d="M6.4794 0.00441829C7.84667 0.334196 8.66077 1.38269 9.57576 2.39362C9.77722 2.60404 9.97867 2.81446 10.1862 3.03125C11.9612 4.9047 11.9612 4.9047 12.1616 6.39362C12.0096 7.6965 11.935 7.81299 11.0303 8.63605C10.8466 8.78063 10.6628 8.92521 10.4735 9.07418C10.0053 9.52373 10.0053 9.52373 10.1326 10.1714C11.0662 12.4643 13.0861 14.5246 15.2525 15.6866C16.3521 15.6045 16.6141 15.3021 17.4747 14.535C18.4848 13.7472 18.4848 13.7472 19.4141 13.5047C20.991 13.8832 21.8765 14.8931 23.0101 16.0098C23.3707 16.3354 23.3707 16.3354 23.7386 16.6676C24.7472 17.604 25.4846 18.3173 26 19.6057C25.8137 21.7482 23.9443 23.407 22.3636 24.7371C21.1318 25.4899 20.2261 25.8235 18.8081 25.6057C12.0902 23.7206 6.2761 18.341 2.74369 12.5186C0.134797 7.87256 0.134797 7.87257 0 5.62595C0.591992 4.1927 1.58281 3.2184 2.64646 2.11079C2.80813 1.91413 2.9698 1.71746 3.13636 1.51483C4.15088 0.333093 4.91891 -0.0463412 6.4794 0.00441829ZM4.86742 3.0363C4.60784 3.29755 4.34826 3.5588 4.08081 3.82797C3.82039 4.08672 3.55997 4.34547 3.29167 4.61206C2.58513 5.31668 2.58513 5.31668 2.32323 6.31282C2.66977 7.16086 3.03385 7.94707 3.45455 8.75726C3.57327 8.98934 3.69199 9.22143 3.81432 9.46054C4.78796 11.3268 5.86821 13.0606 7.17172 14.7169C7.34672 14.941 7.52172 15.1652 7.70202 15.3961C10.7702 19.1094 15.1933 21.9771 19.7778 23.4441C20.1889 23.0877 20.5996 22.7307 21.0101 22.3734C21.2389 22.1747 21.4676 21.9759 21.7033 21.7711C22.2671 21.2677 22.8057 20.7527 23.3333 20.2118C22.8367 19.0221 22.111 18.2764 21.1919 17.3835C20.9278 17.1252 20.6636 16.8669 20.3914 16.6007C20.1889 16.4057 19.9864 16.2107 19.7778 16.0098C19.4139 16.3192 19.0503 16.6291 18.6869 16.9391C18.4844 17.1116 18.2819 17.2841 18.0732 17.4618C17.6579 17.8245 17.2586 18.2057 16.8687 18.5956C14.5587 18.4216 12.4814 16.6896 10.7879 15.2219C9.14967 13.3029 7.95005 11.6434 7.17172 9.22191C8.02505 8.36857 8.87838 7.51524 9.75758 6.63605C9.14513 5.41115 8.61286 4.75784 7.65657 3.80776C7.3999 3.54943 7.14323 3.2911 6.87879 3.02494C5.95284 2.21646 5.79225 2.22687 4.86742 3.0363Z" />
+                    </svg>
+                  </span>
+                  <span class="sg-btn__text">Telefon</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="how-step step-2" data-step="2">
+          <div class="how-col left text-side">
+            <div class="step-copy">
+              <h4 class="step-subtitle">Was wir lieben</h4>
+              <p>Ich freue mich auf eure aktuelle Markenware. Bitte achte auf einen Top-Zustand.</p>
+            </div>
+          </div>
+          <div class="how-col right number-side">
+            <div class="step-number" aria-hidden="true">2</div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="how-step step-3" data-step="3">
+          <div class="how-col left number-side">
+            <div class="step-number" aria-hidden="true">3</div>
+          </div>
+          <div class="how-col right text-side">
+            <div class="step-copy">
+              <h4 class="step-subtitle">Zeit zum Verkaufen</h4>
+              <p>Deine schönen Stücke bleiben für etwa 2–3 Monate im SchrankGold.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="how-step step-4" data-step="4">
+          <div class="how-col left text-side">
+            <div class="step-copy">
+              <h4 class="step-subtitle">Faire Auszahlung oder Rückgabe</h4>
+              <p>Bei Verkauf erhältst du 40% des Erlöses. Nicht verkaufte Artikel werden zurückgegeben.</p>
+            </div>
+          </div>
+          <div class="how-col right number-side">
+            <div class="step-number" aria-hidden="true">4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="how-details-cta">
+        <p>Wie es im Detail funktioniert, könnt ihr hier nachlesen:</p>
+        <!-- PDF placeholder -->
+        <a class="sg-btn sg-btn--verkauf" href="assets/lieferanten.pdf" target="_blank" rel="noopener"
+          aria-label="PDF Verkaufsablauf öffnen">
+          <span class="sg-btn__icon" aria-hidden="true">
+            <svg viewBox="0 0 21 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <path fill="currentColor"
+                d="M2.625 0C1.18879 0 0 1.17747 0 2.6V23.4C0 24.8225 1.18879 26 2.625 26H18.375C19.8112 26 21 24.8225 21 23.4V7.8L13.125 0H2.625ZM2.625 2.6H11.8125V9.1H18.375V23.4H2.625V2.6ZM5.25 13V15.6H15.75V13H5.25ZM5.25 18.2V20.8H15.75V18.2H5.25Z" />
+            </svg>
+          </span>
+          <span class="sg-btn__text">Verkaufsablauf</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- Instagram / Social Updates Section -->
+  <section class="instagram-section" id="instagram">
+    <div class="instagram-inner">
+      <div class="sg-heading-block sg-heading-block--right">
+        <h2 class="instagram-heading sg-section-heading--right">NICHTS MEHR VERPASSEN</h2>
+        <span class="title-underline title-underline--right title-underline--tight" aria-hidden="true"></span>
+      </div>
+      <p class="instagram-tagline">Besucht uns auf Instagram und WhatsApp für aktuelle Infos zu unseren Neuzugängen,
+        Events und Vieles mehr!</p>
+      <div class="instagram-actions">
+        <a class="sg-btn sg-btn--insta" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener"
+          aria-label="Instagram Profil öffnen">
+          <span class="sg-btn__icon" aria-hidden="true">
+            <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <path fill="currentColor"
+                d="M7.22222 0C3.23989 0 0 3.23989 0 7.22222V18.7778C0 22.7601 3.23989 26 7.22222 26H18.7778C22.7601 26 26 22.7601 26 18.7778V7.22222C26 3.23989 22.7601 0 18.7778 0H7.22222ZM7.22222 2.88889H18.7778C21.1669 2.88889 23.1111 4.83311 23.1111 7.22222V18.7778C23.1111 21.1669 21.1669 23.1111 18.7778 23.1111H7.22222C4.83311 23.1111 2.88889 21.1669 2.88889 18.7778V7.22222C2.88889 4.83311 4.83311 2.88889 7.22222 2.88889ZM20.2222 4.33333C19.8391 4.33333 19.4717 4.48552 19.2008 4.7564C18.93 5.02729 18.7778 5.39469 18.7778 5.77778C18.7778 6.16087 18.93 6.52827 19.2008 6.79915C19.4717 7.07004 19.8391 7.22222 20.2222 7.22222C20.6053 7.22222 20.9727 7.07004 21.2436 6.79915C21.5145 6.52827 21.6667 6.16087 21.6667 5.77778C21.6667 5.39469 21.5145 5.02729 21.2436 4.7564C20.9727 4.48552 20.6053 4.33333 20.2222 4.33333ZM13 5.77778C9.01767 5.77778 5.77778 9.01767 5.77778 13C5.77778 16.9823 9.01767 20.2222 13 20.2222C16.9823 20.2222 20.2222 16.9823 20.2222 13C20.2222 9.01767 16.9823 5.77778 13 5.77778ZM13 8.66667C15.3891 8.66667 17.3333 10.6109 17.3333 13C17.3333 15.3891 15.3891 17.3333 13 17.3333C10.6109 17.3333 8.66667 15.3891 8.66667 13C8.66667 10.6109 10.6109 8.66667 13 8.66667Z" />
+            </svg>
+          </span>
+          <span class="sg-btn__text">Instagram</span>
+        </a>
+        <a class="sg-btn sg-btn--wa" href="https://wa.me/" target="_blank" rel="noopener"
+          aria-label="WhatsApp Chat öffnen">
+          <span class="sg-btn__icon" aria-hidden="true">
+            <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+              <path fill="currentColor"
+                d="M13.0165 0C5.858 0 0.0305327 5.82189 0.0279324 12.9797C0.0266323 15.2677 0.62597 17.5013 1.76228 19.4695L0 26L6.80281 24.3928C8.6997 25.4276 10.8351 25.9708 13.0089 25.9721H13.014C20.1712 25.9721 25.9961 20.1489 26 12.9924C26.0026 9.52268 24.6532 6.26045 22.2012 3.80605C19.7491 1.35295 16.4904 0.0013 13.0165 0ZM13.014 2.6C15.791 2.6013 18.4008 3.68394 20.3627 5.64434C22.3246 7.60734 23.4023 10.2156 23.3997 12.9898C23.3971 18.715 18.7398 23.3721 13.0114 23.3721C11.2784 23.3708 9.56166 22.9357 8.04961 22.1102L7.17355 21.6328L6.20607 21.8613L3.64645 22.4656L4.27112 20.1449L4.55298 19.1039L4.01465 18.1695C3.10716 16.5991 2.62689 14.8036 2.62819 12.9797C2.63079 7.25709 7.28951 2.6 13.014 2.6ZM8.42035 6.9875C8.20323 6.9875 7.85218 7.06875 7.55445 7.39375C7.25672 7.71745 6.41684 8.50145 6.41684 10.0979C6.41684 11.6943 7.57984 13.2374 7.74236 13.4545C7.90357 13.6703 9.98725 17.0498 13.2857 18.3498C16.0263 19.4301 16.583 19.2169 17.1784 19.1623C17.7739 19.109 19.0994 18.379 19.3699 17.6211C19.6403 16.8632 19.6409 16.2112 19.5603 16.0773C19.4797 15.9421 19.2632 15.8615 18.9382 15.699C18.6144 15.5365 17.0191 14.7532 16.7214 14.6453C16.4236 14.5374 16.2059 14.4828 15.99 14.8078C15.7742 15.1328 15.154 15.8615 14.9642 16.0773C14.7743 16.2944 14.5858 16.3236 14.2608 16.1611C13.9357 15.9973 12.8907 15.6538 11.6504 14.5488C10.6857 13.6895 10.0347 12.6293 9.8449 12.3043C9.65639 11.9806 9.82713 11.8028 9.98965 11.6416C10.1353 11.496 10.3121 11.2627 10.4747 11.0729C10.6359 10.8831 10.6918 10.7478 10.7997 10.532C10.9076 10.3162 10.8524 10.1258 10.7718 9.96328C10.6911 9.80078 10.0599 8.19845 9.77126 7.55625C9.52814 7.01675 9.27137 7.00422 9.03994 6.99512C8.85142 6.98732 8.63617 6.9875 8.42035 6.9875Z" />
+            </svg>
+          </span>
+          <span class="sg-btn__text">WhatsApp</span>
+        </a>
+      </div>
+      <div class="insta-carousel" aria-label="Instagram Bilder Carousel">
+        <button class="carousel-btn prev" type="button" aria-label="Vorheriges Bild">‹</button>
+        <div class="carousel-stage" aria-live="polite">
+          <ul class="carousel-slides">
+            <li class="carousel-slide"><img src="/assets/image1-BJHhfRFb.png" alt="Instagram Platzhalter Bild 1" loading="lazy" />
+            </li>
+            <li class="carousel-slide"><img src="/assets/image2-DTJBmLHW.png" alt="Instagram Platzhalter Bild 2" loading="lazy" />
+            </li>
+            <li class="carousel-slide"><img src="/assets/image3-BzoQfmPo.png" alt="Instagram Platzhalter Bild 3" loading="lazy" />
+            </li>
+            <li class="carousel-slide"><img src="/assets/image4-DkEo7rjE.png" alt="Instagram Platzhalter Bild 4" loading="lazy" />
+            </li>
+            <li class="carousel-slide"><img src="/assets/image5-BK74mlYY.png" alt="Instagram Platzhalter Bild 5" loading="lazy" />
+            </li>
+            <li class="carousel-slide"><img src="/assets/image6--5thLE-T.png" alt="Instagram Platzhalter Bild 6" loading="lazy" />
+            </li>
+          </ul>
+        </div>
+        <button class="carousel-btn next" type="button" aria-label="Nächstes Bild">›</button>
+      </div>
+    </div>
+  </section>
+  <!-- Location Section -->
+  <section class="location-section" id="location">
+    <div class="location-inner">
+      <div class="sg-heading-block">
+        <h2 class="sg-section-heading">KOMMT'S VORBEI</h2>
+        <span class="title-underline" aria-hidden="true"></span>
+      </div>
+      <!-- MapLibre map container (provide MapTiler credentials via data attributes) -->
+      <div class="location-map" id="store-map"
+        data-mt-url="https://api.maptiler.com/maps/0199f703-1173-7298-81df-98d97011dd27/style.json?key=IAwxH9Qf6uoA1zhZTKlI"
+        data-pitch="17.9" aria-label="Karte mit Standort und Parkmöglichkeit"></div>
+      <div class="store-address-row">
+        <address class="store-address" aria-label="Adresse SchrankGold" translate="no">
+          <h3 class="store-address__heading">SchrankGold</h3>
+          <p class="store-address__text">
+            Am Rätschenbach 11<br />
+            85435 Erding
+          </p>
+        </address>
+        <a id="store-directions-btn" href="#" target="_blank" rel="noopener" class="sg-btn sg-btn--route"
+          data-provider="auto" aria-label="Route öffnen">
+          <span class="sg-btn__icon" aria-hidden="true">
+            <img src="data:image/svg+xml,%3csvg%20width='20'%20height='26'%20viewBox='0%200%2020%2026'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M9.174%200.0041841C9.21522%200.00368301%209.25643%200.00318192%209.29889%200.00266565C10.209%20-0.00610962%2011.0951%20-0.00626488%2011.983%200.219043C12.035%200.232112%2012.0871%200.245182%2012.1407%200.258648C13.7728%200.683967%2015.223%201.4925%2016.4441%202.65239C16.4706%202.67719%2016.497%202.70199%2016.5243%202.72754C18.1979%204.30551%2019.4255%206.67003%2019.4948%209.00237C19.4961%209.07971%2019.4971%209.15705%2019.4979%209.23439C19.4984%209.27638%2019.4989%209.31837%2019.4994%209.36163C19.5473%2014.4499%2016.6369%2018.9055%2013.0215%2023.0453C12.9208%2023.1559%2012.822%2023.2676%2012.7238%2023.3804C12.2625%2023.9089%2011.7737%2024.4123%2011.2796%2024.91C11.2087%2024.9814%2011.1381%2025.053%2011.0675%2025.1246C10.2162%2025.9771%2010.2162%2025.9771%209.76511%2025.9878C9.71309%2025.9897%209.66108%2025.9916%209.60748%2025.9935C9.27803%2025.9489%209.04752%2025.6919%208.81459%2025.4714C8.78286%2025.4415%208.75113%2025.4117%208.71844%2025.3809C8.40778%2025.0864%208.10387%2024.785%207.80069%2024.4828C7.75348%2024.4358%207.70626%2024.3888%207.65762%2024.3404C7.42819%2024.1105%207.20548%2023.8781%206.99398%2023.6315C6.86386%2023.4813%206.7267%2023.3378%206.59035%2023.1933C6.35455%2022.9413%206.13022%2022.6838%205.91449%2022.4142C5.80662%2022.2815%205.69582%2022.1524%205.58348%2022.0235C5.23957%2021.6286%204.92119%2021.2172%204.60621%2020.7989C4.54002%2020.7118%204.47299%2020.6254%204.40514%2020.5395C2.46534%2018.0733%200.872884%2015.169%200.209157%2012.0879C0.201491%2012.0525%200.193825%2012.017%200.185926%2011.9804C0.0412688%2011.2706%20-0.0015282%2010.5762%204.13302e-05%209.85421C5.20517e-05%209.80857%206.27725e-05%209.76293%207.38189e-05%209.71591C0.00178384%208.98496%200.045054%208.28204%200.221831%207.56978C0.231592%207.53018%200.241354%207.49057%200.251411%207.44977C0.315513%207.19872%200.391104%206.95296%200.475304%206.70797C0.486667%206.67457%200.498029%206.64118%200.509736%206.60678C0.899747%205.4772%201.4521%204.41141%202.24962%203.5142C2.30138%203.45421%202.30138%203.45421%202.35418%203.39301C3.93844%201.58741%205.99743%200.427471%208.38368%200.0669584C8.43789%200.05812%208.49209%200.0492816%208.54794%200.0401754C8.75792%200.0138323%208.96265%200.00628712%209.174%200.0041841ZM5.66438%206.22322C4.66055%207.37669%204.28147%208.8569%204.3788%2010.358C4.53639%2011.7604%205.26457%2012.9741%206.3052%2013.9066C7.50236%2014.8597%208.97752%2015.2787%2010.4982%2015.1078C11.8971%2014.8972%2013.1509%2014.1496%2014.0316%2013.0434C14.9012%2011.8367%2015.3073%2010.4057%2015.0912%208.92131C14.8455%207.49012%2014.0714%206.20928%2012.886%205.35505C10.5342%203.80109%207.57547%204.12772%205.66438%206.22322Z'%20fill='white'/%3e%3c/svg%3e" alt="" class="route-icon" />
+          </span>
+          <span class="sg-btn__text">Route</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- Opening Hours Section -->
+  <section class="hours-section" id="opening-hours" aria-labelledby="hours-heading">
+    <div class="hours-bg" aria-hidden="true"></div>
+    <div class="hours-inner">
+      <div class="sg-heading-block sg-heading-block--right">
+        <h2 id="hours-heading" class="sg-section-heading--right">SCHAUT'S REIN</h2>
+        <span class="title-underline title-underline--right" aria-hidden="true"></span>
+      </div>
+      <div class="hours-status" id="hours-status" role="status" aria-live="polite">
+        <span class="hours-status__icon" aria-hidden="true"></span>
+        <span class="hours-status__text">Öffnungsstatus wird geladen…</span>
+      </div>
+      <div class="hours-table" aria-describedby="hours-heading">
+        <div class="hours-table__col hours-table__col--days" aria-hidden="true">
+          <p>MI</p>
+          <p>DO</p>
+          <p>FR</p>
+          <p>SA</p>
+        </div>
+        <div class="hours-table__col hours-table__col--times">
+          <p><time datetime="10:00">10–18 Uhr</time></p>
+          <p><time datetime="10:00">10–13 Uhr</time> &amp; <time datetime="15:00">15–18 Uhr</time></p>
+          <p><time datetime="10:00">10–13 Uhr</time> &amp; <time datetime="15:00">15–18 Uhr</time></p>
+          <p>erster und letzter Samstag<br />im Monat <time datetime="10:00">10–13 Uhr</time></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Story / Idea Section (moved to end) -->
+  <section class="story-section" id="story" aria-labelledby="story-heading">
+    <div class="story-inner">
+      <div class="sg-heading-block">
+        <h2 id="story-heading" class="sg-section-heading">MEINE IDEE UND GESCHICHTE</h2>
+        <span class="title-underline title-underline--tight" aria-hidden="true"></span>
+      </div>
+      <h3 class="story-subheading">SchrankGold, das ist mehr als ein Secondhandladen.<br />Es ist mein Herzensprojekt!
+      </h3>
+      <div class="story-copy" lang="de">
+        <p>Es soll ein Ort des Stils, der Nachhaltigkeit und der Begegnung sein. Mitten in der Erdinger Altstadt habe
+          ich es mir zur Aufgabe gemacht, hochwertiger Mode ein zweites Leben zu schenken – und dabei meinen KundInnen
+          ein Einkaufserlebnis mit Charme und Persönlichkeit zu bieten.</p>
+        <p>Die Idee zu SchrankGold stammt von mir, Gabi Strobl.</p>
+        <p>Ich habe über zwölf Jahre in der Modebranche gearbeitet – unter anderem bei Fanny Huber in Erding und
+          Sport+Mode Gruber in Hallbergmoos. Schon lange war es mein Wunsch, mich selbstständig zu machen. Als sich ganz
+          spontan die Möglichkeit ergab, ein kleines Ladengeschäft in der Pfendtnergasse zu übernehmen, zögerte ich
+          nicht lange. Mit viel Unterstützung von Familie und Freunden – und einem alten Bauernschrank als goldenem
+          Hingucker – entstand ein liebevoll gestalteter Raum, der an ein stilvolles Wohnzimmer erinnert.</p>
+        <p>Nach nur einem Jahr platzte der Laden aus allen Nähten. Der für mich unerwartete Erfolg und die positive
+          Resonanz meiner KundInnen machten den Umzug in größere Räumlichkeiten am Rätschenbach möglich – mit noch mehr
+          Platz für stilvolle Einzelstücke aus zweiter Hand, ausgefallenen Accessoires (zum großen Teil neu) und
+          persönlicher Beratung in wohnlicher Atmosphäre.</p>
+        <p>Das Besondere an SchrankGold ist das Konzept: Alle Second-Hand-Kleidungsstücke stammen aus hochwertigen
+          Marken, sind modisch aktuell und in bestem Zustand. Ich achte persönlich darauf, dass jedes Teil fast wie neu
+          aussieht und etwas Besonderes oder Ausgefallenes ist. Ich nehme nur Kleidung an, die mir gefällt und in die
+          ich selbst gerne schlüpfen würde.&nbsp;</p>
+        <p>Mein Sortiment reicht von Größe 34 bis 46, geordnet nach Farben und Größen – ergänzt durch auffälligen
+          Schmuck, edle Tücher und Taschen!</p>
+        <p>Seit dem Start von SchrankGold habe ich mein Konzept weiterentwickelt um euren Bedürfnissen besser gerecht zu
+          werden! Mittlerweile kombinieren wir unsere ausgefallenen Second-Hand-Teile oft mit neuen
+          Basics-Kleidungsstücken und neuer aktueller Mode!</p>
+        <p>Hinter meinem SchrankGold steht nicht nur ein Gespür für Mode, sondern auch ein starker Wille, Nachhaltigkeit
+          und Luxus zu verbinden. Kleidungsstücke, die sonst ungetragen im Schrank hängen würden, finden hier neue
+          Besitzerinnen – oft zu einem Bruchteil des Originalpreises. Lieferantinnen unter anderem auch die
+          Kabarettistin Monika Gruber schätzen genau das: Ihre Lieblingsteile werden weitergetragen – und zaubern einer
+          anderen Frau ein Lächeln ins Gesicht. Das ist attraktiv für beide Seiten, meine LieferantInnen und meine
+          KundInnnen!</p>
+        <p>Wir wollen, dass jede Kundin sich willkommen und wohlfühlt – ob beim Stöbern, Anprobieren oder einfach beim
+          Ratschen. Denn SchrankGold ist kein anonymer Laden, sondern ein Ort der Begegnung – mit Herz, Stil und Seele.
+        </p>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer" id="contact" aria-labelledby="footer-heading">
+    <h2 id="footer-heading" class="visually-hidden">Kontakt und Rechtliches</h2>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="/assets/title-B3CKLfT5.svg" alt="SchrankGold" class="footer-logo" />
+      </div>
+      <ul class="footer-contact" aria-label="Kontaktmöglichkeiten">
+        <li>
+          <a href="tel:+4917698306373" class="footer-link footer-link--icon" aria-label="Telefon anrufen">
+            <span class="footer-link__icon" aria-hidden="true">
+              <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="currentColor"
+                  d="M6.4794 0.00441829C7.84667 0.334196 8.66077 1.38269 9.57576 2.39362C9.77722 2.60404 9.97867 2.81446 10.1862 3.03125C11.9612 4.9047 11.9612 4.9047 12.1616 6.39362C12.0096 7.6965 11.935 7.81299 11.0303 8.63605C10.8466 8.78063 10.6628 8.92521 10.4735 9.07418C10.0053 9.52373 10.0053 9.52373 10.1326 10.1714C11.0662 12.4643 13.0861 14.5246 15.2525 15.6866C16.3521 15.6045 16.6141 15.3021 17.4747 14.535C18.4848 13.7472 18.4848 13.7472 19.4141 13.5047C20.991 13.8832 21.8765 14.8931 23.0101 16.0098C23.3707 16.3354 23.3707 16.3354 23.7386 16.6676C24.7472 17.604 25.4846 18.3173 26 19.6057C25.8137 21.7482 23.9443 23.407 22.3636 24.7371C21.1318 25.4899 20.2261 25.8235 18.8081 25.6057C12.0902 23.7206 6.2761 18.341 2.74369 12.5186C0.134797 7.87256 0.134797 7.87257 0 5.62595C0.591992 4.1927 1.58281 3.2184 2.64646 2.11079C2.80813 1.91413 2.9698 1.71746 3.13636 1.51483C4.15088 0.333093 4.91891 -0.0463412 6.4794 0.00441829ZM4.86742 3.0363C4.60784 3.29755 4.34826 3.5588 4.08081 3.82797C3.82039 4.08672 3.55997 4.34547 3.29167 4.61206C2.58513 5.31668 2.58513 5.31668 2.32323 6.31282C2.66977 7.16086 3.03385 7.94707 3.45455 8.75726C3.57327 8.98934 3.69199 9.22143 3.81432 9.46054C4.78796 11.3268 5.86821 13.0606 7.17172 14.7169C7.34672 14.941 7.52172 15.1652 7.70202 15.3961C10.7702 19.1094 15.1933 21.9771 19.7778 23.4441C20.1889 23.0877 20.5996 22.7307 21.0101 22.3734C21.2389 22.1747 21.4676 21.9759 21.7033 21.7711C22.2671 21.2677 22.8057 20.7527 23.3333 20.2118C22.8367 19.0221 22.111 18.2764 21.1919 17.3835C20.9278 17.1252 20.6636 16.8669 20.3914 16.6007C20.1889 16.4057 19.9864 16.2107 19.7778 16.0098C19.4139 16.3192 19.0503 16.6291 18.6869 16.9391C18.4844 17.1116 18.2819 17.2841 18.0732 17.4618C17.6579 17.8245 17.2586 18.2057 16.8687 18.5956C14.5587 18.4216 12.4814 16.6896 10.7879 15.2219C9.14967 13.3029 7.95005 11.6434 7.17172 9.22191C8.02505 8.36857 8.87838 7.51524 9.75758 6.63605C9.14513 5.41115 8.61286 4.75784 7.65657 3.80776C7.3999 3.54943 7.14323 3.2911 6.87879 3.02494C5.95284 2.21646 5.79225 2.22687 4.86742 3.0363Z" />
+              </svg>
+            </span>
+            <span class="footer-link__text">+49&nbsp;176&nbsp;9830&nbsp;6373</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener"
+            class="footer-link footer-link--icon" aria-label="Instagram Profil _schrankgold">
+            <span class="footer-link__icon" aria-hidden="true">
+              <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="currentColor"
+                  d="M7.22222 0C3.23989 0 0 3.23989 0 7.22222V18.7778C0 22.7601 3.23989 26 7.22222 26H18.7778C22.7601 26 26 22.7601 26 18.7778V7.22222C26 3.23989 22.7601 0 18.7778 0H7.22222ZM7.22222 2.88889H18.7778C21.1669 2.88889 23.1111 4.83311 23.1111 7.22222V18.7778C23.1111 21.1669 21.1669 23.1111 18.7778 23.1111H7.22222C4.83311 23.1111 2.88889 21.1669 2.88889 18.7778V7.22222C2.88889 4.83311 4.83311 2.88889 7.22222 2.88889ZM20.2222 4.33333C19.8391 4.33333 19.4717 4.48552 19.2008 4.7564C18.93 5.02729 18.7778 5.39469 18.7778 5.77778C18.7778 6.16087 18.93 6.52827 19.2008 6.79915C19.4717 7.07004 19.8391 7.22222 20.2222 7.22222C20.6053 7.22222 20.9727 7.07004 21.2436 6.79915C21.5145 6.52827 21.6667 6.16087 21.6667 5.77778C21.6667 5.39469 21.5145 5.02729 21.2436 4.7564C20.9727 4.48552 20.6053 4.33333 20.2222 4.33333ZM13 5.77778C9.01767 5.77778 5.77778 9.01767 5.77778 13C5.77778 16.9823 9.01767 20.2222 13 20.2222C16.9823 20.2222 20.2222 16.9823 20.2222 13C20.2222 9.01767 16.9823 5.77778 13 5.77778ZM13 8.66667C15.3891 8.66667 17.3333 10.6109 17.3333 13C17.3333 15.3891 15.3891 17.3333 13 17.3333C10.6109 17.3333 8.66667 15.3891 8.66667 13C8.66667 10.6109 10.6109 8.66667 13 8.66667Z" />
+              </svg>
+            </span>
+            <span class="footer-link__text">_schrankgold</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:schrankgold.erding@gmail.com" class="footer-link footer-link--icon"
+            aria-label="E-Mail an SchrankGold senden">
+            <span class="footer-link__icon" aria-hidden="true">
+              <svg viewBox="0 0 26 22" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="currentColor"
+                  d="M2.16667 0C0.970833 0 0 0.985714 0 2.2C0 2.95714 0.379167 3.64286 0.970833 4.1L11.0833 11.8C11.675 12.2571 12.4917 12.2571 13.0833 11.8L23.1958 4.1C23.7898 3.64286 24.1667 2.95714 24.1667 2.2C24.1667 0.985714 23.198 0 22 0H2.16667ZM0 5.5V17.6C0 19.3679 1.45583 20.8 3.25 20.8H20.9167C22.7108 20.8 24.1667 19.3679 24.1667 17.6V5.5L14.0833 13.2C12.7008 14.2429 11.4658 14.3429 10.0833 13.2L0 5.5Z" />
+              </svg>
+            </span>
+            <span class="footer-link__text">schrankgold.erding@gmail.com</span>
+          </a>
+        </li>
+      </ul>
+      <ul class="footer-legal" aria-label="Rechtliches">
+        <li><a href="impressum.html" class="footer-link">Impressum</a></li>
+        <li><a href="privacy.html" class="footer-link">Datenschutzerklärung</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; <span id="footer-year"></span> SchrankGold. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+  <!-- MapLibre GL JS -->
+  <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+  <script src="./script.js"></script>
+  <script>
+    (function () {
+      const yEl = document.getElementById('footer-year');
+      if (yEl) yEl.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+
+</html>

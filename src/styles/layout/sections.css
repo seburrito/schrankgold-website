@@ -1,0 +1,874 @@
+/* ================== STANDARDIZED SECTION HEADINGS ================== */
+/* Unified system: identical size, indentation & spacing across all sections */
+.sg-section-heading,
+.sg-section-heading--right {
+    font-family: var(--font-family-heading);
+    font-weight: 400;
+    font-size: var(--font-size-h2);
+    /* single fluid scale */
+    line-height: var(--line-height-base);
+    /* unified with paragraph line-height */
+    margin: 0 0 var(--heading-underline-gap);
+    /* unified gap to underline */
+    letter-spacing: 0.025em;
+}
+
+/* Left-aligned (default) */
+.sg-section-heading {
+    padding-left: var(--heading-side-inset);
+    text-align: left;
+}
+
+/* Right-aligned variant mirrors padding */
+.sg-section-heading--right {
+    padding-right: var(--heading-side-inset);
+    text-align: right;
+}
+
+/* Heading + underline wrapper for consistent spacing */
+.sg-heading-block {
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--heading-side-inset);
+    margin-bottom: var(--heading-stack-gap);
+}
+
+.sg-heading-block--right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-left: 0;
+    padding-right: var(--heading-side-inset);
+    margin-bottom: var(--heading-stack-gap);
+}
+
+/* Remove internal heading padding when inside block to avoid double inset */
+.sg-heading-block>.sg-section-heading {
+    padding-left: 0;
+}
+
+.sg-heading-block--right>.sg-section-heading--right {
+    padding-right: 0;
+}
+
+/* Inside blocks, ensure gap from h2 to underline uses variable (already set on h2 margin-bottom) */
+/* Inside heading block: remove underline bottom margin; spacing handled by sibling rule */
+.sg-heading-block .title-underline {
+    margin-bottom: 0;
+}
+
+/* Consistent spacing from underline to next h3 */
+/* Ensure block formatting context */
+.sg-section-heading+.title-underline,
+.sg-section-heading--right+.title-underline {
+    display: block;
+}
+
+/* ================== WELCOME TEXT TYPOGRAPHY BOXES ================== */
+#welcome-text {
+    /* structural wrapper */
+    display: block;
+    padding: clamp(12px, 4vh, 40px) 0 clamp(32px, 6vh, 72px);
+    max-width: 1400px;
+    /* Content shift variable removed for simplicity */
+    margin: 0 auto 0;
+}
+
+#welcome-text h2,
+#welcome-text h3,
+#welcome-text p {
+    /* Invisible boxes: control measure without borders/background */
+    display: block;
+}
+
+/* H3 + paragraphs: limit to center (50% width), add left padding */
+#welcome-text h3,
+#welcome-text p {
+    padding-left: var(--heading-side-inset);
+}
+
+/* Make only the paragraph copy flexibly narrower on large screens for improved readability. */
+#welcome-text p {
+    width: min(45vw, 48ch);
+    max-width: 48ch;
+    margin: 0;
+    /* Override general p margin */
+}
+
+/* Keep h3 aligned to exact same measure as paragraph for consistent column */
+#welcome-text h3 {
+    width: min(45vw, 48ch);
+    max-width: 48ch;
+}
+
+#welcome-text p {
+    line-height: 1.5;
+}
+
+/* ================== WELCOME SECTION BACKGROUND TOWER (SIMPLIFIED) ================== */
+#welcome {
+    position: relative;
+    /* Keep initial separation from landing; retain simple existing margin-top */
+    margin-top: clamp(48px, calc(20px + (100vw - 700px) * 0.55), 520px);
+    /* Simple padding model like hours section */
+    --welcome-pad-top: clamp(110px, 10vh + 2vw, 300px);
+    --welcome-pad-bottom: clamp(160px, 100px + 10vw, 420px);
+    --welcome-overlap: 80px;
+    /* extend background below to sit behind founder */
+    padding: var(--section-pad-top) var(--section-x-pad) var(--welcome-pad-bottom);
+    min-height: clamp(680px, 52vh + 14vw, 1600px);
+}
+
+/* Extracted tower background for parallax */
+.welcome-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Extend further so more of the lower tower stays hidden behind founder section */
+    bottom: calc(var(--welcome-overlap) * -1 - 60px);
+    /* raise further (less hidden) */
+    --welcome-shift: clamp(-140px, calc(140px - (100vw - 360px) * 0.25), 140px);
+    /* 140px (phone) -> ~0 (mid) -> -120/-140px (wide) */
+    /* Earlier & stronger growth: start a bit larger on small phones (76%), ramp faster (18vw) hitting near-max by ~760-820px */
+    --welcome-bg-size: clamp(76%, 58% + 18vw, 102%);
+    background: url('/assets/erding-tower-full.svg') right calc(var(--welcome-shift) * -1) bottom / auto var(--welcome-bg-size) no-repeat;
+    pointer-events: none;
+    z-index: -1;
+    /* behind section content + founder */
+    /* Simple parallax vars (mirroring hours section approach) */
+    --welcome-parallax: 0px;
+    /* Raise tower overall (lower base value); still allow modest downward push on wide screens */
+    --welcome-parallax-base: clamp(14px, 4.2vh, 130px);
+    /* unchanged vertical baseline */
+    /* Extra downward drop ONLY on narrow mobile widths (< ~480px). */
+    --welcome-mobile-drop: clamp(0px, (560px - 100vw) * 0.285, 62px);
+    transform: translateY(calc(var(--welcome-parallax-base) + var(--welcome-mobile-drop) + var(--welcome-parallax)));
+    transition: transform .15s linear;
+}
+
+/* Ensure founder section establishes its own stacking context above negative tower background */
+.founder-section {
+    position: relative;
+    z-index: 0;
+}
+
+/* ================== FOUNDER SECTION ================== */
+.founder-section {
+    background: var(--color-dark-red);
+    /* Increased top padding (max from 200px -> 300px) for more breathing room above heading */
+    padding: var(--section-pad-top) var(--section-x-pad) 0;
+    margin-bottom: -2px;
+    /* tiny 2px cover by next section */
+    /* overflow removed so image can sit lower than text while still allowing upward overlap */
+}
+
+/* Side-by-side layout: image (gabi) LEFT, text RIGHT (row-reverse since copy is first in DOM) */
+.founder-inner {
+    max-width: 1400px;
+    /* reverted */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-start;
+    /* text column top */
+    gap: clamp(24px, 4vw, 140px);
+    /* More aggressive large-screen growth to lower the image further */
+    min-height: clamp(620px, 54vh + 38vw, 3000px);
+    justify-content: flex-start;
+    position: relative;
+    padding-bottom: 0;
+}
+
+/* Visual sits at bottom with a consistent gap above */
+/* Visual container: keep bottom anchoring */
+.founder-visual {
+    position: absolute;
+    /* take out of normal flow */
+    left: 0;
+    bottom: 0;
+    /* anchor to bottom */
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    width: 100%;
+    max-height: 100%;
+    pointer-events: none;
+    /* container only */
+}
+
+/* Founder image itself */
+.founder-image {
+    display: block;
+    /* Larger presence on medium & large screens */
+    width: clamp(430px, 85vw, 1100px);
+    height: auto;
+    object-fit: contain;
+    /* Move more to the left on tablet/mid-range screens, less on desktop */
+    margin: 0 0 0 clamp(-120px, -15vw + 8vw, 60px);
+    /* Overlap only after large breakpoint (~1000px) */
+    --founder-overlap-x: clamp(0px, (100vw - 1120px) * 0.09, 110px);
+    /* reverted overlap timing */
+    /* Lift image upward on larger screens (negative Y) */
+    /* Reduced lift in tablet range for better text clearance */
+    --founder-lift-up: clamp(0px, (100vw - 640px) * -0.35, -520px);
+    transform: translateX(var(--founder-overlap-x)) translateY(calc(var(--founder-lift-up) + var(--founder-lift)));
+    position: relative;
+    z-index: 1;
+    transition: transform .8s ease, width .6s ease;
+    pointer-events: none;
+}
+
+/* Text column on RIGHT */
+.founder-copy {
+    text-align: right;
+    padding-right: var(--heading-side-inset);
+    padding-left: 0;
+    /* Allow heading area to expand MUCH more on ultra-wide screens while body copy stays narrow. */
+    /* Increased mid growth (42ch -> 60ch) and higher max (150ch -> 220ch). */
+    flex: 1 1 clamp(30ch, 60ch + 26vw, 220ch);
+    position: relative;
+    z-index: 2;
+    /* above image */
+    align-self: flex-start;
+    /* Slightly reduce text vertical lift so the image appears relatively higher after its own lift increase. */
+    --founder-lift: clamp(0px, (100vw - 1200px) * 0.18, 180px);
+}
+
+/* Let heading & subtitle use entire container width */
+/* Give h2 more horizontal reach without affecting paragraph measure */
+/* Wider h2 on ultra-wide screens */
+.founder-copy .sg-section-heading--right {
+    width: 100%;
+    /* Greatly expanded max width so heading can breathe on very large displays. */
+    max-width: clamp(50ch, 90ch + 36vw, 320ch);
+    letter-spacing: 0.03em;
+}
+
+/* Subtitle much wider: allow slight extra tracking for readability when very wide */
+.founder-copy h3 {
+    width: 100%;
+    max-width: none;
+    letter-spacing: 0.035em;
+}
+
+/* Underline scale larger proportionally */
+.founder-copy .title-underline {
+    width: clamp(340px, 62vw, 1180px);
+}
+
+.founder-copy .sg-heading-block {
+    align-items: flex-end;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.founder-copy h3,
+.founder-copy p {
+    padding-right: 0;
+}
+
+/* Paragraph measure unified */
+.founder-copy p {
+    margin-left: auto;
+    max-width: clamp(30ch, 25ch + 4vw, 46ch);
+}
+
+/* Allow subtitle to span the full available width */
+/* Subtitle: enforce a wider min width on large screens so difference is obvious */
+/* Subtitle: slightly reduced large cap but still expansive */
+.founder-copy h3 {
+    width: 100%;
+    max-width: clamp(28ch, 44ch + 26vw, 200ch);
+}
+
+/* ================== HOW IT WORKS SECTION ================== */
+.how-section {
+    background: var(--color-red);
+    position: relative;
+    /* keep stacking context */
+    z-index: 2;
+    /* sits above founder to hide exact 2px */
+    margin-top: 0;
+    /* no large overlap */
+    padding: var(--section-pad-top) var(--section-x-pad) clamp(80px, 10vh + 2vw, 300px);
+    color: var(--color-white);
+}
+
+.how-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Restored: .how-steps is the grid container */
+.how-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr minmax(80px, 140px) 1fr;
+    /* Only adjust this: slightly reduced on small/medium, original 120px on large */
+    padding-top: clamp(70px, 42px + 4vw, 120px);
+    /* Reverted original row-gap scaling */
+    row-gap: clamp(120px, calc(5vh + 7vw), 340px);
+    /* Distance from heading block to steps group (unchanged) */
+    margin-top: clamp(48px, calc(40px + 4vh + 2vw), 160px);
+    /* Outward shift variable (unchanged) */
+    --how-number-shift: clamp(26px, calc(14px + 8.5vw), 128px);
+}
+
+/* Decorative S line */
+.how-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Keep asset vertical: scale width slightly, let height auto (very tall) */
+    width: clamp(190px, 9vw + 6.5vh, 250px);
+    height: auto;
+    pointer-events: none;
+    display: block;
+    object-fit: contain;
+    z-index: 0;
+}
+
+.how-step {
+    display: contents;
+    /* allow grid placement via children */
+}
+
+.how-step .how-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    /* ensure sits above decorative line */
+    z-index: 1;
+}
+
+/* Allow positioning context for overlap adjustments */
+.how-step .text-side {
+    position: relative;
+}
+
+/* Right-aligned text (steps 1 & 3) needs right padding */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side {
+    padding-right: var(--heading-side-inset);
+}
+
+/* Left-aligned text (steps 2 & 4) needs left padding */
+.how-step.step-2 .text-side,
+.how-step.step-4 .text-side {
+    padding-left: var(--heading-side-inset);
+}
+
+.how-step .number-side {
+    align-items: flex-end;
+}
+
+.how-step.step-2 .number-side,
+.how-step.step-4 .number-side {
+    align-items: flex-start;
+}
+
+.step-number {
+    /* More aggressive scaling: mid screens ramp via vw, capped high */
+    font-size: clamp(56px, calc(40px + 10vw), 140px);
+    font-weight: var(--font-weight-regular);
+    /* regular weight per request */
+    line-height: 1;
+    color: var(--color-gold);
+}
+
+/* Push numbers further away from center (outward) */
+.how-step.step-1 .number-side .step-number,
+.how-step.step-3 .number-side .step-number {
+    transform: translateX(calc(var(--how-number-shift) * -1));
+}
+
+.how-step.step-2 .number-side .step-number,
+.how-step.step-4 .number-side .step-number {
+    transform: translateX(var(--how-number-shift));
+}
+
+.step-copy {
+    /* Narrower constraint to account for double padding */
+    max-width: clamp(23ch, 14ch + 4vw, 42ch);
+}
+
+.step-subtitle {
+    margin: 0 0 var(--how-step-subtitle-gap);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+}
+
+.step-copy p {
+    margin: 0;
+    color: var(--color-grey);
+    line-height: 1.45;
+}
+
+/* Right column text should be right-aligned (steps 1 & 3) */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.how-step.step-1 .text-side .step-actions,
+.how-step.step-3 .text-side .step-actions {
+    align-self: flex-end;
+}
+
+.step-actions {
+    margin-top: 16px;
+}
+
+/* Position children into grid columns */
+.how-step.step-1 .left {
+    grid-column: 1;
+}
+
+.how-step.step-1 .right {
+    grid-column: 3;
+}
+
+.how-step.step-2 .left {
+    grid-column: 1;
+}
+
+.how-step.step-2 .right {
+    grid-column: 3;
+}
+
+.how-step.step-3 .left {
+    grid-column: 1;
+}
+
+.how-step.step-3 .right {
+    grid-column: 3;
+}
+
+.how-step.step-4 .left {
+    grid-column: 1;
+}
+
+.how-step.step-4 .right {
+    grid-column: 3;
+}
+
+
+.how-details-cta {
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.how-details-cta p {
+    margin: 0;
+    color: var(--color-grey);
+}
+
+.how-section h3 {
+    max-width: 72ch;
+    padding-left: var(--heading-side-inset);
+}
+
+/* ================== HOW IT WORKS: OVERLAP SIDE COLUMNS (only on smaller viewports) ================== */
+/* Overlap increases as viewport gets narrower; at wider (~>=900px) it resolves to 0 without media queries */
+.how-steps {
+    --how-overlap: clamp(0px, calc((900px - 100vw) * 0.14), 64px);
+}
+
+/* Right-side text steps (1 & 3) shift left */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side {
+    margin-left: calc(var(--how-overlap) * -1);
+}
+
+/* Left-side text steps (2 & 4) shift right */
+.how-step.step-2 .text-side,
+.how-step.step-4 .text-side {
+    margin-right: calc(var(--how-overlap) * -1);
+}
+
+/* Subtle inward nudge of text blocks on large viewports (without breakpoints) */
+.how-steps {
+    --how-inward: clamp(0px, (100vw - 1000px) * 0.35, 180px);
+}
+
+/* Inward translation affects whole text column for clearer visual shift */
+.how-step.step-1 .text-side,
+.how-step.step-3 .text-side {
+    transform: translateX(calc(var(--how-inward) * -1));
+}
+
+.how-step.step-2 .text-side,
+.how-step.step-4 .text-side {
+    transform: translateX(var(--how-inward));
+}
+
+/* ================== INSTAGRAM SECTION ================== */
+.instagram-section {
+    background: var(--color-dark-red);
+    color: var(--color-white);
+    padding: var(--section-pad-top) var(--section-x-pad) clamp(80px, 12vh + 2vw, 280px);
+}
+
+.instagram-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Explicit spacing for instagram stack */
+.instagram-inner .sg-heading-block--right {
+    margin-bottom: 0;
+}
+
+.instagram-inner .sg-heading-block--right+.instagram-tagline {
+    margin-top: var(--underline-bottom-gap);
+}
+
+.instagram-tagline+.instagram-actions {
+    margin-top: var(--heading-stack-gap);
+}
+
+.instagram-heading {
+    /* uses .sg-section-heading--right for standardized style */
+    width: 100%;
+}
+
+.instagram-tagline {
+    /* Wider again for large + ultra-wide: raise cap & growth; mobile minimum unchanged. */
+    width: min(96vw, clamp(28ch, 24ch + 24vw, 160ch));
+    max-width: clamp(28ch, 24ch + 24vw, 160ch);
+    text-align: right;
+    padding-right: var(--heading-side-inset);
+    margin: 0;
+    color: var(--color-grey);
+    /* Override general p margin */
+}
+
+.instagram-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-end;
+    width: 100%;
+    padding-right: var(--heading-side-inset);
+}
+
+/* ================== LOCATION SECTION ================== */
+.location-section {
+    background: var(--color-red);
+    color: var(--color-white);
+    padding: var(--section-pad-top) var(--section-x-pad) clamp(80px, 12vh + 2vw, 280px);
+}
+
+.location-inner {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Reuse heading block – no extra subtitle/text */
+.location-section .sg-heading-block+* {
+    margin-top: var(--heading-stack-gap);
+}
+
+/* ================== OPENING HOURS SECTION ================== */
+.hours-section {
+    /* Base visual styling */
+    --hours-overlap: 20px;
+    /* requirement 1: overlap next section ~20px */
+    background: var(--color-red);
+    position: relative;
+    z-index: 2;
+    /* sit above next section's background so overlap is clean */
+    color: var(--color-white);
+    /* Content paddings (top grows a bit, bottom grows with width - requirement 5) */
+    /* Increased top padding so tower + content start lower */
+    --hours-pad-top: clamp(150px, 14vh + 2vw, 360px);
+    padding-top: var(--section-pad-top);
+    padding-right: var(--section-x-pad);
+    padding-left: var(--section-x-pad);
+    /* Bottom padding increases with screen width (simple formula) */
+    /* Slightly increased bottom padding to maintain visual balance after lowering start */
+    /* Add a bit more bottom space on smaller screens: raise lower bound and slope */
+    --hours-pad-bottom: clamp(280px, 200px + 16vw, 580px);
+    padding-bottom: var(--hours-pad-bottom);
+    /* Remove negative margin; overlap handled by background element extending downward */
+    margin-bottom: 0;
+    /* Simpler: base section height ensures some vertical presence even with little content */
+    min-height: clamp(820px, 60vh + 22vw, 1600px);
+    overflow: visible;
+    /* allow background overlap */
+}
+
+/* Background illustration element */
+.hours-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    bottom: calc(var(--hours-overlap) * -1);
+    /* extend below for overlap */
+    width: 100%;
+    /* Parallax offset custom property (populated by JS) */
+    --hours-parallax: 0px;
+    /* Increased baseline so illustration sits lower overall */
+    /* Lower tower slightly (increase baseline) so more of it shows on mobile */
+    --hours-parallax-base: clamp(90px, 11vh, 200px);
+    /* Horizontal shift: 0 at ~900px and smaller; becomes increasingly negative on wider screens (moves image left) */
+    --hours-x-shift: clamp(-420px,
+            calc(-200px - clamp(0px, (520px - 100vw) * 0.75, 200px) - clamp(0px, (100vw - 1400px) * 0.06, 60px) + clamp(0px, (480px - 100vw) * 0.25, 28px)),
+            -200px);
+    /* Base transform (center horizontally + dynamic vertical parallax) */
+    transform: translate(calc(-50% + var(--hours-x-shift)), calc(var(--hours-parallax-base) + var(--hours-parallax)));
+    /* Maintain aspect visually: full height, auto width on desktops; allow slight cover on tiny screens */
+    background: url('/assets/schoener-turm.svg') center bottom / auto 100% no-repeat;
+    /* On very small screens we will override to cover to avoid narrow pillar look */
+    z-index: 0;
+    pointer-events: none;
+    /* Smooth transitions */
+    transition: transform .15s linear;
+    /* smoother parallax updates */
+}
+
+/* Tiny screens: allow a bit of cropping width-wise to keep visual impact */
+@media (max-width: 560px) {
+    .hours-bg {
+        background-size: cover;
+    }
+}
+
+/* Ensure content sits above background */
+.hours-section .hours-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.hours-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.hours-inner .sg-heading-block--right+.hours-status {
+    margin-top: clamp(12px, 8px + 1vw, 20px);
+}
+
+.hours-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--font-size-body);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.75em 1.2em;
+    border-radius: 999px;
+    background: #0FD65B;
+    color: #062a14;
+    position: relative;
+    isolation: isolate;
+    margin-right: var(--heading-side-inset);
+}
+
+.hours-status__icon {
+    width: 1.55em;
+    height: 1.55em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hours-status__icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: currentColor;
+    color: currentColor;
+}
+
+.hours-status__text {
+    color: currentColor;
+}
+
+/* State colors (no shadows) */
+.hours-status--open-long {
+    background: #8FA87B;
+    color: #1f2817;
+}
+
+.hours-status--open-long .hours-status__text {
+    color: #1f2817;
+}
+
+.hours-status--open-short {
+    background: #E8925C;
+    color: #2a1808;
+}
+
+.hours-status--open-short .hours-status__text {
+    color: #2a1808;
+}
+
+.hours-status--closing-soon {
+    background: #D4874B;
+    color: #2a1808;
+}
+
+.hours-status--closing-soon .hours-status__text {
+    color: #2a1808;
+}
+
+.hours-status--closed-soon {
+    background: #D4874B;
+    color: #2a1808;
+}
+
+.hours-status--closed-soon .hours-status__text {
+    color: #2a1808;
+}
+
+.hours-status--closed-long {
+    background: #8B3A3D;
+    color: #fef5f5;
+}
+
+.hours-status--closed-long .hours-status__text {
+    color: #fef5f5;
+}
+
+.hours-table {
+    display: flex;
+    gap: clamp(40px, 9vw, 200px);
+    margin-top: clamp(46px, 6vh, 160px);
+    font-size: var(--font-size-p);
+    letter-spacing: 0.01em;
+    padding-right: var(--heading-side-inset);
+}
+
+.hours-table__col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: clamp(14px, 2vh, 38px);
+}
+
+.hours-table__col--days p {
+    color: var(--color-grey);
+    font-weight: var(--font-weight-regular);
+}
+
+.hours-table__col--times p {
+    color: var(--color-grey);
+    max-width: 42ch;
+    text-align: right;
+}
+
+.hours-table p {
+    margin: 0;
+    line-height: 1.65;
+    font-size: var(--font-size-p);
+    font-weight: var(--font-weight-regular);
+}
+
+/* ================== STORY SECTION ================== */
+.story-section {
+    background: var(--color-darker-red);
+    color: var(--color-white);
+    padding: var(--section-pad-top) var(--section-x-pad) clamp(120px, 18vh + 4vw, 420px);
+}
+
+.story-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.story-inner .sg-heading-block+.story-subheading {
+    margin-top: var(--heading-stack-gap);
+}
+
+.story-subheading {
+    padding-left: var(--heading-side-inset);
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: 0.02em;
+}
+
+.story-copy {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 12px + 1.2vw, 40px);
+    padding-left: var(--heading-side-inset);
+    /* Wider paragraph measure: allow larger mid and max widths */
+    /* Previous: clamp(40ch, 34ch + 10vw, 86ch) */
+    max-width: clamp(46ch, 40ch + 16vw, 100ch);
+}
+
+.story-copy p {
+    margin: 0;
+    line-height: 1.55;
+    color: var(--color-grey);
+}
+
+/* ================== LEGAL PAGES ================== */
+.legal-content {
+    padding: clamp(80px, 15vh, 180px) var(--section-x-pad);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.legal-content h2 {
+    font-size: var(--font-size-h2);
+    margin-top: 0;
+    margin-bottom: 1.5em;
+}
+
+.legal-content h3 {
+    font-size: var(--font-size-h3);
+    margin-top: 2.5em;
+    margin-bottom: 1em;
+}
+
+.legal-content p {
+    font-size: var(--font-size-p);
+    line-height: 1.6;
+    color: var(--color-grey);
+    margin-bottom: 1em;
+}
+
+.legal-content a {
+    color: var(--color-grey);
+    text-decoration: underline;
+}
+
+.legal-content a:hover {
+    color: var(--color-gold);
+}
+
+.sg-main-content {
+    overflow-x: hidden;
+    /* Prevent horizontal scroll from parallax */
+    transition: filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body.nav-open .sg-main-content {
+    filter: blur(5px) brightness(0.4);
+    transform: scale(0.95);
+    pointer-events: none;
+    user-select: none;
+}
