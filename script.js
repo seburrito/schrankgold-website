@@ -915,3 +915,52 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 });
 
+// Load Instagram Feed from Backend
+async function loadInstagramFeed() {
+  const feedContainer = document.getElementById('instagram-feed');
+  if (!feedContainer) return;
+
+  try {
+    // Zeige Loading-Zustand
+    feedContainer.innerHTML = '<p>Lade Instagram Posts...</p>';
+
+    // Rufe Backend-API auf (Token ist sicher auf dem Server)
+    const response = await fetch('/api/instagram');
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Server error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log('Instagram data:', data); // Debug
+    const items = data.items || [];
+
+    if (items.length === 0) {
+      feedContainer.innerHTML = '<p>Keine Posts verfügbar</p>';
+      return;
+    }
+
+    // Zeige Posts ganz plain
+    feedContainer.innerHTML = items.map((item, index) => `
+      <div style="width: 200px; margin: 10px;">
+        <a href="${item.permalink}" target="_blank" rel="noopener">
+          <img src="${item.image}" alt="Post ${index + 1}" style="width: 100%; height: auto;" />
+        </a>
+        <p style="font-size: 12px; margin-top: 5px;">${item.type}</p>
+      </div>
+    `).join('');
+    
+  } catch (error) {
+    console.error('Error loading Instagram feed:', error);
+    feedContainer.innerHTML = `<p style="color: red;">Fehler beim Laden: ${error.message}</p>`;
+  }
+}
+
+// Initialisiere Instagram Feed wenn DOM bereit ist
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadInstagramFeed);
+} else {
+  loadInstagramFeed();
+}
+
