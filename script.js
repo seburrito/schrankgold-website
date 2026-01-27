@@ -355,149 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(console.error);
   }
 
-  // Infinite carousel (rondell) shifting one slide per click
-  (function initInfiniteCarousel(){
-    const stage = document.querySelector('.carousel-stage');
-    const track = document.querySelector('.carousel-slides');
-    const prevBtn = document.querySelector('.carousel-btn.prev');
-    const nextBtn = document.querySelector('.carousel-btn.next');
-    if (!stage || !track) return;
-    const originals = Array.from(track.children);
-    if (!originals.length) return;
-    const originalCount = originals.length;
-
-    const beforeFrag = document.createDocumentFragment();
-    const afterFrag = document.createDocumentFragment();
-    originals.forEach(sl => { const c = sl.cloneNode(true); c.setAttribute('aria-hidden','true'); afterFrag.appendChild(c); });
-    [...originals].reverse().forEach(sl => { const c = sl.cloneNode(true); c.setAttribute('aria-hidden','true'); beforeFrag.insertBefore(c, beforeFrag.firstChild); });
-    track.insertBefore(beforeFrag, track.firstChild);
-    track.appendChild(afterFrag);
-    const slides = Array.from(track.children);
-    let position = originalCount; // first real slide index
-
-    function slidesPerView(){
-      const w = stage.clientWidth;
-      // 1 slide narrow, 2 slides default, 3 only on ultra-wide viewports
-      if (w < 560) return 1;
-      if (w < 1800) return 2;
-      return 3;
-    }
-    function unitWidth(){ return stage.clientWidth / slidesPerView(); }
-    function applySizes(){ const u = unitWidth(); slides.forEach(sl => sl.style.width = u + 'px'); track.style.width = (u * slides.length) + 'px'; }
-    function translate(noAnim=false){ const u = unitWidth(); if (noAnim) track.style.transition='none'; track.style.transform = `translateX(${-position * u}px)`; if (noAnim){ track.getBoundingClientRect(); track.style.transition=''; } }
-    function shift(delta){ position += delta; translate(); }
-    track.addEventListener('transitionend', () => { if (position >= originalCount * 2){ position -= originalCount; translate(true);} else if (position < originalCount){ position += originalCount; translate(true);} });
-    let resizeRaf=null; function onResize(){ cancelAnimationFrame(resizeRaf); resizeRaf=requestAnimationFrame(()=>{ applySizes(); translate(true); }); }
-    prevBtn && prevBtn.addEventListener('click', () => shift(-1));
-    nextBtn && nextBtn.addEventListener('click', () => shift(1));
-    // Swipe / drag support
-    let isPointerDown = false;
-    let startX = 0, startY = 0, lastDx = 0, dragging = false;
-    const SWIPE_THRESHOLD = 40; // px horizontal to trigger shift
-  // Momentum + multi-slide fling configuration
-  const MOVE_HISTORY_WINDOW_MS = 140; // track last ~140ms of movement to compute velocity
-  const VELOCITY_TRIGGER = 0.55; // px per ms (~550px/s) to allow fling even if distance small
-  const MAX_SLIDES_PER_FLING = 3; // cap multi-slide movement
-  const VELOCITY_SLIDE_FACTOR = 900; // higher -> needs more velocity to add extra slides
-  const BASE_DURATION_PER_SLIDE = 0.45; // seconds for 1 slide
-  const EXTRA_DURATION_PER_SLIDE = 0.12; // add per extra slide
-  const EASING = 'cubic-bezier(.22,.61,.36,1)';
-  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let moveHistory = []; // Array of {t, x}
-    function onPointerDown(e){
-      isPointerDown = true; dragging = false; lastDx = 0;
-      startX = (e.touches ? e.touches[0].clientX : e.clientX);
-      startY = (e.touches ? e.touches[0].clientY : e.clientY);
-      track.style.transition = 'none';
-      moveHistory.length = 0; // reset history
-      const t = performance.now();
-      moveHistory.push({ t, x: startX });
-    }
-    function onPointerMove(e){
-      if(!isPointerDown) return;
-      const x = (e.touches ? e.touches[0].clientX : e.clientX);
-      const y = (e.touches ? e.touches[0].clientY : e.clientY);
-      const dx = x - startX; const dy = y - startY;
-      if(!dragging){
-        if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) dragging = true; else return; // wait until clear horizontal intent
-      }
-      if (dragging) {
-        lastDx = dx;
-        const u = unitWidth();
-        // base position translate plus drag offset
-        track.style.transform = `translateX(${-position * u + dx}px)`;
-        // Record movement history for velocity (keep only recent window)
-        const now = performance.now();
-        moveHistory.push({ t: now, x });
-        // prune old entries
-        while (moveHistory.length && (now - moveHistory[0].t) > MOVE_HISTORY_WINDOW_MS) moveHistory.shift();
-        if (e.cancelable) e.preventDefault();
-      }
-    }
-    function onPointerUp(){
-      if(!isPointerDown){ return; }
-      isPointerDown = false;
-      track.style.transition = '';
-      if (dragging){
-        let usedFling = false;
-        let slidesToMove = 1;
-        let direction = lastDx < 0 ? 1 : -1; // negative drag -> next slide (shift +1)
-        const u = unitWidth();
-        // Distance-based multi-slide (if user drags more than one width)
-        const absUnits = Math.abs(lastDx) / u; // e.g. 1.6 widths -> 2 slides
-        if (absUnits >= 0.95) {
-          slidesToMove = Math.min(MAX_SLIDES_PER_FLING, Math.round(absUnits));
-          usedFling = slidesToMove > 1;
-        }
-        // Velocity-based fling (if quick short swipe)
-        if (!usedFling && moveHistory.length >= 2){
-          const first = moveHistory[0];
-          const last = moveHistory[moveHistory.length - 1];
-          const dt = Math.max(1, last.t - first.t); // ms
-            const vx = (last.x - first.x) / dt; // px per ms
-          const speed = Math.abs(vx);
-          if (speed > VELOCITY_TRIGGER || Math.abs(lastDx) > SWIPE_THRESHOLD){
-            // Determine slide count: base on speed (scaled) + partial distance units
-            const velocityBonus = speed * (VELOCITY_SLIDE_FACTOR ? (VELOCITY_SLIDE_FACTOR / 1000) : 1) / (VELOCITY_SLIDE_FACTOR / 1000);
-            // velocityBonus simplifies to speed (kept for readability if factor tuned later)
-            const combined = absUnits + speed * (u / 280); // heuristic: tie speed to width
-            slidesToMove = Math.min(MAX_SLIDES_PER_FLING, Math.max(1, Math.round(combined)));
-            usedFling = true;
-          }
-        }
-        if (slidesToMove === 1 && Math.abs(lastDx) <= SWIPE_THRESHOLD){
-          // Not enough movement: snap back
-          translate();
-        } else {
-          // Apply custom transition duration for multi-slide movement unless reduced motion
-          if (!prefersReducedMotion){
-            const duration = BASE_DURATION_PER_SLIDE + (slidesToMove - 1) * EXTRA_DURATION_PER_SLIDE;
-            track.style.transition = `transform ${duration}s ${EASING}`;
-          }
-          shift(direction * slidesToMove);
-        }
-      } else {
-        translate();
-      }
-      dragging = false; lastDx = 0;
-      moveHistory.length = 0;
-    }
-    stage.addEventListener('touchstart', onPointerDown, { passive:true });
-    stage.addEventListener('touchmove', onPointerMove, { passive:false });
-    stage.addEventListener('touchend', onPointerUp, { passive:true });
-    stage.addEventListener('mousedown', onPointerDown);
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('mouseup', onPointerUp);
-  // Prevent native image dragging (which blocks our mousemove events)
-  stage.addEventListener('dragstart', e => e.preventDefault());
-  track.querySelectorAll('img').forEach(img => { img.setAttribute('draggable','false'); });
-    stage.addEventListener('keydown', e => { if (e.key==='ArrowLeft') shift(-1); else if (e.key==='ArrowRight') shift(1); });
-    stage.tabIndex=0;
-    window.addEventListener('resize', onResize, { passive:true });
-    applySizes();
-    translate(true);
-  })();
-
   // Fixed distance below the bottom of the vertical decorative S line to the CTA block
   (function initHowLineSpacing(){
     const LINE_SELECTOR = '.how-line';
@@ -915,16 +772,147 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 });
 
+// Infinite carousel (rondell) shifting one slide per click
+function initCarousel(){
+  const stage = document.querySelector('.carousel-stage');
+  const track = document.querySelector('.carousel-slides');
+  const prevBtn = document.querySelector('.carousel-btn.prev');
+  const nextBtn = document.querySelector('.carousel-btn.next');
+  if (!stage || !track) return;
+  const originals = Array.from(track.children);
+  if (!originals.length) return;
+  const originalCount = originals.length;
+
+  const beforeFrag = document.createDocumentFragment();
+  const afterFrag = document.createDocumentFragment();
+  originals.forEach(sl => { const c = sl.cloneNode(true); c.setAttribute('aria-hidden','true'); afterFrag.appendChild(c); });
+  [...originals].reverse().forEach(sl => { const c = sl.cloneNode(true); c.setAttribute('aria-hidden','true'); beforeFrag.insertBefore(c, beforeFrag.firstChild); });
+  track.insertBefore(beforeFrag, track.firstChild);
+  track.appendChild(afterFrag);
+  const slides = Array.from(track.children);
+  let position = originalCount;
+
+  function slidesPerView(){
+    const w = stage.clientWidth;
+    if (w < 560) return 1;
+    if (w < 1800) return 2;
+    return 3;
+  }
+  function unitWidth(){ return stage.clientWidth / slidesPerView(); }
+  function applySizes(){ const u = unitWidth(); slides.forEach(sl => sl.style.width = u + 'px'); track.style.width = (u * slides.length) + 'px'; }
+  function translate(noAnim=false){ const u = unitWidth(); if (noAnim) track.style.transition='none'; track.style.transform = `translateX(${-position * u}px)`; if (noAnim){ track.getBoundingClientRect(); track.style.transition=''; } }
+  function shift(delta){ position += delta; translate(); }
+  track.addEventListener('transitionend', () => { if (position >= originalCount * 2){ position -= originalCount; translate(true);} else if (position < originalCount){ position += originalCount; translate(true);} });
+  let resizeRaf=null; function onResize(){ cancelAnimationFrame(resizeRaf); resizeRaf=requestAnimationFrame(()=>{ applySizes(); translate(true); }); }
+  prevBtn && prevBtn.addEventListener('click', () => shift(-1));
+  nextBtn && nextBtn.addEventListener('click', () => shift(1));
+  let isPointerDown = false;
+  let startX = 0, startY = 0, lastDx = 0, dragging = false;
+  const SWIPE_THRESHOLD = 40;
+  const MOVE_HISTORY_WINDOW_MS = 140;
+  const VELOCITY_TRIGGER = 0.55;
+  const MAX_SLIDES_PER_FLING = 3;
+  const VELOCITY_SLIDE_FACTOR = 900;
+  const BASE_DURATION_PER_SLIDE = 0.45;
+  const EXTRA_DURATION_PER_SLIDE = 0.12;
+  const EASING = 'cubic-bezier(.22,.61,.36,1)';
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let moveHistory = [];
+  function onPointerDown(e){
+    isPointerDown = true; dragging = false; lastDx = 0;
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
+    track.style.transition = 'none';
+    moveHistory.length = 0;
+    const t = performance.now();
+    moveHistory.push({ t, x: startX });
+  }
+  function onPointerMove(e){
+    if(!isPointerDown) return;
+    const x = (e.touches ? e.touches[0].clientX : e.clientX);
+    const y = (e.touches ? e.touches[0].clientY : e.clientY);
+    const dx = x - startX; const dy = y - startY;
+    if(!dragging){
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) dragging = true; else return;
+    }
+    if (dragging) {
+      lastDx = dx;
+      const u = unitWidth();
+      track.style.transform = `translateX(${-position * u + dx}px)`;
+      const now = performance.now();
+      moveHistory.push({ t: now, x });
+      while (moveHistory.length && (now - moveHistory[0].t) > MOVE_HISTORY_WINDOW_MS) moveHistory.shift();
+      if (e.cancelable) e.preventDefault();
+    }
+  }
+  function onPointerUp(){
+    if(!isPointerDown){ return; }
+    isPointerDown = false;
+    track.style.transition = '';
+    if (dragging){
+      let usedFling = false;
+      let slidesToMove = 1;
+      let direction = lastDx < 0 ? 1 : -1;
+      const u = unitWidth();
+      const absUnits = Math.abs(lastDx) / u;
+      if (absUnits >= 0.95) {
+        slidesToMove = Math.min(MAX_SLIDES_PER_FLING, Math.round(absUnits));
+        usedFling = slidesToMove > 1;
+      }
+      if (!usedFling && moveHistory.length >= 2){
+        const first = moveHistory[0];
+        const last = moveHistory[moveHistory.length - 1];
+        const dt = Math.max(1, last.t - first.t);
+        const vx = (last.x - first.x) / dt;
+        const speed = Math.abs(vx);
+        if (speed > VELOCITY_TRIGGER || Math.abs(lastDx) > SWIPE_THRESHOLD){
+          const velocityBonus = speed * (VELOCITY_SLIDE_FACTOR ? (VELOCITY_SLIDE_FACTOR / 1000) : 1) / (VELOCITY_SLIDE_FACTOR / 1000);
+          const combined = absUnits + speed * (u / 280);
+          slidesToMove = Math.min(MAX_SLIDES_PER_FLING, Math.max(1, Math.round(combined)));
+          usedFling = true;
+        }
+      }
+      if (slidesToMove === 1 && Math.abs(lastDx) <= SWIPE_THRESHOLD){
+        translate();
+      } else {
+        if (!prefersReducedMotion){
+          const duration = BASE_DURATION_PER_SLIDE + (slidesToMove - 1) * EXTRA_DURATION_PER_SLIDE;
+          track.style.transition = `transform ${duration}s ${EASING}`;
+        }
+        shift(direction * slidesToMove);
+      }
+    } else {
+      translate();
+    }
+    dragging = false; lastDx = 0;
+    moveHistory.length = 0;
+  }
+  stage.addEventListener('touchstart', onPointerDown, { passive:true });
+  stage.addEventListener('touchmove', onPointerMove, { passive:false });
+  stage.addEventListener('touchend', onPointerUp, { passive:true });
+  stage.addEventListener('mousedown', onPointerDown);
+  window.addEventListener('mousemove', onPointerMove);
+  window.addEventListener('mouseup', onPointerUp);
+  stage.addEventListener('dragstart', e => e.preventDefault());
+  track.querySelectorAll('img').forEach(img => { img.setAttribute('draggable','false'); });
+  stage.addEventListener('keydown', e => { if (e.key==='ArrowLeft') shift(-1); else if (e.key==='ArrowRight') shift(1); });
+  stage.tabIndex=0;
+  window.addEventListener('resize', onResize, { passive:true });
+  applySizes();
+  translate(true);
+}
+
 // Load Instagram Feed from Backend
 async function loadInstagramFeed() {
-  const feedContainer = document.getElementById('instagram-feed');
-  if (!feedContainer) return;
+  const gridContainer = document.querySelector('.instagram-grid');
+  
+  if (!gridContainer) return;
 
   try {
-    // Zeige Loading-Zustand
-    feedContainer.innerHTML = '<p>Lade Instagram Posts...</p>';
+    // Show loading state
+    gridContainer.innerHTML = '<p class="instagram-loading">Lade Instagram Posts...</p>';
 
-    // Rufe Backend-API auf (Token ist sicher auf dem Server)
+    // Call backend API (token is secure on server)
     const response = await fetch('/api/instagram');
     
     if (!response.ok) {
@@ -933,28 +921,185 @@ async function loadInstagramFeed() {
     }
 
     const data = await response.json();
-    console.log('Instagram data:', data); // Debug
+    console.log('Instagram data:', data);
     const items = data.items || [];
 
     if (items.length === 0) {
-      feedContainer.innerHTML = '<p>Keine Posts verfügbar</p>';
+      gridContainer.innerHTML = '<p>Keine Posts verfügbar</p>';
       return;
     }
 
-    // Zeige Posts ganz plain
-    feedContainer.innerHTML = items.map((item, index) => `
-      <div style="width: 200px; margin: 10px;">
-        <a href="${item.permalink}" target="_blank" rel="noopener">
-          <img src="${item.image}" alt="Post ${index + 1}" style="width: 100%; height: auto;" />
-        </a>
-        <p style="font-size: 12px; margin-top: 5px;">${item.type}</p>
-      </div>
-    `).join('');
+    // Calculate how many posts fit in one viewport height
+    const getPostsForOneViewport = () => {
+      const viewportHeight = window.innerHeight;
+      const width = window.innerWidth;
+      
+      // Estimate post size based on CSS grid settings (aspect-ratio: 1, square posts)
+      let postSize;
+      let columnsPerRow;
+      let adjustmentFactor;
+      
+      if (width >= 1400) {
+        postSize = 280; // minmax(280px, 1fr)
+        columnsPerRow = Math.floor(width / 300);
+        adjustmentFactor = 1.15; // More posts to fill gaps with dense grid
+      } else if (width > 768) {
+        postSize = 250; // minmax(200px-300px, average ~250px)
+        columnsPerRow = Math.floor(width / 270);
+        adjustmentFactor = 0.9; // Fewer posts on tablet
+      } else {
+        postSize = 150; // mobile: minmax(150px, 1fr)
+        columnsPerRow = Math.floor(width / 165);
+        adjustmentFactor = 0.7; // Much fewer posts on mobile
+      }
+      
+      // Account for gap (clamp(12px, 2vw, 20px))
+      const gap = width > 768 ? 20 : 12;
+      const totalPostHeight = postSize + gap;
+      
+      // Calculate rows needed to fill viewport
+      const rowsNeeded = Math.floor(viewportHeight / totalPostHeight);
+      
+      // Total posts with adjustment factor
+      const totalPosts = Math.floor(rowsNeeded * columnsPerRow * adjustmentFactor);
+      
+      return Math.max(totalPosts, 4); // Minimum 4 posts
+    };
+    
+    const postsToShow = getPostsForOneViewport();
+    const limitedItems = items.slice(0, postsToShow);
+
+    // Create grid items
+    gridContainer.innerHTML = limitedItems.map((item, index) => {
+      const isVideo = item.type === 'VIDEO' || item.type === 'REEL';
+      
+      // Vary sizes: every 3rd and 4th post is large, others are small
+      const isLarge = (index % 7 === 2) || (index % 7 === 5);
+      const sizeClass = isLarge ? 'grid-item-large' : 'grid-item-small';
+      
+      // Shorten caption for overlay
+      let caption = item.caption || '';
+      if (caption.length > 150) {
+        caption = caption.substring(0, 150) + '...';
+      }
+      
+      return `
+        <div class="instagram-grid-item ${sizeClass}" data-permalink="${item.permalink}">
+          <div class="grid-item-media">
+            ${isVideo && item.videoUrl ? `
+              <video class="grid-video" loop muted playsinline data-video-url="${item.videoUrl}">
+                <source src="${item.videoUrl}" type="video/mp4">
+              </video>
+              <button class="video-play-btn" aria-label="Play video">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            ` : `
+              <img src="${item.image}" alt="Instagram post" loading="lazy">
+            `}
+          </div>
+          <div class="grid-item-overlay">
+            <div class="overlay-content">
+              <p class="overlay-caption">${caption}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    // Add click handlers to grid items (redirect to Instagram)
+    document.querySelectorAll('.instagram-grid-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        // Don't redirect if clicking play button
+        if (e.target.closest('.video-play-btn')) return;
+        
+        const permalink = item.dataset.permalink;
+        if (permalink) {
+          window.open(permalink, '_blank', 'noopener,noreferrer');
+        }
+      });
+    });
+    
+    // Add video play button handlers
+    initVideoPlayers();
     
   } catch (error) {
     console.error('Error loading Instagram feed:', error);
-    feedContainer.innerHTML = `<p style="color: red;">Fehler beim Laden: ${error.message}</p>`;
+    gridContainer.innerHTML = `<p style="color: red;">Fehler beim Laden der Posts</p>`;
   }
+}
+
+// Initialize show more/less functionality
+function initGridControls() {
+  const showMoreBtn = document.querySelector('.show-more-btn');
+  const showLessBtn = document.querySelector('.show-less-btn');
+  const gridContainer = document.querySelector('.instagram-grid');
+  const gridWrapper = document.querySelector('.instagram-grid-wrapper');
+  
+  if (!showMoreBtn || !showLessBtn || !gridContainer || !gridWrapper) return;
+  
+  showMoreBtn.addEventListener('click', () => {
+    gridContainer.classList.add('expanded');
+    gridWrapper.classList.add('expanded');
+    showMoreBtn.style.display = 'none';
+    showLessBtn.style.display = 'inline-flex';
+  });
+  
+  showLessBtn.addEventListener('click', () => {
+    gridContainer.classList.remove('expanded');
+    gridWrapper.classList.remove('expanded');
+    showMoreBtn.style.display = 'inline-flex';
+    showLessBtn.style.display = 'none';
+    
+    // Scroll back to grid
+    gridWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+// Initialize video players with play button
+function initVideoPlayers() {
+  document.querySelectorAll('.video-play-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const gridItem = btn.closest('.instagram-grid-item');
+      const video = gridItem.querySelector('.grid-video');
+      const overlay = gridItem.querySelector('.grid-item-overlay');
+      
+      if (video.paused) {
+        video.play();
+        video.controls = true;
+        btn.style.opacity = '0';
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+      } else {
+        video.pause();
+        video.controls = false;
+        btn.style.opacity = '1';
+        overlay.style.pointerEvents = 'all';
+      }
+    });
+  });
+  
+  // Reset play button when video ends
+  document.querySelectorAll('.grid-video').forEach(video => {
+    video.addEventListener('ended', () => {
+      const gridItem = video.closest('.instagram-grid-item');
+      const btn = gridItem.querySelector('.video-play-btn');
+      const overlay = gridItem.querySelector('.grid-item-overlay');
+      
+      video.controls = false;
+      btn.style.opacity = '1';
+      overlay.style.pointerEvents = 'all';
+    });
+    
+    video.addEventListener('pause', () => {
+      if (video.currentTime > 0 && !video.ended) return;
+      const gridItem = video.closest('.instagram-grid-item');
+      const btn = gridItem.querySelector('.video-play-btn');
+      btn.style.opacity = '1';
+    });
+  });
 }
 
 // Initialisiere Instagram Feed wenn DOM bereit ist

@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // Expect env vars: IG_ACCESS_TOKEN (long-lived), optional MEDIA_LIMIT
 const IG_ACCESS_TOKEN = process.env.IG_ACCESS_TOKEN;
-const MEDIA_LIMIT = process.env.MEDIA_LIMIT || 6;
+const MEDIA_LIMIT = process.env.MEDIA_LIMIT || 20;
 
 if (!IG_ACCESS_TOKEN) {
   console.warn('[instagram] Missing IG_ACCESS_TOKEN environment variable. /api/instagram will return 503.');
@@ -37,6 +37,7 @@ app.get('/api/instagram', async (req, res) => {
       id: m.id,
       type: m.media_type,
       image: m.media_type === 'VIDEO' || m.media_type === 'REEL' ? (m.thumbnail_url || m.media_url) : m.media_url,
+      videoUrl: (m.media_type === 'VIDEO' || m.media_type === 'REEL') ? m.media_url : null,
       permalink: m.permalink,
       caption: m.caption || '',
       timestamp: m.timestamp
