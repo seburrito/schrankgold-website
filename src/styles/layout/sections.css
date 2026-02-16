@@ -611,44 +611,39 @@
     margin-bottom: 0;
     /* Simpler: base section height ensures some vertical presence even with little content */
     min-height: clamp(820px, 60vh + 22vw, 1600px);
-    overflow: visible;
-    /* allow background overlap */
+    /* Clip horizontal overflow to prevent scrollbars, allow vertical for background overlap */
+    overflow-x: clip;
+    overflow-y: visible;
 }
 
 /* Background illustration element */
 .hours-bg {
     position: absolute;
     top: 0;
-    left: 50%;
+    /* Position from left edge, shifted left of center */
+    left: 0;
     bottom: calc(var(--hours-overlap) * -1);
     /* extend below for overlap */
-    width: 100%;
+    /* Width larger than container to allow overflow on both sides */
+    width: 200vw;
+    margin-left: -50vw;
     /* Parallax offset custom property (populated by JS) */
     --hours-parallax: 0px;
     /* Increased baseline so illustration sits lower overall */
-    /* Lower tower slightly (increase baseline) so more of it shows on mobile */
     --hours-parallax-base: clamp(90px, 11vh, 200px);
-    /* Horizontal shift: 0 at ~900px and smaller; becomes increasingly negative on wider screens (moves image left) */
-    --hours-x-shift: clamp(-420px,
-            calc(-200px - clamp(0px, (520px - 100vw) * 0.75, 200px) - clamp(0px, (100vw - 1400px) * 0.06, 60px) + clamp(0px, (480px - 100vw) * 0.25, 28px)),
-            -200px);
-    /* Base transform (center horizontally + dynamic vertical parallax) */
-    transform: translate(calc(-50% + var(--hours-x-shift)), calc(var(--hours-parallax-base) + var(--hours-parallax)));
-    /* Maintain aspect visually: full height, auto width on desktops; allow slight cover on tiny screens */
-    background: url('/assets/schoener-turm.svg') center bottom / auto 100% no-repeat;
-    /* On very small screens we will override to cover to avoid narrow pillar look */
+    /* Vertical transform only (parallax) */
+    transform: translateY(calc(var(--hours-parallax-base) + var(--hours-parallax)));
+    /* Full tower height maintained */
+    background-image: url('/assets/schoener-turm.svg');
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    /* Position: right of center on mobile (+70px), moves left as screen grows (up to -200px) */
+    background-position-x: calc(50% + clamp(-200px, 70px - 10vw, 70px));
+    background-position-y: bottom;
     z-index: 0;
     pointer-events: none;
     /* Smooth transitions */
     transition: transform .15s linear;
-    /* smoother parallax updates */
-}
-
-/* Tiny screens: allow a bit of cropping width-wise to keep visual impact */
-@media (max-width: 560px) {
-    .hours-bg {
-        background-size: cover;
-    }
 }
 
 /* Ensure content sits above background */
@@ -664,6 +659,50 @@
     flex-direction: column;
     align-items: flex-end;
     width: 100%;
+    /* Allow clicks to pass through to elements below */
+    pointer-events: none;
+}
+
+/* Re-enable pointer events on actual content */
+.hours-inner > * {
+    pointer-events: auto;
+}
+
+/* Semi-transparent content box for hours */
+.hours-content-box {
+    background: rgba(77, 0, 27, 0.55);
+    /* Dark wine/maroon at 55% opacity - more transparent */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 0 clamp(20px, 4vw, 40px) clamp(24px, 4vw, 40px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-right: var(--heading-side-inset);
+}
+
+.hours-content-box .hours-status {
+    margin-top: 0;
+    /* Negative margin to align top of box with top of pill */
+    transform: translateY(-50%);
+    justify-content: center;
+    /* Sharp bottom corners, rounded top corners to match box */
+    border-radius: 20px 20px 0 0;
+    /* Extend to full width of box by using negative margins to counter parent padding */
+    margin-left: calc(-1 * clamp(20px, 4vw, 40px));
+    margin-right: calc(-1 * clamp(20px, 4vw, 40px));
+    width: calc(100% + 2 * clamp(20px, 4vw, 40px));
+}
+
+.hours-content-box .hours-table {
+    margin-top: clamp(16px, 3vw, 28px);
+    padding-right: 0;
+    align-self: flex-end;
+}
+
+.hours-inner .sg-heading-block--right+.hours-content-box {
+    margin-top: clamp(12px, 8px + 1vw, 20px);
 }
 
 .hours-inner .sg-heading-block--right+.hours-status {

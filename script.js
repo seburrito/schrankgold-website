@@ -714,7 +714,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const now = new Date();
       const { state, message, isOpen } = classify(now);
       if (state !== lastState){
-        statusEl.className = 'hours-status hours-status--'+state;
+        // Remove old state class and add new one, preserving other classes like animate-in
+        if (lastState) statusEl.classList.remove('hours-status--' + lastState);
+        statusEl.classList.add('hours-status--' + state);
         iconEl.innerHTML = '';
         const svgPath = state.startsWith('open') ? 'assets/icons/check.svg' : 'assets/icons/cross.svg';
         fetch(svgPath)
@@ -769,6 +771,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Observe all animated elements
     animatedElements.forEach(el => observer.observe(el));
+
+    // Immediately check for elements already in viewport on page load
+    requestAnimationFrame(() => {
+      animatedElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const inViewport = rect.top < window.innerHeight * 0.9 && rect.bottom > 0;
+        if (inViewport && !el.classList.contains('animate-in')) {
+          el.classList.add('animate-in');
+          observer.unobserve(el);
+        }
+      });
+    });
   })();
 });
 
