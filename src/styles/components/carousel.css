@@ -44,7 +44,7 @@
 
 .coverflow-item {
   position: absolute;
-  width: clamp(260px, 32vw, 400px);
+  width: clamp(260px, 30vw, 360px);
   aspect-ratio: 9 / 16;
   /* Apple Tahoe-style rounded corners */
   border-radius: 22px;
