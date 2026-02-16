@@ -81,7 +81,7 @@ body.nav-open .side-nav {
 
 .side-nav-links a {
     font-family: var(--font-family-sans);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--color-grey);
     text-decoration: none;
     text-transform: uppercase;
@@ -132,7 +132,7 @@ body.nav-open .side-nav {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .side-nav-legal a {
