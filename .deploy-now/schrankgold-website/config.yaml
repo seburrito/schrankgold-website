@@ -1,5 +1,6 @@
 # IONOS Deploy Now Configuration
 # See: https://docs.ionos.space/docs/runtime-configuration/
+version: 1
 
 runtime:
   name: "Node.js"
