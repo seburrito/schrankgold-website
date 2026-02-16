@@ -1,0 +1,13 @@
+# IONOS Deploy Now Configuration
+# See: https://docs.ionos.space/docs/runtime-configuration/
+
+runtime:
+  name: "Node.js"
+  version: "22"
+  entrypoint: "server.js"
+
+build:
+  install: "npm ci"
+  
+environment:
+  - IG_ACCESS_TOKEN
