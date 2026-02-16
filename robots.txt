@@ -1,0 +1,6 @@
+# SchrankGold robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://schrankgold.de/sitemap.xml
