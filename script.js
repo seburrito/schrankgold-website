@@ -902,15 +902,25 @@ function initCarousel(){
   translate(true);
 }
 
-// Load Instagram Feed from Backend
+// 3D Coverflow Instagram Feed
+let coverflowData = {
+  items: [],
+  currentIndex: 0,
+  isAnimating: false,
+  autoPlayInterval: null,
+  touchStartX: 0,
+  touchEndX: 0
+};
+
 async function loadInstagramFeed() {
-  const gridContainer = document.querySelector('.instagram-grid');
+  const track = document.querySelector('.coverflow-track');
+  const dotsContainer = document.querySelector('.coverflow-dots');
   
-  if (!gridContainer) return;
+  if (!track) return;
 
   try {
     // Show loading state
-    gridContainer.innerHTML = '<p class="instagram-loading">Lade Instagram Posts...</p>';
+    track.innerHTML = '<p class="coverflow-loading">Lade Instagram Posts...</p>';
 
     // Call backend API (token is secure on server)
     const response = await fetch('/api/instagram');
@@ -925,72 +935,32 @@ async function loadInstagramFeed() {
     const items = data.items || [];
 
     if (items.length === 0) {
-      gridContainer.innerHTML = '<p>Keine Posts verfügbar</p>';
+      track.innerHTML = '<p class="coverflow-loading">Keine Posts verfügbar</p>';
       return;
     }
 
-    // Calculate how many posts fit in one viewport height
-    const getPostsForOneViewport = () => {
-      const viewportHeight = window.innerHeight;
-      const width = window.innerWidth;
-      
-      // Estimate post size based on CSS grid settings (aspect-ratio: 1, square posts)
-      let postSize;
-      let columnsPerRow;
-      let adjustmentFactor;
-      
-      if (width >= 1400) {
-        postSize = 280; // minmax(280px, 1fr)
-        columnsPerRow = Math.floor(width / 300);
-        adjustmentFactor = 1.15; // More posts to fill gaps with dense grid
-      } else if (width > 768) {
-        postSize = 250; // minmax(200px-300px, average ~250px)
-        columnsPerRow = Math.floor(width / 270);
-        adjustmentFactor = 0.9; // Fewer posts on tablet
-      } else {
-        postSize = 150; // mobile: minmax(150px, 1fr)
-        columnsPerRow = Math.floor(width / 165);
-        adjustmentFactor = 0.7; // Much fewer posts on mobile
-      }
-      
-      // Account for gap (clamp(12px, 2vw, 20px))
-      const gap = width > 768 ? 20 : 12;
-      const totalPostHeight = postSize + gap;
-      
-      // Calculate rows needed to fill viewport
-      const rowsNeeded = Math.floor(viewportHeight / totalPostHeight);
-      
-      // Total posts with adjustment factor
-      const totalPosts = Math.floor(rowsNeeded * columnsPerRow * adjustmentFactor);
-      
-      return Math.max(totalPosts, 4); // Minimum 4 posts
-    };
-    
-    const postsToShow = getPostsForOneViewport();
-    const limitedItems = items.slice(0, postsToShow);
+    // Limit to 9 items for coverflow (odd number works best)
+    coverflowData.items = items.slice(0, 9);
+    coverflowData.currentIndex = Math.floor(coverflowData.items.length / 2);
 
-    // Create grid items
-    gridContainer.innerHTML = limitedItems.map((item, index) => {
+    // Create coverflow items
+    track.innerHTML = coverflowData.items.map((item, index) => {
       const isVideo = item.type === 'VIDEO' || item.type === 'REEL';
       
-      // Vary sizes: every 3rd and 4th post is large, others are small
-      const isLarge = (index % 7 === 2) || (index % 7 === 5);
-      const sizeClass = isLarge ? 'grid-item-large' : 'grid-item-small';
-      
-      // Shorten caption for overlay
+      // Shorten caption
       let caption = item.caption || '';
-      if (caption.length > 150) {
-        caption = caption.substring(0, 150) + '...';
+      if (caption.length > 100) {
+        caption = caption.substring(0, 100) + '...';
       }
       
       return `
-        <div class="instagram-grid-item ${sizeClass}" data-permalink="${item.permalink}">
-          <div class="grid-item-media">
+        <div class="coverflow-item" data-index="${index}" data-permalink="${item.permalink}">
+          <div class="coverflow-item-media">
             ${isVideo && item.videoUrl ? `
-              <video class="grid-video" loop muted playsinline data-video-url="${item.videoUrl}">
+              <video class="coverflow-video" loop muted playsinline poster="${item.image}">
                 <source src="${item.videoUrl}" type="video/mp4">
               </video>
-              <button class="video-play-btn" aria-label="Play video">
+              <button class="video-play-btn" aria-label="Video abspielen">
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M8 5v14l11-7z"/>
                 </svg>
@@ -999,108 +969,333 @@ async function loadInstagramFeed() {
               <img src="${item.image}" alt="Instagram post" loading="lazy">
             `}
           </div>
-          <div class="grid-item-overlay">
-            <div class="overlay-content">
-              <p class="overlay-caption">${caption}</p>
-            </div>
+          <div class="coverflow-item-overlay">
+            <p class="coverflow-caption">${caption}</p>
           </div>
         </div>
       `;
     }).join('');
+
+    // Create dots for all items
+    if (dotsContainer) {
+      dotsContainer.innerHTML = coverflowData.items
+        .map((_, i) => `<button class="coverflow-dot" data-index="${i}" aria-label="Gehe zu Post ${i + 1}"></button>`)
+        .join('');
+    }
+
+    // Initialize coverflow
+    updateCoverflow();
+    initCoverflowControls();
+    initCoverflowTouch();
     
-    // Add click handlers to grid items (redirect to Instagram)
-    document.querySelectorAll('.instagram-grid-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        // Don't redirect if clicking play button
-        if (e.target.closest('.video-play-btn')) return;
-        
-        const permalink = item.dataset.permalink;
-        if (permalink) {
-          window.open(permalink, '_blank', 'noopener,noreferrer');
-        }
-      });
-    });
-    
-    // Add video play button handlers
-    initVideoPlayers();
-    
+    // Start auto-play
+    startCoverflowAutoPlay();
+
   } catch (error) {
     console.error('Error loading Instagram feed:', error);
-    gridContainer.innerHTML = `<p style="color: red;">Fehler beim Laden der Posts</p>`;
+    track.innerHTML = `<p class="coverflow-loading" style="color: rgba(255,150,150,0.8);">Fehler beim Laden der Posts</p>`;
   }
 }
 
-// Initialize show more/less functionality
-function initGridControls() {
-  const showMoreBtn = document.querySelector('.show-more-btn');
-  const showLessBtn = document.querySelector('.show-less-btn');
-  const gridContainer = document.querySelector('.instagram-grid');
-  const gridWrapper = document.querySelector('.instagram-grid-wrapper');
+function updateCoverflow() {
+  const items = document.querySelectorAll('.coverflow-item');
+  const dots = document.querySelectorAll('.coverflow-dot');
+  const total = items.length;
+  const center = coverflowData.currentIndex;
   
-  if (!showMoreBtn || !showLessBtn || !gridContainer || !gridWrapper) return;
-  
-  showMoreBtn.addEventListener('click', () => {
-    gridContainer.classList.add('expanded');
-    gridWrapper.classList.add('expanded');
-    showMoreBtn.style.display = 'none';
-    showLessBtn.style.display = 'inline-flex';
+  items.forEach((item, i) => {
+    // Calculate the shortest offset (wrapping around)
+    let offset = i - center;
+    
+    // Wrap offset to create infinite loop effect
+    if (offset > total / 2) {
+      offset -= total;
+    } else if (offset < -total / 2) {
+      offset += total;
+    }
+    
+    const absOffset = Math.abs(offset);
+    
+    // Calculate transforms
+    const translateX = offset * (window.innerWidth < 768 ? 70 : 100); // Spacing between items
+    const translateZ = -absOffset * 150; // Push non-center items back
+    const rotateY = offset * -35; // Rotation angle
+    const scale = 1 - absOffset * 0.12; // Scale down non-center items
+    
+    // Apply transforms
+    item.style.transform = `
+      translateX(${translateX}%)
+      translateZ(${translateZ}px)
+      rotateY(${rotateY}deg)
+      scale(${Math.max(scale, 0.6)})
+    `;
+    item.style.zIndex = total - absOffset;
+    
+    // Toggle active class
+    item.classList.toggle('active', offset === 0);
+    
+    // Hide items that are too far but keep them clickable
+    item.style.opacity = absOffset > 3 ? 0 : 1;
+    item.style.pointerEvents = absOffset > 3 ? 'none' : 'auto';
   });
   
-  showLessBtn.addEventListener('click', () => {
-    gridContainer.classList.remove('expanded');
-    gridWrapper.classList.remove('expanded');
-    showMoreBtn.style.display = 'inline-flex';
-    showLessBtn.style.display = 'none';
-    
-    // Scroll back to grid
-    gridWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Update dots
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === center);
   });
 }
 
-// Initialize video players with play button
-function initVideoPlayers() {
-  document.querySelectorAll('.video-play-btn').forEach(btn => {
+function navigateCoverflow(direction) {
+  if (coverflowData.isAnimating) return;
+  
+  const total = coverflowData.items.length;
+  let newIndex = coverflowData.currentIndex + direction;
+  
+  // Loop around
+  if (newIndex < 0) newIndex = total - 1;
+  if (newIndex >= total) newIndex = 0;
+  
+  coverflowData.currentIndex = newIndex;
+  coverflowData.isAnimating = true;
+  
+  updateCoverflow();
+  
+  // Reset animating flag
+  setTimeout(() => {
+    coverflowData.isAnimating = false;
+  }, 500);
+  
+  // Reset autoplay timer
+  restartCoverflowAutoPlay();
+}
+
+function goToSlide(index) {
+  if (coverflowData.isAnimating || index === coverflowData.currentIndex) return;
+  
+  coverflowData.currentIndex = index;
+  coverflowData.isAnimating = true;
+  
+  updateCoverflow();
+  
+  setTimeout(() => {
+    coverflowData.isAnimating = false;
+  }, 500);
+  
+  restartCoverflowAutoPlay();
+}
+
+function initCoverflowControls() {
+  const prevBtn = document.querySelector('.coverflow-btn--prev');
+  const nextBtn = document.querySelector('.coverflow-btn--next');
+  const container = document.querySelector('.coverflow-container');
+  
+  // Navigation buttons
+  prevBtn?.addEventListener('click', () => navigateCoverflow(-1));
+  nextBtn?.addEventListener('click', () => navigateCoverflow(1));
+  
+  // Dot navigation
+  document.querySelectorAll('.coverflow-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const index = parseInt(dot.dataset.index);
+      goToSlide(index);
+    });
+  });
+  
+  // Keyboard navigation
+  container?.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') navigateCoverflow(-1);
+    if (e.key === 'ArrowRight') navigateCoverflow(1);
+  });
+  
+  // Pause autoplay on hover
+  container?.addEventListener('mouseenter', stopCoverflowAutoPlay);
+  container?.addEventListener('mouseleave', startCoverflowAutoPlay);
+  
+  // Video play buttons
+  initCoverflowVideos();
+}
+
+function initCoverflowTouch() {
+  const wrapper = document.querySelector('.coverflow-wrapper');
+  if (!wrapper) return;
+  
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let hasDragged = false;
+  let clickTarget = null;
+  let clickedPlayBtn = false;
+  
+  // Touch events
+  wrapper.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    hasDragged = false;
+    
+    // Find the coverflow item under the touch using elementsFromPoint
+    const elementsUnderTouch = document.elementsFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+    clickTarget = elementsUnderTouch.find(el => el.classList?.contains('coverflow-item')) || null;
+    clickedPlayBtn = elementsUnderTouch.some(el => el.classList?.contains('video-play-btn'));
+    
+    stopCoverflowAutoPlay();
+  }, { passive: true });
+  
+  wrapper.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const diffX = Math.abs(e.touches[0].clientX - startX);
+    const diffY = Math.abs(e.touches[0].clientY - startY);
+    if (diffX > 10 || diffY > 10) hasDragged = true;
+  }, { passive: true });
+  
+  wrapper.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    const threshold = 50;
+    
+    if (Math.abs(diff) > threshold && hasDragged) {
+      // Swipe navigation
+      navigateCoverflow(diff > 0 ? 1 : -1);
+    } else if (!hasDragged && clickTarget && !clickedPlayBtn) {
+      // It was a tap, handle item click
+      handleItemClick(clickTarget);
+    }
+    
+    clickTarget = null;
+    clickedPlayBtn = false;
+    startCoverflowAutoPlay();
+  }, { passive: true });
+  
+  // Mouse events for desktop drag/swipe
+  wrapper.addEventListener('mousedown', (e) => {
+    // Only handle left mouse button
+    if (e.button !== 0) return;
+    
+    startX = e.clientX;
+    startY = e.clientY;
+    isDragging = true;
+    hasDragged = false;
+    
+    // Find the coverflow item under the click using elementsFromPoint
+    // This handles 3D transformed elements better than e.target
+    const elementsUnderClick = document.elementsFromPoint(e.clientX, e.clientY);
+    clickTarget = elementsUnderClick.find(el => el.classList?.contains('coverflow-item')) || null;
+    clickedPlayBtn = elementsUnderClick.some(el => el.classList?.contains('video-play-btn'));
+    
+    stopCoverflowAutoPlay();
+    
+    e.preventDefault(); // Prevent text selection
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const diffX = Math.abs(e.clientX - startX);
+    const diffY = Math.abs(e.clientY - startY);
+    if (diffX > 5 || diffY > 5) hasDragged = true;
+  });
+  
+  document.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    const endX = e.clientX;
+    const diff = startX - endX;
+    const threshold = 50;
+    
+    if (Math.abs(diff) > threshold && hasDragged) {
+      // Swipe navigation
+      navigateCoverflow(diff > 0 ? 1 : -1);
+    } else if (!hasDragged && clickTarget && !clickedPlayBtn) {
+      // It was a click, not a drag - handle item click
+      handleItemClick(clickTarget);
+    }
+    
+    clickTarget = null;
+    clickedPlayBtn = false;
+    startCoverflowAutoPlay();
+  });
+}
+
+function handleItemClick(item) {
+  const index = parseInt(item.dataset.index);
+  
+  if (index === coverflowData.currentIndex) {
+    // Center item clicked - go to Instagram
+    const permalink = item.dataset.permalink;
+    if (permalink) {
+      window.open(permalink, '_blank', 'noopener,noreferrer');
+    }
+  } else if (!isNaN(index)) {
+    // Side item clicked - bring to center
+    goToSlide(index);
+  }
+}
+
+function initCoverflowVideos() {
+  document.querySelectorAll('.coverflow-item .video-play-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const gridItem = btn.closest('.instagram-grid-item');
-      const video = gridItem.querySelector('.grid-video');
-      const overlay = gridItem.querySelector('.grid-item-overlay');
+      const item = btn.closest('.coverflow-item');
+      const video = item.querySelector('.coverflow-video');
+      
+      if (!video) return;
       
       if (video.paused) {
         video.play();
-        video.controls = true;
-        btn.style.opacity = '0';
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>`;
+        stopCoverflowAutoPlay();
       } else {
         video.pause();
-        video.controls = false;
-        btn.style.opacity = '1';
-        overlay.style.pointerEvents = 'all';
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+        startCoverflowAutoPlay();
       }
     });
   });
   
-  // Reset play button when video ends
-  document.querySelectorAll('.grid-video').forEach(video => {
+  document.querySelectorAll('.coverflow-video').forEach(video => {
     video.addEventListener('ended', () => {
-      const gridItem = video.closest('.instagram-grid-item');
-      const btn = gridItem.querySelector('.video-play-btn');
-      const overlay = gridItem.querySelector('.grid-item-overlay');
-      
-      video.controls = false;
-      btn.style.opacity = '1';
-      overlay.style.pointerEvents = 'all';
-    });
-    
-    video.addEventListener('pause', () => {
-      if (video.currentTime > 0 && !video.ended) return;
-      const gridItem = video.closest('.instagram-grid-item');
-      const btn = gridItem.querySelector('.video-play-btn');
-      btn.style.opacity = '1';
+      const btn = video.closest('.coverflow-item').querySelector('.video-play-btn');
+      if (btn) {
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      }
+      video.currentTime = 0;
+      startCoverflowAutoPlay();
     });
   });
 }
+
+function startCoverflowAutoPlay() {
+  stopCoverflowAutoPlay();
+  coverflowData.autoPlayInterval = setInterval(() => {
+    navigateCoverflow(1);
+  }, 5000);
+}
+
+function stopCoverflowAutoPlay() {
+  if (coverflowData.autoPlayInterval) {
+    clearInterval(coverflowData.autoPlayInterval);
+    coverflowData.autoPlayInterval = null;
+  }
+}
+
+function restartCoverflowAutoPlay() {
+  stopCoverflowAutoPlay();
+  startCoverflowAutoPlay();
+}
+
+// Handle window resize
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    if (coverflowData.items.length > 0) {
+      updateCoverflow();
+    }
+  }, 100);
+});
 
 // Initialisiere Instagram Feed wenn DOM bereit ist
 if (document.readyState === 'loading') {
