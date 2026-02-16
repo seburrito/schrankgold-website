@@ -46,7 +46,8 @@
   position: absolute;
   width: clamp(260px, 32vw, 400px);
   aspect-ratio: 9 / 16;
-  border-radius: 16px;
+  /* Apple Tahoe-style rounded corners */
+  border-radius: 22px;
   overflow: hidden;
   background: #1a1a1a;
   cursor: pointer;

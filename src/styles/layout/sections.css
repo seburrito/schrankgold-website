@@ -674,7 +674,8 @@
     /* Dark wine/maroon at 55% opacity - more transparent */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border-radius: 20px;
+    /* Apple Tahoe-style rounded corners */
+    border-radius: 22px;
     padding: 0 clamp(20px, 4vw, 40px) clamp(24px, 4vw, 40px);
     display: flex;
     flex-direction: column;
@@ -688,7 +689,7 @@
     transform: translateY(-50%);
     justify-content: center;
     /* Sharp bottom corners, rounded top corners to match box */
-    border-radius: 20px 20px 0 0;
+    border-radius: 22px 22px 0 0;
     /* Extend to full width of box by using negative margins to counter parent padding */
     margin-left: calc(-1 * clamp(20px, 4vw, 40px));
     margin-right: calc(-1 * clamp(20px, 4vw, 40px));

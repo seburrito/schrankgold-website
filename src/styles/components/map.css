@@ -5,6 +5,9 @@
     /* Stronger growth: base 360 + 22vw + 10vh, higher cap */
     --map-h: clamp(360px, 260px + 22vw + 10vh, 1180px);
     height: var(--map-h);
+    /* Apple Tahoe-style rounded corners */
+    border-radius: 22px;
+    overflow: hidden;
 }
 
 @media (max-width: 640px) {
