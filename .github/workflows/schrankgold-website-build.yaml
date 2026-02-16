@@ -32,12 +32,13 @@ jobs:
         with:
           node-version: v22.x
 
-      - name: Build Node assets
-        env:
-          CI: true
-          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
-          SITE_URL: ${{ inputs.site-url }}
+      - name: Install dependencies
         run: npm ci
+
+      - name: Prebuild Instagram feed
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: npm run prebuild
 
 # Please do not touch the following action
       - name: Store deployment content
@@ -49,5 +50,4 @@ jobs:
           branch-id: ${{ inputs.branch-id }}
           version: ${{ github.sha }}
           folder: ${{ env.DEPLOYMENT_FOLDER }}
-          config-file: .deploy-now/config.yaml
           action: upload

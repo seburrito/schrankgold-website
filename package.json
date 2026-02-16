@@ -5,7 +5,8 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "prebuild": "node prebuild-instagram.js",
+    "build": "npm run prebuild && vite build",
     "preview": "vite preview",
     "server:dev": "node server.js"
   },

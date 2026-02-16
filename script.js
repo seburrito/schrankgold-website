@@ -922,8 +922,8 @@ async function loadInstagramFeed() {
     // Show loading state
     track.innerHTML = '<p class="coverflow-loading">Lade Instagram Posts...</p>';
 
-    // Call backend API (token is secure on server)
-    const response = await fetch('/api/instagram');
+    // Load pre-built Instagram feed (static JSON)
+    const response = await fetch('/instagram-feed.json');
     
     if (!response.ok) {
       const errorText = await response.text();
