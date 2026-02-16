@@ -959,7 +959,8 @@ async function loadInstagramFeed() {
 
     // Limit to 9 items for coverflow (odd number works best)
     coverflowData.items = items.slice(0, 9);
-    coverflowData.currentIndex = Math.floor(coverflowData.items.length / 2);
+    // Start on the latest post (index 0, leftmost)
+    coverflowData.currentIndex = 0;
 
     // Create coverflow items
     track.innerHTML = coverflowData.items.map((item, index) => {
