@@ -3,6 +3,8 @@
 .wardrobe {
     /* Increased mid-range growth for larger presence on tablets */
     width: clamp(320px, 50vw, 580px);
+    /* Constrain height to ensure full hero fits on screen */
+    max-height: 55vh;
     height: auto;
     transition: width 0.4s ease;
 }
@@ -56,6 +58,8 @@
 .wardrobe svg {
     width: 100%;
     height: auto;
+    max-height: 55vh;
+    object-fit: contain;
     display: block;
 }
 

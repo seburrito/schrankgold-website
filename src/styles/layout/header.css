@@ -26,7 +26,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: clamp(40px, 5vh, 120px);
+    gap: clamp(24px, 3vh, 80px);
+    padding: clamp(20px, 3vh, 60px) 0;
+    box-sizing: border-box;
 }
 
 /* ================== BRAND TEXT ================== */
@@ -53,13 +55,13 @@
     /* Title base width and ratio to subtitle */
     --title-base: 900;
     /* px at full scale */
-    --subtitle-ratio: 0.55;
+    --subtitle-ratio: 0.62;
     /* subtitle = title * ratio */
-    /* Fluid title width (independent of brand-scale now for better continuous shrink) */
-    --title-min: 380px;
-    --title-max: 900px;
+    /* Fluid title width - reduced max for desktop to match constrained wardrobe */
+    --title-min: 320px;
+    --title-max: 600px;
     /* Increased from 60vw to 68vw for larger presence on tablets */
-    --title-fluid: clamp(var(--title-min), 68vw, var(--title-max));
+    --title-fluid: clamp(var(--title-min), 52vw, var(--title-max));
 }
 
 .branding-block {
@@ -90,4 +92,33 @@
     width: calc(var(--title-fluid) * var(--subtitle-ratio));
     height: auto;
     display: block;
+}
+
+/* Für Damen label - positioned bottom right of branding block */
+.fuer-damen-label {
+    align-self: flex-end;
+    transform: translateY(-30px);
+    margin-right: calc(-5px - 1.5vw);
+    opacity: 0;
+    transition: opacity .2s ease-out;
+}
+
+.fuer-damen-label .fuer-damen-graphic {
+    width: calc(var(--title-fluid) * 0.32);
+    height: auto;
+    display: block;
+    clip-path: inset(0 100% 0 0);
+}
+
+.fuer-damen-label.handwriting .fuer-damen-graphic {
+    animation: handwrite 1.2s ease-out forwards;
+}
+
+@keyframes handwrite {
+    0% {
+        clip-path: inset(0 100% 0 0);
+    }
+    100% {
+        clip-path: inset(0 0 0 0);
+    }
 }
