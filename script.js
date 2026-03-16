@@ -93,27 +93,48 @@ function initWardrobeAnimation() {
   const doorRight = document.querySelector('#door-right-group');
   const hook = document.querySelector('#coat-hook');
   const bestSecond = document.querySelector('.best-second-subtitle');
+  const fuerDamen = document.querySelector('.fuer-damen-label');
   if (!landingSection || !bestSecond) return;
 
   let wobblyHookTriggered = false;
+  let fuerDamenTriggered = false;
 
   function slideUpText(scrolledPx, maxScroll) {
     const start = 0.3 * maxScroll;
     const end = 0.5 * maxScroll;
+    // Fuer Damen handwriting starts after subtitle is fully revealed
+    const fuerStart = 0.55 * maxScroll;
     if (scrolledPx <= start) {
       bestSecond.style.transform = 'translateY(100%)';
       bestSecond.style.opacity = '0';
+      if (fuerDamen) {
+        fuerDamen.style.opacity = '0';
+        fuerDamen.classList.remove('handwriting');
+        fuerDamenTriggered = false;
+      }
       return 0;
     }
     if (scrolledPx >= end) {
       bestSecond.style.transform = 'translateY(0)';
       bestSecond.style.opacity = '1';
-      return 1;
+    } else {
+      const progress = (scrolledPx - start) / (end - start);
+      bestSecond.style.transform = `translateY(${(1 - progress) * 100}%)`;
+      bestSecond.style.opacity = progress;
     }
-    const progress = (scrolledPx - start) / (end - start);
-    bestSecond.style.transform = `translateY(${(1 - progress) * 100}%)`;
-    bestSecond.style.opacity = progress;
-    return progress;
+    // Trigger fuer-damen handwriting animation
+    if (fuerDamen) {
+      if (scrolledPx >= fuerStart && !fuerDamenTriggered) {
+        fuerDamen.style.opacity = '1';
+        fuerDamen.classList.add('handwriting');
+        fuerDamenTriggered = true;
+      } else if (scrolledPx < fuerStart && fuerDamenTriggered) {
+        fuerDamen.style.opacity = '0';
+        fuerDamen.classList.remove('handwriting');
+        fuerDamenTriggered = false;
+      }
+    }
+    return scrolledPx >= end ? 1 : (scrolledPx - start) / (end - start);
   }
 
   function onScroll() {
