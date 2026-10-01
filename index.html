@@ -68,33 +68,45 @@
       <span class="topbar__word">SCHRANK<b>GOLD</b></span>
     </a>
     <nav class="topbar__nav" aria-label="Hauptnavigation">
-      <a href="#stories">Stories</a>
-      <a href="#neu">Neu im Schrank</a>
-      <a href="#abgeben">Ware abgeben</a>
-      <a href="#gabi">Über Gabi</a>
-      <a href="#besuch">Besuch</a>
+      <a href="#willkommen">Willkommen</a>
+      <a href="#gabi">Über Uns</a>
+      <a href="#abgeben">Warenannahme</a>
+      <a href="#neuigkeiten">Neuigkeiten</a>
+      <a href="#besuch">Besuche Uns</a>
+      <a href="#geschichte">Unsere Geschichte</a>
+      <a href="#kontakt">Kontakt</a>
     </nav>
     <a class="btn btn--gold btn--sm topbar__cta" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-magnetic>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" class="fill"></circle></svg>
-      Folgen
+      Instagram
     </a>
   </header>
 
+  <!-- Menu button: a gold clothes hanger that turns into an X -->
   <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu" data-menu-btn>
-    <span class="menu-btn__line"></span>
-    <span class="menu-btn__line"></span>
+    <svg class="hanger" viewBox="0 0 44 44" aria-hidden="true">
+      <g class="hanger__swing">
+        <path class="hanger__hook" d="M22 16 V13.2 c0 -1.6 3.6 -2 3.6 -5 a3.6 3.6 0 0 0 -7.2 0"></path>
+        <line class="hanger__l" x1="22" y1="16" x2="5" y2="30"></line>
+        <line class="hanger__r" x1="22" y1="16" x2="39" y2="30"></line>
+        <line class="hanger__b" x1="5" y1="30" x2="39" y2="30"></line>
+      </g>
+    </svg>
   </button>
 
   <div class="menu" id="menu" hidden data-menu>
     <nav class="menu__nav" aria-label="Menü">
-      <a href="#stories" data-menu-link><span>01</span>Stories</a>
-      <a href="#neu" data-menu-link><span>02</span>Neu im Schrank</a>
-      <a href="#abgeben" data-menu-link><span>03</span>Ware abgeben</a>
-      <a href="#gabi" data-menu-link><span>04</span>Über Gabi</a>
-      <a href="#besuch" data-menu-link><span>05</span>Besuch</a>
+      <a href="#willkommen" data-menu-link>Willkommen</a>
+      <a href="#gabi" data-menu-link>Über Uns</a>
+      <a href="#abgeben" data-menu-link>Warenannahme</a>
+      <a href="#neuigkeiten" data-menu-link>Neuigkeiten</a>
+      <a href="#besuch" data-menu-link>Besuche Uns</a>
+      <a href="#geschichte" data-menu-link>Unsere Geschichte</a>
+      <a href="#kontakt" data-menu-link>Kontakt</a>
     </nav>
+    <img class="menu__art" src="assets/wardrobe.svg" alt="" aria-hidden="true" data-menu-art />
     <div class="menu__foot" data-menu-link>
-      <a href="tel:+4917698306373">+49 176 9830 6373</a>
+      <a href="tel:+4917698306373">+49&nbsp;176&nbsp;9830&nbsp;6373</a>
       <a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener">Instagram</a>
       <a href="https://wa.me/4917698306373" target="_blank" rel="noopener">WhatsApp</a>
     </div>
@@ -117,27 +129,22 @@
             <img src="assets/fuer-damen.svg" alt="für Damen" class="fuer-damen-graphic" />
           </div>
         </div>
-        <div class="scroll-hint" aria-hidden="true">
-          <span>Scrollen</span>
-          <i></i>
-        </div>
+        <div class="scroll-hint" aria-hidden="true"><i></i></div>
       </div>
       <!-- Extra scroll spacer to allow animation progress while content stays visually fixed -->
       <div class="landing-scroll-spacer" aria-hidden="true"></div>
     </section>
 
-    <!-- ===================== MANIFEST ===================== -->
+    <!-- ===================== WILLKOMMEN ===================== -->
     <section class="manifest" id="willkommen" data-theme="red">
       <div class="wrap">
-        <p class="eyebrow" data-reveal>Willkommen im SchrankGold</p>
-        <p class="manifest__text" data-scrub-words>Keine Second-Hand-, sondern <em>Second-Best</em>-Ware mitten in Erding. Nachhaltigkeit, Qualität, Mode und ein persönlicher Service stehen im Vordergrund.</p>
-        <div class="manifest__row" data-reveal>
-          <p class="status" data-hours-status><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span></p>
-          <div class="btn-row">
-            <a class="btn btn--light" href="#neu" data-magnetic>Was ist neu?</a>
-            <a class="btn btn--ghost" href="#besuch" data-magnetic>Öffnungszeiten &amp; Anfahrt</a>
-          </div>
+        <div class="heading">
+          <h2 class="h2" data-split>WILLKOMMEN IM SCHRANK<em>GOLD</em></h2>
+          <span class="underline" aria-hidden="true"></span>
         </div>
+        <h3 class="h3" data-reveal>Komm vorbei, wir freuen uns auf dich!</h3>
+        <p class="manifest__text" data-scrub-words>Keine Second-HAND, sondern <em>Second-BEST</em>-Ware mitten in Erding.<br />Nachhaltigkeit, Qualität, Mode und ein persönlicher Service stehen im Vordergrund.</p>
+        <p class="status" data-hours-status data-reveal role="status" aria-live="polite"><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span></p>
       </div>
       <div class="manifest__towers" aria-hidden="true">
         <img class="tower tower--a" src="assets/erding-tower-full.svg" alt="" data-parallax="-12" />
@@ -145,165 +152,223 @@
       </div>
     </section>
 
-    <!-- ===================== STORIES ===================== -->
-    <section class="stories" id="stories" data-theme="ink">
-      <div class="wrap section-head">
-        <div>
-          <p class="eyebrow eyebrow--gold" data-reveal data-stories-eyebrow>Live von Instagram · letzte 24 Stunden</p>
-          <h2 class="h2" data-split>Heute im <em>SchrankGold</em></h2>
-        </div>
-        <div class="section-head__aside" data-reveal>
-          <p>Gabis Stories direkt hier – tippen zum Ansehen, keine App nötig.</p>
-          <div class="strip-nav">
-            <button type="button" class="round-btn" data-strip-prev aria-label="Stories zurück"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
-            <button type="button" class="round-btn" data-strip-next aria-label="Stories weiter"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
-          </div>
-        </div>
-      </div>
-      <div class="stories__track" data-stories data-lenis-prevent-horizontal></div>
-    </section>
-
     <!-- ===================== MARQUEE ===================== -->
     <div class="marquee" aria-hidden="true" data-marquee>
       <div class="marquee__track">
-        <span>Größen 34 – 46</span><i>✦</i><span>Markenmode in Top-Zustand</span><i>✦</i><span>Neue Basics &amp; Accessoires</span><i>✦</i><span>40 % für deine Teile</span><i>✦</i><span>Am Rätschenbach 11, Erding</span><i>✦</i>
-        <span>Größen 34 – 46</span><i>✦</i><span>Markenmode in Top-Zustand</span><i>✦</i><span>Neue Basics &amp; Accessoires</span><i>✦</i><span>40 % für deine Teile</span><i>✦</i><span>Am Rätschenbach 11, Erding</span><i>✦</i>
+        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
+        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
+        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
+        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
       </div>
     </div>
 
-    <!-- ===================== FEED ===================== -->
-    <section class="feed" id="neu" data-theme="ink">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow eyebrow--gold" data-reveal>Instagram · @_schrankgold</p>
-            <h2 class="h2" data-split>Neu im <em>Schrank</em></h2>
+    <!-- ===================== NEUIGKEITEN: stories + feed ===================== -->
+    <section class="news" id="neuigkeiten" data-theme="ink">
+      <div class="wrap section-head">
+        <div class="heading">
+          <h2 class="h2" data-split>NICHTS MEHR VERPASSEN</h2>
+          <span class="underline" aria-hidden="true"></span>
+        </div>
+        <div class="section-head__aside" data-reveal>
+          <p>Besucht uns auf Instagram und WhatsApp für aktuelle Infos zu unseren Neuzugängen, Events und Vieles mehr!</p>
+          <div class="btn-row">
+            <a class="btn btn--gold" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-magnetic>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" class="fill"></circle></svg>
+              Instagram
+            </a>
+            <a class="btn btn--ghost" href="https://wa.me/4917698306373" target="_blank" rel="noopener" data-magnetic>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg>
+              WhatsApp
+            </a>
           </div>
-          <div class="tabs" role="group" aria-label="Beiträge filtern" data-reveal>
+        </div>
+      </div>
+
+      <div class="stories" id="stories">
+        <div class="wrap strip-nav" data-reveal>
+          <button type="button" class="round-btn" data-strip-prev aria-label="Stories zurück"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+          <button type="button" class="round-btn" data-strip-next aria-label="Stories weiter"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
+        </div>
+        <div class="stories__track" data-stories></div>
+      </div>
+
+      <div class="wrap feed" id="instagram">
+        <div class="feed__bar" data-reveal>
+          <div class="tabs" role="group" aria-label="Beiträge filtern">
             <button type="button" class="tab is-active" data-filter="all" aria-pressed="true">Alle</button>
             <button type="button" class="tab" data-filter="reel" aria-pressed="false">Reels</button>
             <button type="button" class="tab" data-filter="photo" aria-pressed="false">Fotos</button>
           </div>
         </div>
         <div class="feed__grid" data-feed></div>
-        <div class="btn-row btn-row--center" data-reveal>
-          <a class="btn btn--gold" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-magnetic>Alle Beiträge auf Instagram</a>
-          <a class="btn btn--ghost" href="https://wa.me/4917698306373" target="_blank" rel="noopener" data-magnetic>Teil reservieren per WhatsApp</a>
-        </div>
       </div>
     </section>
 
-    <!-- ===================== SELL / SO FUNKTIONIERT'S ===================== -->
+    <!-- ===================== WARENANNAHME: tags on a clothes rail ===================== -->
     <section class="sell" id="abgeben" data-theme="ink">
       <div class="sell__pin" data-sell-pin>
-        <div class="wrap sell__intro">
-          <p class="eyebrow eyebrow--gold" data-reveal>So funktioniert's · für Lieferantinnen</p>
-          <h2 class="h2 h2--xl" data-split>Dein Schrank.<br /><em>Dein Gold.</em></h2>
+        <div class="wrap sell__head">
+          <div class="heading">
+            <h2 class="h2" data-split>SO FUNKTIONIERT'S</h2>
+            <span class="underline" aria-hidden="true"></span>
+          </div>
+          <h3 class="h3" data-reveal>Wenn ihr was zum Abgeben habt</h3>
         </div>
-        <div class="sell__track" data-sell-track>
-          <article class="step">
-            <span class="step__num">01</span>
-            <h3>Dein Termin bei mir</h3>
-            <p>Bitte ruft mich an und macht einen Termin aus. Ohne Termin keine Abgabe. Ihr erreicht mich telefonisch oder über WhatsApp.</p>
-            <a class="step__link" href="tel:+4917698306373">+49 176 9830 6373</a>
-          </article>
-          <article class="step">
-            <span class="step__num">02</span>
-            <h3>Was wir lieben</h3>
-            <p>Ich freue mich auf eure aktuelle Markenware. Bitte achtet auf einen Top-Zustand – Größe 34 bis 46.</p>
-          </article>
-          <article class="step">
-            <span class="step__num">03</span>
-            <h3>Zeit zum Verkaufen</h3>
-            <p>Deine schönen Stücke bleiben für etwa 2–3 Monate im SchrankGold – im Laden und auf Instagram.</p>
-          </article>
-          <article class="step">
-            <span class="step__num">04</span>
-            <h3>Faire Auszahlung oder Rückgabe</h3>
-            <p>Bei Verkauf erhältst du 40 % des Erlöses. Nicht verkaufte Artikel werden zurückgegeben.</p>
-            <a class="step__link" href="assets/lieferanten.pdf" target="_blank" rel="noopener">Verkaufsablauf im Detail (PDF)</a>
-          </article>
-        </div>
-        <div class="sell__progress" aria-hidden="true"><span data-sell-progress></span></div>
-      </div>
 
-      <div class="wrap calc-wrap">
-        <div class="calc" data-calc data-reveal>
-          <div class="calc__copy">
-            <p class="eyebrow eyebrow--gold">Rechner</p>
-            <h3 class="calc__title">Was bringt mir mein Lieblingsteil?</h3>
-            <label for="calc-price">Verkaufspreis im Laden</label>
-            <p class="calc__price"><output for="calc-price" data-calc-price>80 €</output></p>
-            <input id="calc-price" type="range" min="10" max="300" step="5" value="80" data-calc-input />
-          </div>
-          <div class="calc__result">
-            <span>Du bekommst</span>
-            <strong data-calc-payout>32 €</strong>
-            <div class="btn-row">
-              <a class="btn btn--gold" href="tel:+4917698306373" data-magnetic>Termin anrufen</a>
-              <a class="btn btn--ghost" href="https://wa.me/4917698306373" target="_blank" rel="noopener" data-magnetic>WhatsApp</a>
-            </div>
-          </div>
+        <div class="rail-stage" data-rail-stage>
+          <div class="rail" aria-hidden="true"><span class="rail__fill" data-rail-fill></span></div>
+          <ol class="sell__track" data-sell-track aria-label="Ablauf Verkaufsschritte">
+            <li class="hang">
+              <div class="hang__swing">
+                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <article class="tag tag--cream">
+                  <div class="tag__top">
+                    <span class="tag__num" aria-hidden="true">1</span>
+                    <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path><path d="M9 15l2 2 4-4"></path></svg>
+                  </div>
+                  <h4 class="tag__title">Dein Termin bei mir</h4>
+                  <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich telefonisch oder über Whatsapp.</p>
+                  <a class="btn btn--ink btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
+                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+                    Telefon
+                  </a>
+                </article>
+              </div>
+            </li>
+            <li class="hang">
+              <div class="hang__swing">
+                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <article class="tag tag--gold">
+                  <div class="tag__top">
+                    <span class="tag__num" aria-hidden="true">2</span>
+                    <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg>
+                  </div>
+                  <h4 class="tag__title">Was wir lieben</h4>
+                  <p>Ich freue mich auf eure aktuelle Markenware. Bitte achte auf einen Top-Zustand.</p>
+                </article>
+              </div>
+            </li>
+            <li class="hang">
+              <div class="hang__swing">
+                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <article class="tag tag--red">
+                  <div class="tag__top">
+                    <span class="tag__num" aria-hidden="true">3</span>
+                    <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12.5" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>
+                  </div>
+                  <h4 class="tag__title">Zeit zum Verkaufen</h4>
+                  <p>Deine schönen Stücke bleiben für etwa 2–3 Monate im SchrankGold.</p>
+                </article>
+              </div>
+            </li>
+            <li class="hang">
+              <div class="hang__swing">
+                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <article class="tag tag--cream">
+                  <div class="tag__top">
+                    <span class="tag__num" aria-hidden="true">4</span>
+                    <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6.5" rx="7.5" ry="3"></ellipse><path d="M4.5 6.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"></path><path d="M4.5 11.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"></path></svg>
+                  </div>
+                  <h4 class="tag__title">Faire Auszahlung oder Rückgabe</h4>
+                  <p>Bei Verkauf erhältst du <strong>40%</strong> des Erlöses. Nicht verkaufte Artikel werden zurückgegeben.</p>
+                </article>
+              </div>
+            </li>
+            <li class="hang hang--doc">
+              <div class="hang__swing">
+                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <div class="tag tag--paper">
+                  <svg class="tag__icon tag__icon--doc" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 13h6M9 17h6"></path></svg>
+                  <p>Wie es im Detail funktioniert, könnt ihr hier nachlesen:</p>
+                  <a class="btn btn--red btn--sm" href="assets/lieferanten.pdf" target="_blank" rel="noopener" aria-label="PDF Verkaufsablauf öffnen" data-magnetic>Verkaufsablauf</a>
+                </div>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
 
-    <!-- ===================== GABI ===================== -->
+    <!-- ===================== ÜBER UNS (Gabi) ===================== -->
     <section class="gabi" id="gabi" data-theme="bone">
       <div class="wrap gabi__inner">
         <figure class="gabi__visual" data-gabi-visual>
           <div class="gabi__arch">
             <img src="assets/gabi.svg" alt="Illustration: Gabi Strobl" class="gabi__img" />
           </div>
-          <figcaption class="gabi__badge">Mit Freude dabei<b>Gabi Strobl</b></figcaption>
+          <figcaption class="gabi__badge"><img src="assets/sidebar-crown-icon.svg" alt="" />Gabi Strobl</figcaption>
         </figure>
         <div class="gabi__copy">
-          <p class="eyebrow eyebrow--red" data-reveal>Meine Idee und Geschichte</p>
-          <blockquote class="gabi__quote" data-scrub-words>„Ich nehme nur Kleidung an, die mir gefällt und in die ich selbst gerne schlüpfen würde.“</blockquote>
-          <p data-reveal>Gabi Strobl, das bin ich – das Herz vom SchrankGold. Mit Leidenschaft für Stil und Mode wähle ich hochwertige Second-Hand-Mode und neue Lieblingsteile für euch persönlich aus. Ich helfe dir mit herzlicher und ehrlicher Beratung, das perfekte Outfit für deinen Stil oder Anlass zu finden.</p>
-          <details class="story" data-story>
-            <summary data-magnetic><span>Die ganze Geschichte lesen</span><i aria-hidden="true"></i></summary>
-            <div class="story__body">
-              <p>SchrankGold, das ist mehr als ein Secondhandladen. Es ist mein Herzensprojekt! Es soll ein Ort des Stils, der Nachhaltigkeit und der Begegnung sein. Mitten in der Erdinger Altstadt habe ich es mir zur Aufgabe gemacht, hochwertiger Mode ein zweites Leben zu schenken – und dabei meinen KundInnen ein Einkaufserlebnis mit Charme und Persönlichkeit zu bieten.</p>
-              <p>Ich habe über zwölf Jahre in der Modebranche gearbeitet – unter anderem bei Fanny Huber in Erding und Sport+Mode Gruber in Hallbergmoos. Schon lange war es mein Wunsch, mich selbstständig zu machen. Als sich ganz spontan die Möglichkeit ergab, ein kleines Ladengeschäft in der Pfendtnergasse zu übernehmen, zögerte ich nicht lange. Mit viel Unterstützung von Familie und Freunden – und einem alten Bauernschrank als goldenem Hingucker – entstand ein liebevoll gestalteter Raum, der an ein stilvolles Wohnzimmer erinnert.</p>
-              <p>Nach nur einem Jahr platzte der Laden aus allen Nähten. Der für mich unerwartete Erfolg und die positive Resonanz meiner KundInnen machten den Umzug in größere Räumlichkeiten am Rätschenbach möglich – mit noch mehr Platz für stilvolle Einzelstücke aus zweiter Hand, ausgefallenen Accessoires (zum großen Teil neu) und persönlicher Beratung in wohnlicher Atmosphäre.</p>
-              <p>Das Besondere an SchrankGold ist das Konzept: Alle Second-Hand-Kleidungsstücke stammen aus hochwertigen Marken, sind modisch aktuell und in bestem Zustand. Ich achte persönlich darauf, dass jedes Teil fast wie neu aussieht und etwas Besonderes oder Ausgefallenes ist.</p>
-              <p>Mein Sortiment reicht von Größe 34 bis 46, geordnet nach Farben und Größen – ergänzt durch auffälligen Schmuck, edle Tücher und Taschen! Mittlerweile kombinieren wir unsere ausgefallenen Second-Hand-Teile oft mit neuen Basics-Kleidungsstücken und neuer aktueller Mode.</p>
-              <p>Hinter meinem SchrankGold steht nicht nur ein Gespür für Mode, sondern auch ein starker Wille, Nachhaltigkeit und Luxus zu verbinden. Kleidungsstücke, die sonst ungetragen im Schrank hängen würden, finden hier neue Besitzerinnen – oft zu einem Bruchteil des Originalpreises. Lieferantinnen, unter anderem auch die Kabarettistin Monika Gruber, schätzen genau das: Ihre Lieblingsteile werden weitergetragen – und zaubern einer anderen Frau ein Lächeln ins Gesicht.</p>
-              <p>Wir wollen, dass jede Kundin sich willkommen und wohlfühlt – ob beim Stöbern, Anprobieren oder einfach beim Ratschen. Denn SchrankGold ist kein anonymer Laden, sondern ein Ort der Begegnung – mit Herz, Stil und Seele.</p>
-            </div>
-          </details>
+          <div class="heading">
+            <h2 class="h2" data-split>MIT FREUDE DABEI</h2>
+            <span class="underline" aria-hidden="true"></span>
+          </div>
+          <h3 class="h3" data-scrub-words>Gabi Strobl, das bin ich!<br />Das Herz vom SchrankGold.</h3>
+          <p data-reveal>Mit Leidenschaft für Stil und Mode wähle ich für mein SchrankGold hochwertige Second-Hand-Mode und neue Lieblingsteile für euch persönlich aus.<br /><br />Ich helfe dir mit herzlicher und ehrlicher Beratung, das perfekte Outfit für deinen Stil oder Anlass zu finden.</p>
         </div>
       </div>
     </section>
 
-    <!-- ===================== VISIT ===================== -->
+    <!-- ===================== UNSERE GESCHICHTE ===================== -->
+    <section class="history" id="geschichte" data-theme="deep" aria-labelledby="story-heading">
+      <div class="wrap">
+        <div class="heading">
+          <h2 class="h2" id="story-heading" data-split>MEINE IDEE UND GESCHICHTE</h2>
+          <span class="underline" aria-hidden="true"></span>
+        </div>
+        <h3 class="history__lead" data-scrub-words>SchrankGold, das ist mehr als ein Secondhandladen.<br />Es ist mein Herzensprojekt!</h3>
+        <div class="history__copy" lang="de">
+          <p>Es soll ein Ort des Stils, der Nachhaltigkeit und der Begegnung sein. Mitten in der Erdinger Altstadt habe ich es mir zur Aufgabe gemacht, hochwertiger Mode ein zweites Leben zu schenken – und dabei meinen KundInnen ein Einkaufserlebnis mit Charme und Persönlichkeit zu bieten.</p>
+          <p>Die Idee zu SchrankGold stammt von mir, Gabi Strobl.</p>
+          <p>Ich habe über zwölf Jahre in der Modebranche gearbeitet – unter anderem bei Fanny Huber in Erding und Sport+Mode Gruber in Hallbergmoos. Schon lange war es mein Wunsch, mich selbstständig zu machen. Als sich ganz spontan die Möglichkeit ergab, ein kleines Ladengeschäft in der Pfendtnergasse zu übernehmen, zögerte ich nicht lange. Mit viel Unterstützung von Familie und Freunden – und einem alten Bauernschrank als goldenem Hingucker – entstand ein liebevoll gestalteter Raum, der an ein stilvolles Wohnzimmer erinnert.</p>
+          <p>Nach nur einem Jahr platzte der Laden aus allen Nähten. Der für mich unerwartete Erfolg und die positive Resonanz meiner KundInnen machten den Umzug in größere Räumlichkeiten am Rätschenbach möglich – mit noch mehr Platz für stilvolle Einzelstücke aus zweiter Hand, ausgefallenen Accessoires (zum großen Teil neu) und persönlicher Beratung in wohnlicher Atmosphäre.</p>
+          <p>Das Besondere an SchrankGold ist das Konzept: Alle Second-Hand-Kleidungsstücke stammen aus hochwertigen Marken, sind modisch aktuell und in bestem Zustand. Ich achte persönlich darauf, dass jedes Teil fast wie neu aussieht und etwas Besonderes oder Ausgefallenes ist. Ich nehme nur Kleidung an, die mir gefällt und in die ich selbst gerne schlüpfen würde.&nbsp;</p>
+          <p>Mein Sortiment reicht von Größe 34 bis 46, geordnet nach Farben und Größen – ergänzt durch auffälligen Schmuck, edle Tücher und Taschen!</p>
+          <p>Seit dem Start von SchrankGold habe ich mein Konzept weiterentwickelt um euren Bedürfnissen besser gerecht zu werden! Mittlerweile kombinieren wir unsere ausgefallenen Second-Hand-Teile oft mit neuen Basics-Kleidungsstücken und neuer aktueller Mode!</p>
+          <p>Hinter meinem SchrankGold steht nicht nur ein Gespür für Mode, sondern auch ein starker Wille, Nachhaltigkeit und Luxus zu verbinden. Kleidungsstücke, die sonst ungetragen im Schrank hängen würden, finden hier neue Besitzerinnen – oft zu einem Bruchteil des Originalpreises. Lieferantinnen unter anderem auch die Kabarettistin Monika Gruber schätzen genau das: Ihre Lieblingsteile werden weitergetragen – und zaubern einer anderen Frau ein Lächeln ins Gesicht. Das ist attraktiv für beide Seiten, meine LieferantInnen und meine KundInnnen!</p>
+          <p>Wir wollen, dass jede Kundin sich willkommen und wohlfühlt – ob beim Stöbern, Anprobieren oder einfach beim Ratschen. Denn SchrankGold ist kein anonymer Laden, sondern ein Ort der Begegnung – mit Herz, Stil und Seele.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BESUCHE UNS: hours + location ===================== -->
     <section class="visit" id="besuch" data-theme="red">
       <div class="wrap visit__inner">
-        <div class="visit__hours">
-          <p class="eyebrow" data-reveal>Schaut's rein</p>
-          <h2 class="h2" data-split>Kommt's <em>vorbei</em></h2>
-          <p class="status" data-hours-status data-reveal><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span></p>
-          <dl class="hours" data-hours>
-            <div class="hours__row" data-day="3"><dt>Mittwoch</dt><dd>10–18 Uhr</dd></div>
-            <div class="hours__row" data-day="4"><dt>Donnerstag</dt><dd>10–13 &amp; 15–18 Uhr</dd></div>
-            <div class="hours__row" data-day="5"><dt>Freitag</dt><dd>10–13 &amp; 15–18 Uhr</dd></div>
-            <div class="hours__row" data-day="6"><dt>Samstag</dt><dd>10–13 Uhr<small>erster &amp; letzter Samstag im Monat</small></dd></div>
+        <div class="visit__hours" id="opening-hours">
+          <div class="heading">
+            <h2 class="h2 h2--md" id="hours-heading" data-split>SCHAUT'S REIN</h2>
+            <span class="underline" aria-hidden="true"></span>
+          </div>
+          <p class="status" data-hours-status data-reveal role="status" aria-live="polite"><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span></p>
+          <dl class="hours" data-hours aria-describedby="hours-heading">
+            <div class="hours__row" data-day="3"><dt>MI</dt><dd><time datetime="10:00">10–18 Uhr</time></dd></div>
+            <div class="hours__row" data-day="4"><dt>DO</dt><dd><time datetime="10:00">10–13 Uhr</time> &amp; <time datetime="15:00">15–18 Uhr</time></dd></div>
+            <div class="hours__row" data-day="5"><dt>FR</dt><dd><time datetime="10:00">10–13 Uhr</time> &amp; <time datetime="15:00">15–18 Uhr</time></dd></div>
+            <div class="hours__row" data-day="6"><dt>SA</dt><dd>erster und letzter Samstag<br />im Monat <time datetime="10:00">10–13 Uhr</time></dd></div>
           </dl>
         </div>
-        <div class="visit__map">
+        <div class="visit__map" id="location">
+          <div class="heading">
+            <h2 class="h2 h2--md" data-split>KOMMT'S VORBEI</h2>
+            <span class="underline" aria-hidden="true"></span>
+          </div>
           <div class="map" data-map-reveal>
             <div class="map__fallback">
               <img class="map__pin" src="assets/sidebar-crown-icon.svg" alt="" />
-              <p>SchrankGold<br />Am Rätschenbach 11<br />85435 Erding</p>
             </div>
             <div class="map__canvas" id="store-map"
               data-mt-url="https://api.maptiler.com/maps/0199f703-1173-7298-81df-98d97011dd27/style.json?key=IAwxH9Qf6uoA1zhZTKlI"
               data-pitch="17.9" aria-label="Karte mit Standort und Parkmöglichkeit"></div>
           </div>
           <div class="visit__address" data-reveal>
-            <p><b>SchrankGold</b><br />Am Rätschenbach 11, 85435 Erding</p>
-            <a class="btn btn--light" href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" data-directions data-magnetic>Route planen</a>
+            <address class="store-address" aria-label="Adresse SchrankGold" translate="no">
+              <h3>SchrankGold</h3>
+              <p>Am Rätschenbach 11<br />85435 Erding</p>
+            </address>
+            <a class="btn btn--light" href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" aria-label="Route öffnen" data-directions data-magnetic>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+              Route
+            </a>
           </div>
         </div>
       </div>
@@ -311,19 +376,22 @@
   </main>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="footer" id="kontakt" data-theme="deep">
+  <footer class="footer" id="kontakt" data-theme="deep" aria-labelledby="footer-heading">
+    <h2 id="footer-heading" class="visually-hidden">Kontakt und Rechtliches</h2>
     <div class="wrap">
-      <p class="footer__word" data-footer-word aria-label="SchrankGold">Schrank<em>Gold</em></p>
+      <p class="footer__word" data-footer-word aria-hidden="true">Schrank<em>Gold</em></p>
       <div class="footer__grid">
         <ul class="footer__contact" aria-label="Kontaktmöglichkeiten">
-          <li><a href="tel:+4917698306373">+49 176 9830 6373</a></li>
-          <li><a href="https://wa.me/4917698306373" target="_blank" rel="noopener">WhatsApp</a></li>
-          <li><a href="mailto:schrankgold.erding@gmail.com">schrankgold.erding@gmail.com</a></li>
-          <li><a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener">Instagram @_schrankgold</a></li>
+          <li><a href="tel:+4917698306373" aria-label="Telefon anrufen">+49&nbsp;176&nbsp;9830&nbsp;6373</a></li>
+          <li><a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram Profil _schrankgold">_schrankgold</a></li>
+          <li><a href="mailto:schrankgold.erding@gmail.com" aria-label="E-Mail an SchrankGold senden">schrankgold.erding@gmail.com</a></li>
         </ul>
         <div class="footer__legal">
-          <p>© <span data-year>2026</span> SchrankGold · Best Second in Erding</p>
-          <p><a href="impressum.html">Impressum</a> · <a href="privacy.html">Datenschutz</a></p>
+          <ul aria-label="Rechtliches">
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="privacy.html">Datenschutzerklärung</a></li>
+          </ul>
+          <p>&copy; <span data-year>2026</span> SchrankGold. Alle Rechte vorbehalten.</p>
         </div>
       </div>
     </div>
@@ -331,13 +399,13 @@
 
   <!-- ===================== MOBILE QUICK BAR ===================== -->
   <nav class="quickbar" aria-label="Schnellaktionen" data-quickbar>
-    <a href="tel:+4917698306373" class="quickbar__main">
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>Anrufen
+    <a href="tel:+4917698306373" class="quickbar__main" aria-label="Jetzt anrufen">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>Telefon
     </a>
-    <a href="https://wa.me/4917698306373" target="_blank" rel="noopener">
+    <a href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp Chat öffnen">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg>WhatsApp
     </a>
-    <a href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" data-directions>
+    <a href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" aria-label="Route öffnen" data-directions>
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>Route
     </a>
   </nav>
@@ -365,8 +433,8 @@
       <div class="viewer__foot">
         <p class="viewer__caption" data-viewer-caption></p>
         <div class="viewer__actions">
-          <a class="btn btn--ghost btn--sm" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-viewer-link>Auf Instagram</a>
-          <a class="btn btn--gold btn--sm" href="https://wa.me/4917698306373" target="_blank" rel="noopener">Reservieren</a>
+          <a class="btn btn--ghost btn--sm" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Story auf Instagram öffnen" data-viewer-link>Instagram</a>
+          <a class="btn btn--gold btn--sm" href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp Chat öffnen">WhatsApp</a>
         </div>
       </div>
     </div>

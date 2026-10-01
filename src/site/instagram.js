@@ -9,14 +9,10 @@ const PROFILE_URL = 'https://www.instagram.com/_schrankgold';
 const CROWN = 'assets/sidebar-crown-icon.svg';
 const FEED_LAYOUT = ['is-big', '', '', '', 'is-tall', '', '', 'is-wide', '', '', '', ''];
 
-const PLACEHOLDER_STORIES = [
-  'Neu reingekommen', 'Outfit des Tages', 'Taschen & Tücher', 'Ein Blick in den Laden', 'Gabis Lieblingsteil', 'Schmuck, der auffällt'
-];
-const PLACEHOLDER_POSTS = [
-  ['REEL', 'Neue Kollektion im Schrank'], ['IMAGE', 'Lieblingsbluse'], ['CAROUSEL_ALBUM', '3 Looks, 1 Jeans'],
-  ['IMAGE', 'Neue Basics eingetroffen'], ['REEL', 'Einmal durch den Laden'], ['IMAGE', 'Taschen-Freitag'],
-  ['IMAGE', 'Gabis Tipp der Woche'], ['CAROUSEL_ALBUM', 'Schmuck, der auffällt'], ['REEL', 'Outfit-Inspiration']
-];
+// Placeholders carry no invented copy – only the account handle.
+const PLACEHOLDER_STORY_COUNT = 6;
+const PLACEHOLDER_POST_TYPES = ['REEL', 'IMAGE', 'CAROUSEL_ALBUM', 'IMAGE', 'REEL', 'IMAGE', 'IMAGE', 'CAROUSEL_ALBUM', 'REEL'];
+const HANDLE = '_schrankgold';
 
 async function loadJson(url) {
   try {
@@ -57,10 +53,12 @@ function ago(ts) {
 function placeholder(label, bg) {
   const ph = el('span', 'ph');
   if (bg) ph.style.setProperty('--ph-bg', bg);
-  const img = el('img', '', { src: CROWN, alt: '' });
-  const txt = el('span');
-  txt.textContent = label;
-  ph.append(img, txt);
+  ph.append(el('img', '', { src: CROWN, alt: '' }));
+  if (label) {
+    const txt = el('span');
+    txt.textContent = label;
+    ph.append(txt);
+  }
   return ph;
 }
 
@@ -83,7 +81,7 @@ export async function initInstagram({ lenis, reducedMotion }) {
     type: s.type,
     src: isVideo(s.type) ? s.videoUrl : s.image,
     poster: s.image,
-    label: 'Heute im SchrankGold',
+    label: '',
     time: ago(s.timestamp),
     link: s.permalink || PROFILE_URL
   }));
@@ -94,18 +92,15 @@ export async function initInstagram({ lenis, reducedMotion }) {
       type: p.type,
       src: isVideo(p.type) && p.videoUrl ? p.videoUrl : p.image,
       poster: p.image,
-      label: firstLine(p.caption) || 'Neu im SchrankGold',
+      label: firstLine(p.caption),
       time: ago(p.timestamp),
       link: p.permalink || PROFILE_URL
     }));
   }
   if (!slides.length) {
     mode = 'placeholder';
-    slides = PLACEHOLDER_STORIES.map((label, i) => ({ id: 'ph-' + i, type: 'PLACEHOLDER', label, time: 'Instagram', link: PROFILE_URL }));
+    slides = Array.from({ length: PLACEHOLDER_STORY_COUNT }, (_, i) => ({ id: 'ph-' + i, type: 'PLACEHOLDER', label: '', time: '', link: PROFILE_URL }));
   }
-
-  const eyebrow = document.querySelector('[data-stories-eyebrow]');
-  if (eyebrow && mode !== 'live') eyebrow.textContent = mode === 'latest' ? 'Neueste Reels & Beiträge' : 'Instagram · @_schrankgold';
 
   const viewer = createViewer({ slides, lenis, reducedMotion });
   renderStories(slides, viewer);
@@ -122,7 +117,7 @@ function renderStories(slides, viewer) {
   const seen = readSeen();
   track.textContent = '';
   slides.forEach((s, i) => {
-    const card = el('button', 'story-card', { type: 'button', 'aria-label': `Story ansehen: ${s.label}` });
+    const card = el('button', 'story-card', { type: 'button', 'aria-label': s.label ? `Story ansehen: ${s.label}` : 'Story ansehen' });
     if (seen.has(s.id)) card.classList.add('is-seen');
     const media = el('span', 'story-card__media');
     if (s.type === 'PLACEHOLDER') {
@@ -134,7 +129,7 @@ function renderStories(slides, viewer) {
     const time = el('span', 'story-card__time');
     time.textContent = s.time;
     const label = el('span', 'story-card__label');
-    label.textContent = s.label;
+    label.textContent = s.label || HANDLE;
     meta.append(time, label);
     card.append(el('span', 'story-card__ring'), media, meta);
     if (isVideo(s.type)) {
@@ -190,7 +185,7 @@ function renderFeed(feed, reducedMotion) {
   grid.textContent = '';
   const items = feed.length
     ? feed.slice(0, 12)
-    : PLACEHOLDER_POSTS.map(([type, caption], i) => ({ id: 'ph' + i, type, caption, placeholder: true }));
+    : PLACEHOLDER_POST_TYPES.map((type, i) => ({ id: 'ph' + i, type, caption: '', placeholder: true }));
 
   items.forEach((item, i) => {
     const reel = isVideo(item.type);
@@ -214,10 +209,14 @@ function renderFeed(feed, reducedMotion) {
     }
     const badge = el('span', 'post__badge');
     badge.innerHTML = reel ? BADGES.reel : item.type === 'CAROUSEL_ALBUM' ? BADGES.album : BADGES.photo;
-    const caption = el('p', 'post__caption');
-    caption.textContent = firstLine(item.caption, 110) || 'Auf Instagram ansehen';
-    post.setAttribute('aria-label', (reel ? 'Reel: ' : 'Beitrag: ') + caption.textContent);
-    post.append(media, badge, caption);
+    const text = firstLine(item.caption, 110);
+    post.setAttribute('aria-label', (reel ? 'Instagram-Reel' : 'Instagram-Beitrag') + (text ? ': ' + text : ''));
+    post.append(media, badge);
+    if (text) {
+      const caption = el('p', 'post__caption');
+      caption.textContent = text;
+      post.append(caption);
+    }
     grid.append(post);
   });
 
@@ -335,11 +334,7 @@ function createViewer({ slides, lenis, reducedMotion }) {
       raf = requestAnimationFrame(tick);
     } else {
       if (s.type === 'PLACEHOLDER') {
-        const ph = placeholder(s.label);
-        const hint = el('span');
-        hint.textContent = 'Gabis aktuelle Stories erscheinen hier automatisch.';
-        ph.append(hint);
-        media.append(ph);
+        media.append(placeholder(''));
       } else {
         media.append(el('img', '', { src: s.src, alt: s.label || 'Instagram-Story' }));
       }
