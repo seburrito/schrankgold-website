@@ -40,6 +40,7 @@
     --gold-light: #E3C27A;
     --cream: #F5ECDF;
     --bone: #F3EADF;
+    --blush: #F2DCDD;
 
     --font-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
     --font-sans: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -61,14 +62,16 @@
 [data-theme="ink"] { --bg: var(--ink); --fg: var(--cream); --muted: #CDB7C0; --line: rgba(227, 194, 122, 0.22); --accent: var(--gold); --panel: var(--ink-3); }
 [data-theme="bone"] { --bg: var(--bone); --fg: #2A0A14; --muted: #5E3A45; --line: rgba(77, 0, 27, 0.18); --accent: var(--red); --panel: #E6D6C4; }
 [data-theme="deep"] { --bg: var(--deep); --fg: var(--cream); --muted: #E6CBD4; --line: rgba(227, 194, 122, 0.25); --accent: var(--gold); --panel: #650A2A; }
+[data-theme="blush"] { --bg: var(--blush); --fg: #2A0A14; --muted: #5A3440; --line: rgba(77, 0, 27, 0.18); --accent: var(--red); --panel: #E8C9CC; }
 
 [data-theme] {
     background: var(--bg);
     color: var(--fg);
 }
 
-/* With motion enabled, the body carries the (tweened) background colour */
-.has-motion [data-theme] { background: transparent; }
+/* While the colour morph runs, the body carries the background colour and
+   sections are see-through. Without it every section keeps its own colour. */
+.has-morph [data-theme] { background: transparent; }
 
 /* ---------- Base ---------- */
 *,
@@ -82,9 +85,10 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
     margin: 0;
-    background: var(--red);
+    background: var(--deep);
     color: #FFFFFF;
     font-family: var(--font-sans);
+    transition: background-color 0.9s var(--ease-out);
     font-size: clamp(16px, 0.95rem + 0.25vw, 19px);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
@@ -187,7 +191,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 /* SplitText line masks */
 .line-mask { overflow: clip; padding-bottom: 0.06em; margin-bottom: -0.06em; }
 /* room for ascenders in the footer wordmark's character masks */
-.char-mask { padding-top: 0.16em; margin-top: -0.16em; }
+.char-mask { padding: 0.16em 0.14em 0 0; margin: -0.16em -0.14em 0 0; }
 
 /* ---------- Buttons ---------- */
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -295,7 +299,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     align-items: center;
     gap: 28px;
     height: 76px;
-    padding: 0 calc(var(--gutter) + 68px) 0 var(--gutter);
+    padding: 0 calc(var(--gutter) + 150px) 0 var(--gutter);
     color: var(--cream);
     background: rgba(28, 8, 16, 0.72);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
@@ -341,44 +345,45 @@ html.js .topbar:focus-within { transform: translateY(0); }
 .topbar__nav a:hover::after { transform: scaleX(1); transform-origin: left; }
 .topbar__cta { flex: none; }
 
-/* Menu button: a gold clothes hanger that swings on hover and folds into an X */
+/* Menu button: gold pill with a label; the two lines fold into an X */
 .menu-btn {
     position: fixed;
-    top: 10px;
+    top: 14px;
     right: var(--gutter);
     z-index: 60;
-    width: 56px;
-    height: 56px;
-    padding: 0;
+    height: 48px;
+    padding: 0 18px 0 22px;
     border: 0;
     border-radius: 999px;
-    background: transparent;
-    color: var(--gold);
+    background: var(--gold);
+    color: var(--ink);
     cursor: pointer;
-    display: flex;
-    justify-content: center;
+    display: inline-flex;
     align-items: center;
-    transition: background 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+    gap: 14px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(12, 3, 7, 0.28);
+    transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
-.menu-btn.is-solid {
-    background: rgba(28, 8, 16, 0.62);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    box-shadow: inset 0 0 0 1px rgba(227, 194, 122, 0.3);
+.menu-btn:hover { background: var(--cream); }
+.menu-btn[aria-expanded="true"] { background: var(--cream); }
+.menu-btn__icon { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; width: 22px; }
+.menu-btn__icon i {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: transform 0.5s var(--ease-out), width 0.5s var(--ease-out);
 }
-.menu-btn[aria-expanded="true"] { background: transparent; box-shadow: none; }
-.hanger {
-    width: 40px;
-    height: 40px;
-    overflow: visible;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-.hanger__swing { transform-box: view-box; transform-origin: 22px 6px; }
-.menu-btn[aria-expanded="false"]:hover .hanger__swing { animation: wobble 1.6s ease-out; }
+.menu-btn__icon i:last-child { width: 13px; }
+.menu-btn:hover .menu-btn__icon i:last-child { width: 22px; }
+.menu-btn[aria-expanded="true"] .menu-btn__icon i:first-child { transform: translateY(3.5px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] .menu-btn__icon i:last-child { width: 22px; transform: translateY(-3.5px) rotate(-45deg); }
 
 .menu {
     position: fixed;
@@ -510,6 +515,18 @@ html.js .best-second-subtitle {
 }
 html.js .fuer-damen-label { opacity: 0; }
 
+.fuer-damen-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: calc(var(--title-fluid) * 0.13);
+    line-height: 1.1;
+    color: var(--gold);
+    white-space: nowrap;
+    rotate: -7deg;
+    padding: 0 0.12em;
+}
+.fuer-damen-label .fuer-damen-text { width: auto; }
 .fuer-damen-label .fuer-damen-graphic {
     width: calc(var(--title-fluid) * 0.32);
     height: auto;
@@ -517,12 +534,45 @@ html.js .fuer-damen-label { opacity: 0; }
 }
 html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
 
-.fuer-damen-label.handwriting .fuer-damen-graphic { animation: handwrite 1.2s ease-out forwards; }
+.fuer-damen-label.handwriting .fuer-damen-graphic { animation: handwrite 1.4s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
 
 @keyframes handwrite {
     0% { clip-path: inset(0 100% 0 0); }
     100% { clip-path: inset(0 0 0 0); }
 }
+
+/* Gold light and sparkles that come out of the wardrobe as it opens */
+.wardrobe-stage { position: relative; display: flex; justify-content: center; }
+.wardrobe-glow {
+    position: absolute;
+    left: 50%;
+    top: 58%;
+    width: 150%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(closest-side, rgba(255, 220, 130, 0.62), rgba(202, 153, 33, 0.26) 45%, rgba(202, 153, 33, 0) 72%);
+    opacity: 0;
+    scale: 0.4;
+    pointer-events: none;
+}
+.wardrobe-stage .wardrobe { position: relative; z-index: 1; }
+.sparkles { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.sparkle {
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    filter: drop-shadow(0 0 6px rgba(255, 214, 120, 0.9));
+    background: var(--gold-light);
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+    opacity: 0;
+}
+.sparkle:nth-child(3n) { background: #FFF3D1; }
+#wardrobe-svg.is-open #crown-dot-left { animation: jump 0.55s ease-in-out; }
+#wardrobe-svg.is-open #crown-dot-center { animation: jump 0.55s ease-in-out 0.1s; }
+#wardrobe-svg.is-open #crown-dot-right { animation: jump 0.55s ease-in-out 0.2s; }
 
 .wardrobe {
     width: clamp(320px, 50vw, 580px);
@@ -920,7 +970,7 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
     right: calc(max(var(--gutter), (100vw - 1320px) / 2) - 28px);
     height: 8px;
     border-radius: 8px;
-    background: rgba(227, 194, 122, 0.25);
+    background: rgba(77, 0, 27, 0.14);
 }
 .rail::before,
 .rail::after {
@@ -958,6 +1008,7 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
     align-items: center;
     transform-origin: 50% 12px;
     rotate: calc(var(--sway, 0) * 1deg);
+    filter: drop-shadow(0 16px 22px rgba(77, 0, 27, 0.2));
     will-change: transform;
 }
 .hook {
@@ -966,7 +1017,7 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
     width: 40px;
     height: 72px;
     fill: none;
-    stroke: var(--gold-light);
+    stroke: var(--deep);
     stroke-width: 3;
     stroke-linecap: round;
     overflow: visible;
@@ -998,12 +1049,14 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
     height: 18px;
     margin-left: -9px;
     border-radius: 999px;
-    background: var(--ink);
+    background: var(--bg);
     box-shadow: 0 0 0 3px var(--tag-ring);
 }
+.tag--deep { --tag-bg: var(--deep); --tag-fg: var(--cream); --tag-accent: var(--gold-light); --tag-ring: var(--gold-light); }
+.tag--ink { --tag-bg: var(--ink); --tag-fg: var(--cream); --tag-accent: var(--gold); --tag-ring: var(--gold); }
 .tag--gold { --tag-bg: var(--gold); --tag-fg: var(--ink); --tag-accent: var(--deep); --tag-ring: var(--deep); }
 .tag--red { --tag-bg: var(--red); --tag-fg: #FFFFFF; --tag-accent: var(--gold-light); --tag-ring: var(--gold-light); }
-.tag--paper { --tag-bg: var(--bone); width: clamp(240px, 19vw, 290px); align-items: flex-start; }
+.tag--paper { --tag-bg: #FFFDF8; width: clamp(240px, 19vw, 290px); align-items: flex-start; }
 .tag__top { display: flex; justify-content: space-between; align-items: flex-start; }
 .tag__num {
     font-family: var(--font-display);
@@ -1055,10 +1108,10 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
 }
 
 /* Without the animated rail (reduced motion, no JS, scripts failed) the tags wrap instead of overflowing */
-html:not(.has-motion) .rail-stage { width: auto; }
-html:not(.has-motion) .rail { display: none; }
-html:not(.has-motion) .sell__track { flex-wrap: wrap; justify-content: center; gap: 40px clamp(20px, 2.6vw, 44px); }
-html:not(.has-motion) .hang::before { display: block; }
+html:not(.has-rail) .rail-stage { width: auto; }
+html:not(.has-rail) .rail { display: none; }
+html:not(.has-rail) .sell__track { flex-wrap: wrap; justify-content: center; gap: 40px clamp(20px, 2.6vw, 44px); }
+html:not(.has-rail) .hang::before { display: block; }
 
 /* =====================================================================
    ÜBER UNS (Gabi)
@@ -1208,8 +1261,9 @@ html:not(.has-motion) .hang::before { display: block; }
 .footer { padding: 96px 0 calc(48px + env(safe-area-inset-bottom)); overflow: clip; }
 .footer__word {
     font-family: var(--font-display);
-    font-size: min(calc((100vw - 2 * var(--gutter)) / 5.7), 230px);
+    font-size: min(calc((100vw - 2 * var(--gutter)) / 6.3), 220px);
     line-height: 0.86;
+    padding-right: 0.15em;
     letter-spacing: -0.03em;
     white-space: nowrap;
 }
@@ -1345,7 +1399,7 @@ html:not(.has-motion) .hang::before { display: block; }
 @media (max-width: 760px) {
     .topbar { height: 64px; }
     .topbar__cta { display: none; }
-    .menu-btn { top: 4px; }
+    .menu-btn { top: 8px; height: 44px; padding: 0 16px 0 18px; gap: 12px; }
     .menu__art { display: none; }
     .strip-nav { display: none; }
     .feed__bar { justify-content: flex-start; }

@@ -99,7 +99,7 @@ function initWardrobeAnimation({ reducedMotion, onProgress }) {
       const scaleTrigger = 0.7;
       const rawScale = Math.min(Math.max((animProgress - scaleTrigger) / (1 - scaleTrigger), 0), 1);
       const eased = 1 - Math.pow(1 - rawScale, 3);
-      const maxScale = 1.04;
+      const maxScale = 1.12; // grows a little more as it opens (was 1.04)
       const scaleValue = 1 + (maxScale - 1) * eased;
       wardrobeSvg.style.transform = `scale(${scaleValue})`;
     }

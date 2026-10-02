@@ -16,7 +16,12 @@ const finePointer = window.matchMedia('(pointer: fine)').matches;
 const qs = (s, root = document) => root.querySelector(s);
 const qsa = (s, root = document) => [...root.querySelectorAll(s)];
 
-const THEME_BG = { red: '#990036', ink: '#1C0810', bone: '#F3EADF', deep: '#4D001B' };
+const THEME_BG = { red: '#990036', ink: '#1C0810', bone: '#F3EADF', deep: '#4D001B', blush: '#F2DCDD' };
+
+// Run one feature; if it fails, log it and keep the rest of the page working
+const safe = (fn, ...args) => {
+  try { return fn(...args); } catch (err) { console.error('[schrankgold]', fn.name, err); return undefined; }
+};
 
 /* ------------------------------ Smooth scroll ------------------------------ */
 let lenis = null;
@@ -55,26 +60,6 @@ function inlineSvgs() {
 }
 
 /* ------------------------------ Menu ------------------------------ */
-// The menu button is a clothes hanger; open, its arms fold into an X.
-const HANGER = {
-  closed: { l: [22, 16, 5, 30], r: [22, 16, 39, 30], b: [5, 30, 39, 30], hook: 1 },
-  open: { l: [33, 11, 11, 33], r: [11, 11, 33, 33], b: [22, 22, 22, 22], hook: 0 }
-};
-
-function setHanger(btn, state) {
-  const shape = HANGER[state];
-  const attrs = ([x1, y1, x2, y2]) => ({ x1, y1, x2, y2 });
-  const parts = { l: qs('.hanger__l', btn), r: qs('.hanger__r', btn), b: qs('.hanger__b', btn) };
-  const hook = qs('.hanger__hook', btn);
-  if (motion) {
-    for (const k of ['l', 'r', 'b']) gsap.to(parts[k], { attr: attrs(shape[k]), duration: 0.55, ease: 'expo.inOut', overwrite: true });
-    gsap.to(hook, { opacity: shape.hook, duration: 0.3, overwrite: true });
-  } else {
-    for (const k of ['l', 'r', 'b']) Object.entries(attrs(shape[k])).forEach(([n, v]) => parts[k]?.setAttribute(n, v));
-    if (hook) hook.style.opacity = shape.hook;
-  }
-}
-
 function initMenu() {
   const btn = qs('[data-menu-btn]');
   const menu = qs('[data-menu]');
@@ -94,7 +79,6 @@ function initMenu() {
     btn.setAttribute('aria-label', 'Menü schließen');
     background.forEach(n => { n.inert = true; });
     lenis?.stop();
-    setHanger(btn, 'open');
     if (motion) {
       tl?.kill();
       const at = origin();
@@ -112,7 +96,6 @@ function initMenu() {
     btn.setAttribute('aria-expanded', 'false');
     btn.setAttribute('aria-label', 'Menü öffnen');
     background.forEach(n => { n.inert = false; });
-    setHanger(btn, 'closed');
     const done = () => { menu.hidden = true; lenis?.start(); if (after) after(); };
     if (motion) {
       tl?.kill();
@@ -143,7 +126,6 @@ function initMenu() {
 function initChrome() {
   const topbar = qs('[data-topbar]');
   const quickbar = qs('[data-quickbar]');
-  const menuBtn = qs('[data-menu-btn]');
   const landing = qs('#landing');
   let lastY = window.scrollY;
 
@@ -156,7 +138,6 @@ function initChrome() {
     else if (goingUp) topbar.classList.add('is-visible');
     else if (goingDown) topbar.classList.remove('is-visible');
     quickbar?.classList.toggle('is-visible', pastHero);
-    menuBtn?.classList.toggle('is-solid', pastHero);
     lastY = y;
   };
   window.addEventListener('scroll', update, { passive: true });
@@ -165,26 +146,39 @@ function initChrome() {
 
 /* ------------------------------ Motion ------------------------------ */
 function initThemeMorph() {
-  // The section crossing the 55% line of the viewport decides the page colour.
+  // The section crossing the 55% line of the viewport sets the page colour.
+  // Driven by plain scroll/resize events (not ScrollTrigger), so it keeps working
+  // in embedded viewers; sections only turn see-through once this runs.
   const meta = qs('meta[name="theme-color"]');
   const sections = qsa('[data-theme]');
+  if (!sections.length) return;
   let current = null;
+  let queued = false;
   const pick = () => {
+    queued = false;
+    const doc = document.documentElement;
+    const atEnd = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
     const line = window.innerHeight * 0.55;
-    const atEnd = window.scrollY >= ScrollTrigger.maxScroll(window) - 2;
-    const active = atEnd ? sections[sections.length - 1] : sections.find(s => {
-      const r = s.getBoundingClientRect();
+    const active = atEnd ? sections[sections.length - 1] : sections.find(sec => {
+      const r = sec.getBoundingClientRect();
       return r.top <= line && r.bottom > line;
     });
-    const theme = active ? active.dataset.theme : 'red';
+    const theme = (active || sections[0]).dataset.theme;
     if (theme === current) return;
     current = theme;
-    const color = THEME_BG[theme];
-    gsap.to(document.body, { backgroundColor: color, duration: 0.8, ease: 'power2.out', overwrite: 'auto' });
-    meta?.setAttribute('content', color);
+    document.body.style.backgroundColor = THEME_BG[theme];
+    meta?.setAttribute('content', THEME_BG[theme]);
   };
-  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: pick, onRefresh: pick });
+  const queue = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(pick);
+  };
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  lenis?.on('scroll', queue);
   pick();
+  document.documentElement.classList.add('has-morph');
 }
 
 function initHeroIntro() {
@@ -405,6 +399,7 @@ function initSellMotion() {
   };
 
   mm.add('(min-width: 761px)', () => {
+    document.documentElement.classList.add('has-rail');
     gsap.set(swings, { opacity: 0 });
     hung.clear();
     const distance = () => Math.max(stage.scrollWidth - window.innerWidth, 0);
@@ -463,14 +458,18 @@ function initSellMotion() {
         }
       })
     });
-    return () => stage.removeEventListener('focusin', onFocus);
+    return () => {
+      stage.removeEventListener('focusin', onFocus);
+      document.documentElement.classList.remove('has-rail');
+    };
   });
 
   // gsap.matchMedia() resets the scroll position while it rebuilds the rail across
   // the 760/761px breakpoint (e.g. turning a phone); put the visitor back.
   let savedY = window.scrollY;
   window.addEventListener('scroll', () => { savedY = window.scrollY; }, { passive: true });
-  window.matchMedia('(max-width: 760px)').addEventListener('change', () => {
+  const mql = window.matchMedia('(max-width: 760px)');
+  (mql.addEventListener ? mql.addEventListener.bind(mql, 'change') : mql.addListener.bind(mql))(() => {
     const y = savedY;
     requestAnimationFrame(() => {
       window.scrollTo(0, y);
@@ -552,30 +551,85 @@ function initMagnetic() {
   });
 }
 
+/* ------------------------------ Wardrobe effects ------------------------------ */
+function createWardrobeFx() {
+  const glow = qs('[data-wardrobe-glow]');
+  const box = qs('[data-sparkles]');
+  if (!glow || !box || !motion) return () => {};
+  const sparks = Array.from({ length: 26 }, () => {
+    const sp = document.createElement('span');
+    sp.className = 'sparkle';
+    box.append(sp);
+    return sp;
+  });
+  let loops = [];
+  const start = () => {
+    if (loops.length) return;
+    const size = Math.max(box.offsetWidth, box.offsetHeight);
+    loops = sparks.map((sp, i) => {
+      const angle = gsap.utils.random(-165, -15) * Math.PI / 180; // fan upwards and sideways
+      const dist = gsap.utils.random(0.3, 0.7) * size;
+      return gsap.timeline({ repeat: -1, delay: i * 0.11, repeatDelay: gsap.utils.random(0.1, 1.2) })
+        .fromTo(sp, { x: 0, y: 0, scale: 0, opacity: 0, rotation: 0 }, {
+          x: Math.cos(angle) * dist,
+          y: Math.sin(angle) * dist,
+          scale: gsap.utils.random(0.5, 1.5),
+          rotation: gsap.utils.random(-180, 180),
+          opacity: 1,
+          duration: gsap.utils.random(1.4, 2.4),
+          ease: 'power2.out'
+        })
+        .to(sp, { opacity: 0, duration: 0.6 }, '-=0.6');
+    });
+  };
+  const stop = () => {
+    if (!loops.length) return;
+    loops.forEach(t => t.kill());
+    loops = [];
+    gsap.to(sparks, { opacity: 0, duration: 0.4 });
+  };
+  return (progress, anim) => {
+    glow.style.opacity = String(Math.min(1, anim * 1.15));
+    glow.style.scale = String(0.4 + anim * 0.9);
+    if (anim > 0.55) start();
+    else if (anim < 0.4) stop();
+    qs('#wardrobe-svg')?.classList.toggle('is-open', anim > 0.97);
+  };
+}
+
 /* ------------------------------ Boot ------------------------------ */
 async function boot() {
   const yearEl = qs('[data-year]');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  initMenu();
-  initChrome();
-  initHours();
-  initDirections();
-  initMap();
+  safe(initMenu);
+  safe(initChrome);
+  safe(initHours);
+  safe(initDirections);
+  safe(initMap);
+  if (motion) safe(initThemeMorph);
 
   const hint = qs('.scroll-hint');
+  const wardrobeFx = safe(createWardrobeFx) || (() => {});
   const wardrobeReady = loadWardrobe({
     reducedMotion,
-    onProgress: p => { if (hint) hint.style.opacity = String(Math.max(0, 1 - p * 14)); }
+    onProgress: (p, anim) => {
+      if (hint) hint.style.opacity = String(Math.max(0, 1 - p * 14));
+      wardrobeFx(p, anim);
+    }
   });
   const svgsReady = inlineSvgs();
 
   if (motion) {
     await wardrobeReady;
-    initHeroIntro();
+    safe(initHeroIntro);
   }
 
-  await initInstagram({ lenis, reducedMotion: !motion });
+  try {
+    await initInstagram({ lenis, reducedMotion: !motion });
+  } catch (err) {
+    console.error('[schrankgold] instagram', err);
+  }
   await svgsReady;
 
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
@@ -584,18 +638,20 @@ async function boot() {
     return;
   }
 
-  initSellMotion(); // pins first, so every trigger below accounts for the pin spacing
-  initThemeMorph();
-  initTextReveals();
-  initParallax();
-  initStoriesMotion();
-  initMarquee();
-  initFeedMotion();
-  initGabiMotion();
-  initHistoryMotion();
-  initVisitMotion();
-  initMagnetic();
+  safe(initSellMotion); // pins first, so every trigger below accounts for the pin spacing
+  safe(initTextReveals);
+  safe(initParallax);
+  safe(initStoriesMotion);
+  safe(initMarquee);
+  safe(initFeedMotion);
+  safe(initGabiMotion);
+  safe(initHistoryMotion);
+  safe(initVisitMotion);
+  safe(initMagnetic);
   ScrollTrigger.refresh();
+  // Layout can settle late in embedded viewers (images, a frame that was hidden while loading)
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) ScrollTrigger.refresh(); });
 
   // The browser jumped to #section before content and pin spacing existed
   const target = hashTarget();

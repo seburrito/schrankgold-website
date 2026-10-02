@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Schrankgold | Best Second in Erding</title>
   <meta name="description" content="SchrankGold - Dein Best-Second-Hand Laden für Damen in Erding. Hochwertige Mode, nachhaltig und mit persönlicher Beratung. Besuche uns für einzigartige Lieblingsstücke." />
-  <meta name="theme-color" content="#990036" />
+  <meta name="theme-color" content="#4D001B" />
 
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
@@ -82,16 +82,10 @@
     </a>
   </header>
 
-  <!-- Menu button: a gold clothes hanger that turns into an X -->
+  <!-- Menu button: gold pill, the two lines fold into an X -->
   <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu" data-menu-btn>
-    <svg class="hanger" viewBox="0 0 44 44" aria-hidden="true">
-      <g class="hanger__swing">
-        <path class="hanger__hook" d="M22 16 V13.2 c0 -1.6 3.6 -2 3.6 -5 a3.6 3.6 0 0 0 -7.2 0"></path>
-        <line class="hanger__l" x1="22" y1="16" x2="5" y2="30"></line>
-        <line class="hanger__r" x1="22" y1="16" x2="39" y2="30"></line>
-        <line class="hanger__b" x1="5" y1="30" x2="39" y2="30"></line>
-      </g>
-    </svg>
+    <span class="menu-btn__label" aria-hidden="true">Menü</span>
+    <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i></span>
   </button>
 
   <div class="menu" id="menu" hidden data-menu data-lenis-prevent>
@@ -119,9 +113,13 @@
   <main id="main">
 
     <!-- ===================== HERO: original wardrobe animation ===================== -->
-    <section class="landing-section" id="landing" data-theme="red" aria-label="SchrankGold – best second für Damen">
+    <section class="landing-section" id="landing" data-theme="deep" aria-label="SchrankGold – best second für Damen">
       <div class="content-container">
-        <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"><noscript><img src="assets/wardrobe.svg" alt="" /></noscript></div>
+        <div class="wardrobe-stage">
+          <div class="wardrobe-glow" aria-hidden="true" data-wardrobe-glow></div>
+          <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"><noscript><img src="assets/wardrobe.svg" alt="" /></noscript></div>
+          <div class="sparkles" aria-hidden="true" data-sparkles></div>
+        </div>
         <div class="branding-block">
           <h1 class="schrankgold-title">
             <img src="assets/title.svg" alt="Schrankgold" class="title-graphic" />
@@ -130,7 +128,7 @@
             <img src="assets/subtitle.svg" alt="best second" class="subtitle-graphic" />
           </div>
           <div class="fuer-damen-label">
-            <img src="assets/fuer-damen.svg" alt="für Damen" class="fuer-damen-graphic" />
+            <span class="fuer-damen-graphic fuer-damen-text">für Damen</span>
           </div>
         </div>
         <div class="scroll-hint" aria-hidden="true"><i></i></div>
@@ -209,7 +207,7 @@
     </section>
 
     <!-- ===================== WARENANNAHME: tags on a clothes rail ===================== -->
-    <section class="sell" id="abgeben" data-theme="ink">
+    <section class="sell" id="abgeben" data-theme="bone">
       <div class="sell__pin" data-sell-pin>
         <div class="wrap sell__head">
           <div class="heading">
@@ -225,14 +223,14 @@
             <li class="hang">
               <div class="hang__swing">
                 <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
-                <article class="tag tag--cream">
+                <article class="tag tag--deep">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">1</span>
                     <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path><path d="M9 15l2 2 4-4"></path></svg>
                   </div>
                   <h4 class="tag__title">Dein Termin bei mir</h4>
                   <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich telefonisch oder über Whatsapp.</p>
-                  <a class="btn btn--ink btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
+                  <a class="btn btn--gold btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
                     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
                     Telefon
                   </a>
@@ -268,7 +266,7 @@
             <li class="hang">
               <div class="hang__swing">
                 <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
-                <article class="tag tag--cream">
+                <article class="tag tag--ink">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">4</span>
                     <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6.5" rx="7.5" ry="3"></ellipse><path d="M4.5 6.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"></path><path d="M4.5 11.5v5c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-5"></path></svg>
@@ -294,7 +292,7 @@
     </section>
 
     <!-- ===================== ÜBER UNS (Gabi) ===================== -->
-    <section class="gabi" id="gabi" data-theme="bone">
+    <section class="gabi" id="gabi" data-theme="blush">
       <div class="wrap gabi__inner">
         <figure class="gabi__visual" data-gabi-visual>
           <div class="gabi__arch">
@@ -380,7 +378,7 @@
   </main>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="footer" id="kontakt" data-theme="deep" aria-labelledby="footer-heading">
+  <footer class="footer" id="kontakt" data-theme="ink" aria-labelledby="footer-heading">
     <h2 id="footer-heading" class="visually-hidden">Kontakt und Rechtliches</h2>
     <div class="wrap">
       <p class="visually-hidden">SchrankGold</p>
