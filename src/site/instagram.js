@@ -105,7 +105,7 @@ export async function initInstagram({ lenis, reducedMotion }) {
   const viewer = createViewer({ slides, lenis, reducedMotion });
   renderStories(slides, viewer);
   renderFeed(feed, reducedMotion);
-  initStripNav();
+  initStripNav(reducedMotion);
   return { mode };
 }
 
@@ -142,14 +142,15 @@ function renderStories(slides, viewer) {
   });
 }
 
-function initStripNav() {
+function initStripNav(reducedMotion) {
   const track = document.querySelector('[data-stories]');
   const prev = document.querySelector('[data-strip-prev]');
   const next = document.querySelector('[data-strip-next]');
   if (!track) return;
   const step = () => (track.querySelector('.story-card')?.offsetWidth || 240) * 2 + 36;
-  prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-  next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  const behavior = reducedMotion ? 'auto' : 'smooth';
+  prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior }));
+  next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior }));
 
   // Drag to scroll with the mouse (touch scrolls natively)
   let down = false; let startX = 0; let startLeft = 0; let moved = false;
@@ -232,10 +233,10 @@ function renderFeed(feed, reducedMotion) {
     videos.forEach(v => io.observe(v));
   }
 
-  initFeedFilter(grid);
+  initFeedFilter(grid, reducedMotion);
 }
 
-function initFeedFilter(grid) {
+function initFeedFilter(grid, reducedMotion) {
   const tabs = document.querySelectorAll('[data-filter]');
   const gsap = window.gsap;
   const Flip = window.Flip;
@@ -248,7 +249,10 @@ function initFeedFilter(grid) {
         t.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       const posts = [...grid.querySelectorAll('.post')];
-      const state = Flip && gsap ? Flip.getState(posts) : null;
+      // Once the visitor filters, every post is shown in full (no pending scroll reveal)
+      if (gsap) gsap.set(posts, { clearProps: 'clipPath' });
+      posts.forEach(p => { p.style.clipPath = ''; });
+      const state = Flip && gsap && !reducedMotion ? Flip.getState(posts) : null;
       posts.forEach(p => { p.hidden = !(filter === 'all' || p.dataset.kind === filter); });
       if (state) {
         Flip.from(state, {
@@ -257,7 +261,8 @@ function initFeedFilter(grid) {
           stagger: 0.03,
           absolute: true,
           onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' }),
-          onLeave: els => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 })
+          onLeave: els => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 }),
+          onComplete: () => window.ScrollTrigger?.refresh()
         });
       }
     });
@@ -391,6 +396,7 @@ function createViewer({ slides, lenis, reducedMotion }) {
     stopProgress();
     document.removeEventListener('keydown', onKey);
     const finish = () => {
+      if (gsap) gsap.set(frame, { clearProps: 'transform,opacity' });
       root.hidden = true;
       media.textContent = '';
       video = null;
@@ -438,7 +444,7 @@ function createViewer({ slides, lenis, reducedMotion }) {
   frame.addEventListener('touchmove', e => {
     if (startY == null) return;
     const dy = e.touches[0].clientY - startY;
-    if (dy > 0 && gsap) gsap.set(frame, { y: dy * 0.6, scale: 1 - dy / 2000 });
+    if (dy > 0 && gsap && !reducedMotion) gsap.set(frame, { y: dy * 0.6, scale: 1 - dy / 2000 });
   }, { passive: true });
   frame.addEventListener('touchend', e => {
     if (startY == null) return;

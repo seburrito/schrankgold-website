@@ -24,36 +24,37 @@ function intervalsFor(date) {
 
 const pad = n => (n < 10 ? '0' : '') + n;
 const fmt = d => pad(d.getHours()) + ':' + pad(d.getMinutes());
-const addMinutes = (date, mins) => new Date(date.getTime() + mins * 60000);
 
 export function classify(now = new Date()) {
   const mNow = now.getHours() * 60 + now.getMinutes();
-  let minutesUntilClose = null;
-  let minutesUntilOpen = null;
+  // Build targets from the calendar date + minute of day, so they stay right
+  // across daylight-saving changes (adding raw minutes would be an hour off).
+  const at = (dayOffset, minute) => new Date(now.getFullYear(), now.getMonth(), now.getDate() + dayOffset, 0, minute);
+  let closeAt = null;
+  let openAt = null;
   for (const [s, e] of intervalsFor(now)) {
-    if (mNow >= s && mNow < e) { minutesUntilClose = e - mNow; break; }
-    if (mNow < s && minutesUntilOpen == null) minutesUntilOpen = s - mNow;
+    if (mNow >= s && mNow < e) { closeAt = at(0, e); break; }
+    if (mNow < s && openAt == null) openAt = at(0, s);
   }
-  if (minutesUntilClose != null) {
-    const closeTime = fmt(addMinutes(now, minutesUntilClose));
+  if (closeAt) {
+    const minutesUntilClose = (closeAt - now) / 60000;
     return minutesUntilClose > 60
-      ? { isOpen: true, message: `Jetzt geöffnet bis ${closeTime} Uhr` }
-      : { isOpen: true, message: `Noch geöffnet bis ${closeTime} Uhr` };
+      ? { isOpen: true, message: `Jetzt geöffnet bis ${fmt(closeAt)} Uhr` }
+      : { isOpen: true, message: `Noch geöffnet bis ${fmt(closeAt)} Uhr` };
   }
-  if (minutesUntilOpen == null) {
+  if (openAt == null) {
     // search next open day up to 14 days ahead (covers month boundary for Saturdays)
     for (let d = 1; d <= 14; d++) {
-      const future = new Date(now.getFullYear(), now.getMonth(), now.getDate() + d);
-      const intervals = intervalsFor(future);
-      if (intervals.length) { minutesUntilOpen = (24 * 60 - mNow) + (d - 1) * 24 * 60 + intervals[0][0]; break; }
+      const intervals = intervalsFor(at(d, 0));
+      if (intervals.length) { openAt = at(d, intervals[0][0]); break; }
     }
   }
-  if (minutesUntilOpen == null) return { isOpen: false, message: 'Heute geschlossen' };
-  const target = addMinutes(now, minutesUntilOpen);
-  const sameDay = target.toDateString() === now.toDateString();
-  if (minutesUntilOpen <= 60) return { isOpen: false, message: `Öffnet bald um ${fmt(target)} Uhr` };
-  if (sameDay) return { isOpen: false, message: `Jetzt geschlossen bis ${fmt(target)} Uhr` };
-  return { isOpen: false, message: `Jetzt geschlossen bis ${WEEKDAYS[target.getDay()]}. ${fmt(target)} Uhr` };
+  if (openAt == null) return { isOpen: false, message: 'Heute geschlossen' };
+  const minutesUntilOpen = (openAt - now) / 60000;
+  const sameDay = openAt.toDateString() === now.toDateString();
+  if (minutesUntilOpen <= 60) return { isOpen: false, message: `Öffnet bald um ${fmt(openAt)} Uhr` };
+  if (sameDay) return { isOpen: false, message: `Jetzt geschlossen bis ${fmt(openAt)} Uhr` };
+  return { isOpen: false, message: `Jetzt geschlossen bis ${WEEKDAYS[openAt.getDay()]}. ${fmt(openAt)} Uhr` };
 }
 
 export function initHours() {

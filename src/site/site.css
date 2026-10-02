@@ -76,7 +76,9 @@
 *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
-html:not(.has-motion) { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) {
+    html:not(.has-motion) { scroll-behavior: smooth; }
+}
 
 body {
     margin: 0;
@@ -93,7 +95,10 @@ body {
 }
 
 img, svg, video { display: block; max-width: 100%; }
+main { overflow-x: clip; }
 main section[id], footer[id] { scroll-margin-top: 64px; }
+main section[tabindex="-1"]:focus, footer[tabindex="-1"]:focus { outline: none; }
+.nowrap { white-space: nowrap; }
 a { color: inherit; }
 button { font: inherit; color: inherit; }
 p { margin: 0; }
@@ -181,10 +186,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 
 /* SplitText line masks */
 .line-mask { overflow: clip; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+/* room for ascenders in the footer wordmark's character masks */
+.char-mask { padding-top: 0.16em; margin-top: -0.16em; }
 
 /* ---------- Buttons ---------- */
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
-.btn-row--center { justify-content: center; }
 
 .btn {
     position: relative;
@@ -223,8 +229,6 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .btn--light::before { background: var(--gold); }
 .btn--ghost { border-color: currentColor; color: var(--fg); font-weight: 500; }
 .btn--ghost:hover { color: var(--ink); border-color: var(--cream); }
-[data-theme="bone"] .btn--ghost:hover { color: var(--cream); }
-[data-theme="bone"] .btn--ghost::before { background: var(--red); }
 
 .round-btn {
     width: 52px;
@@ -297,10 +301,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     backdrop-filter: blur(16px) saturate(140%);
     border-bottom: 1px solid rgba(227, 194, 122, 0.16);
-    transform: translateY(-100%);
     transition: transform 0.6s var(--ease-out);
 }
-.topbar.is-visible { transform: translateY(0); }
+html.js .topbar { transform: translateY(-100%); }
+html.js .topbar.is-visible,
+html.js .topbar:focus-within { transform: translateY(0); }
 .topbar__brand {
     display: flex;
     align-items: center;
@@ -387,6 +392,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     gap: 40px;
     padding: 96px var(--gutter) 48px;
     overflow-y: auto;
+    overscroll-behavior: contain;
     clip-path: circle(0% at calc(100% - var(--gutter) - 28px) 38px);
 }
 .menu[hidden] { display: none; }
@@ -400,7 +406,23 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     transition: color 0.3s;
 }
 .menu__nav a:hover { color: var(--gold); font-style: italic; }
-.menu__foot { display: flex; flex-wrap: wrap; gap: 12px 28px; font-size: 16px; }
+.menu__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; font-size: 15px; }
+.menu__social { display: flex; gap: 10px; }
+.menu__social a {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    border: 1px solid rgba(227, 194, 122, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-light);
+    transition: background 0.3s, color 0.3s;
+}
+.menu__social a:hover { background: var(--gold); color: var(--ink); }
+.menu__legal { color: var(--muted); }
+.menu__legal a { text-decoration: none; }
+.menu__legal a:hover { color: var(--gold); }
 .menu__art {
     position: absolute;
     right: clamp(24px, 8vw, 160px);
@@ -422,10 +444,8 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     perspective: 1000px;
 }
 
-.landing-scroll-spacer {
-    height: var(--landing-scroll-extra);
-    pointer-events: none;
-}
+.landing-scroll-spacer { pointer-events: none; }
+html.js .landing-scroll-spacer { height: var(--landing-scroll-extra); }
 
 .content-container {
     position: sticky;
@@ -469,9 +489,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 
 .best-second-subtitle {
+    transition: transform .5s ease-out, opacity .5s ease-out;
+}
+html.js .best-second-subtitle {
     transform: translateY(100%);
     opacity: 0;
-    transition: transform .5s ease-out, opacity .5s ease-out;
 }
 
 .best-second-subtitle .subtitle-graphic {
@@ -484,16 +506,16 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     align-self: flex-end;
     transform: translateY(-30px);
     margin-right: calc(-5px - 1.5vw);
-    opacity: 0;
     transition: opacity .2s ease-out;
 }
+html.js .fuer-damen-label { opacity: 0; }
 
 .fuer-damen-label .fuer-damen-graphic {
     width: calc(var(--title-fluid) * 0.32);
     height: auto;
     display: block;
-    clip-path: inset(0 100% 0 0);
 }
+html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
 
 .fuer-damen-label.handwriting .fuer-damen-graphic { animation: handwrite 1.2s ease-out forwards; }
 
@@ -807,7 +829,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     grid-auto-rows: clamp(150px, 19vw, 300px);
     grid-auto-flow: dense;
     gap: 14px;
-    margin: 56px 0;
+    margin: 24px 0 0;
 }
 .post {
     position: relative;
@@ -862,7 +884,6 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .post:hover .post__caption,
 .post:focus-visible .post__caption { transform: translateY(0); opacity: 1; }
 .post.is-big .post__caption { transform: none; opacity: 1; font-size: 16px; }
-.feed__grid { margin: 24px 0 0; }
 
 /* =====================================================================
    WARENANNAHME – the steps hang like price tags on a clothes rail
@@ -878,6 +899,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     gap: clamp(32px, 5vh, 64px);
     padding: clamp(88px, 11vh, 120px) 0 clamp(40px, 6vh, 72px);
     overflow: hidden;
+    overflow: clip;
 }
 .sell__head {
     display: flex;
@@ -1017,6 +1039,26 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     color: var(--tag-accent);
 }
 .tag .btn { align-self: flex-start; margin-top: 6px; }
+
+/* a short piece of rail per tag (phones, and the no-animation fallback) */
+.hang::before {
+    content: "";
+    display: none;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 150px;
+    height: 8px;
+    margin-left: -75px;
+    border-radius: 8px;
+    background: var(--gold);
+}
+
+/* Without the animated rail (reduced motion, no JS, scripts failed) the tags wrap instead of overflowing */
+html:not(.has-motion) .rail-stage { width: auto; }
+html:not(.has-motion) .rail { display: none; }
+html:not(.has-motion) .sell__track { flex-wrap: wrap; justify-content: center; gap: 40px clamp(20px, 2.6vw, 44px); }
+html:not(.has-motion) .hang::before { display: block; }
 
 /* =====================================================================
    ÜBER UNS (Gabi)
@@ -1166,7 +1208,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .footer { padding: 96px 0 calc(48px + env(safe-area-inset-bottom)); overflow: clip; }
 .footer__word {
     font-family: var(--font-display);
-    font-size: clamp(64px, 15.5vw, 252px);
+    font-size: min(calc((100vw - 2 * var(--gutter)) / 5.7), 230px);
     line-height: 0.86;
     letter-spacing: -0.03em;
     white-space: nowrap;
@@ -1258,6 +1300,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     justify-content: center;
     cursor: pointer;
 }
+.viewer__icon-btn[hidden] { display: none; }
 .viewer__icon-btn .icon { width: 24px; height: 24px; }
 .viewer__media { position: absolute; inset: 0; }
 .viewer__media img,
@@ -1313,17 +1356,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     .rail { display: none; }
     .sell__track { flex-direction: column; align-items: center; gap: 36px; }
     .hang { width: 100%; display: flex; justify-content: center; }
-    .hang::before {
-        content: "";
-        position: absolute;
-        top: 8px;
-        left: 50%;
-        width: 150px;
-        height: 8px;
-        margin-left: -75px;
-        border-radius: 8px;
-        background: var(--gold);
-    }
+    .hang::before { display: block; }
     .tag, .tag--paper { width: min(100%, 380px); }
 
     .viewer { padding: 0; }
@@ -1347,10 +1380,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
         border-radius: 22px;
         background: var(--cream);
         box-shadow: 0 14px 40px rgba(0, 0, 0, 0.4);
-        transform: translateY(calc(100% + 24px));
         transition: transform 0.6s var(--ease-out);
     }
-    .quickbar.is-visible { transform: translateY(0); }
+    html.js .quickbar { transform: translateY(calc(100% + 24px)); }
+    html.js .quickbar.is-visible,
+    html.js .quickbar:focus-within { transform: translateY(0); }
     .quickbar a {
         display: flex;
         flex-direction: column;
@@ -1367,14 +1401,41 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
     .quickbar__main { background: var(--gold); }
 }
 
+@media (max-width: 400px) {
+    /* long single words (FUNKTIONIERT'S, SCHRANKGOLD) must fit 320px phones */
+    .h2 { font-size: min(38px, 10vw); }
+}
+
+@media (max-width: 340px) {
+    .fuer-damen-label { margin-right: 0; }
+}
+
+/* Laptops with short screens: the pinned rail must fit the viewport */
+@media (min-width: 761px) and (max-height: 820px) {
+    .sell__pin { padding: 64px 0 16px; gap: 16px; }
+    .sell__head .h2 { font-size: clamp(34px, 7vh, 72px); }
+    .sell__head .underline { height: 12px; }
+    .tag { padding: 44px 24px 20px; gap: 6px; }
+    .tag__num { font-size: 48px; }
+    .tag__icon { width: 32px; height: 32px; }
+    .tag__title { margin-top: 4px; font-size: 22px; }
+    .tag p { font-size: 15px; line-height: 1.45; }
+}
+
+/* Landscape phones: keep the open menu compact */
+@media (max-height: 500px) {
+    .menu__art { display: none; }
+    .menu { justify-content: flex-start; padding-top: 72px; gap: 20px; }
+}
+
 /* Reduced motion: final states, no long scroll hold */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-    .landing-scroll-spacer { display: none; }
-    .best-second-subtitle { transform: none; opacity: 1; }
-    .fuer-damen-label { opacity: 1; }
-    .fuer-damen-label .fuer-damen-graphic { clip-path: none; }
+    html.js .landing-scroll-spacer { display: none; }
+    html.js .best-second-subtitle { transform: none; opacity: 1; }
+    html.js .fuer-damen-label { opacity: 1; }
+    html.js .fuer-damen-label .fuer-damen-graphic { clip-path: none; }
     .scroll-hint { display: none; }
-    .topbar { transform: none; }
-    .quickbar { transform: none; }
+    html.js .topbar { transform: none; }
+    html.js .quickbar { transform: none; }
 }

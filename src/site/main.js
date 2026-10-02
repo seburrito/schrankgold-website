@@ -24,11 +24,27 @@ if (motion) {
   gsap.registerPlugin(ScrollTrigger, SplitText, Flip);
   document.documentElement.classList.add('has-motion');
   if (Lenis) {
-    lenis = new Lenis({ lerp: 0.1, smoothWheel: true, anchors: { offset: -64 } });
+    lenis = new Lenis({ lerp: 0.1, smoothWheel: true, anchors: true });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(time => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
   }
+}
+
+/* ------------------------------ Deep links ------------------------------ */
+const LEGACY_HASH = { welcome: 'willkommen', 'so-funktionierts': 'abgeben', instagram: 'neuigkeiten', location: 'besuch', 'opening-hours': 'besuch', story: 'geschichte', contact: 'kontakt' };
+{
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (LEGACY_HASH[h]) history.replaceState(null, '', '#' + LEGACY_HASH[h]);
+}
+const hashTarget = () => {
+  const id = decodeURIComponent(location.hash.slice(1));
+  return id ? document.getElementById(id) : null;
+};
+// Move keyboard focus to a section after jumping to it
+function focusSection(target) {
+  if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+  target.focus({ preventScroll: true });
 }
 
 /* ------------------------------ Inline SVGs ------------------------------ */
@@ -63,7 +79,7 @@ function initMenu() {
   const btn = qs('[data-menu-btn]');
   const menu = qs('[data-menu]');
   if (!btn || !menu) return;
-  const background = qsa('main, footer, [data-topbar], [data-quickbar]');
+  const background = qsa('main, footer, [data-topbar], [data-quickbar], .skip-link');
   let isOpen = false;
   let tl = null;
   const origin = () => {
@@ -85,7 +101,7 @@ function initMenu() {
       tl = gsap.timeline()
         .fromTo(menu, { clipPath: `circle(0% at ${at})` }, { clipPath: `circle(150% at ${at})`, duration: 0.9, ease: 'expo.inOut' })
         .fromTo(qsa('[data-menu-link]', menu), { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.05, duration: 0.8, ease: 'expo.out' }, '-=0.45')
-        .fromTo(qs('[data-menu-art]', menu), { opacity: 0, scale: 0.7, rotation: -8, yPercent: -40 }, { opacity: 1, scale: 1, rotation: 0, yPercent: -50, duration: 1.4, ease: 'elastic.out(1, 0.5)' }, '-=0.9');
+        .fromTo(qs('[data-menu-art]', menu), { opacity: 0, scale: 0.7, rotation: -8, y: 0, yPercent: -40 }, { opacity: 1, scale: 1, rotation: 0, y: 0, yPercent: -50, duration: 1.4, ease: 'elastic.out(1, 0.5)' }, '-=0.9');
     } else {
       menu.style.clipPath = 'none';
     }
@@ -115,8 +131,9 @@ function initMenu() {
       const target = qs(a.getAttribute('href'));
       close(() => {
         if (!target) return;
-        if (lenis) lenis.scrollTo(target, { offset: -64 });
-        else target.scrollIntoView({ behavior: 'smooth' });
+        if (lenis) lenis.scrollTo(target);
+        else target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
+        focusSection(target);
       });
     });
   });
@@ -154,7 +171,8 @@ function initThemeMorph() {
   let current = null;
   const pick = () => {
     const line = window.innerHeight * 0.55;
-    const active = sections.find(s => {
+    const atEnd = window.scrollY >= ScrollTrigger.maxScroll(window) - 2;
+    const active = atEnd ? sections[sections.length - 1] : sections.find(s => {
       const r = s.getBoundingClientRect();
       return r.top <= line && r.bottom > line;
     });
@@ -184,6 +202,8 @@ function initTextReveals() {
     SplitText.create(el, {
       type: 'lines',
       mask: 'lines',
+      linesClass: 'line',
+      aria: 'none',
       autoSplit: true,
       onSplit: self => gsap.from(self.lines, {
         yPercent: 110,
@@ -198,6 +218,7 @@ function initTextReveals() {
   qsa('[data-scrub-words]').forEach(el => {
     SplitText.create(el, {
       type: 'words',
+      aria: 'none',
       autoSplit: true,
       onSplit: self => gsap.fromTo(self.words, { opacity: 0.16 }, {
         opacity: 1,
@@ -231,6 +252,7 @@ function initTextReveals() {
     SplitText.create(word, {
       type: 'chars',
       mask: 'chars',
+      charsClass: 'char',
       autoSplit: true,
       onSplit: self => gsap.from(self.chars, {
         yPercent: 105,
@@ -252,7 +274,7 @@ function initParallax() {
     });
   });
   gsap.from('.tower', {
-    yPercent: 40,
+    y: 160,
     opacity: 0,
     duration: 1.6,
     ease: 'expo.out',
@@ -291,6 +313,7 @@ function initMarquee() {
   const track = qs('.marquee__track');
   if (!track) return;
   const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 30, repeat: -1 });
+  loop.totalTime(loop.duration() * 1000); // far from 0, so scrolling up (reverse) never completes it
   let direction = 1;
   ScrollTrigger.create({
     onUpdate: self => {
@@ -374,8 +397,16 @@ function initSellMotion() {
   }
 
   const mm = gsap.matchMedia();
+  const hung = new Set();
+  const hang = (swing, i, from) => {
+    if (hung.has(swing)) return;
+    hung.add(swing);
+    hangTag(swing, from ?? (i % 2 ? 30 : -34));
+  };
+
   mm.add('(min-width: 761px)', () => {
     gsap.set(swings, { opacity: 0 });
+    hung.clear();
     const distance = () => Math.max(stage.scrollWidth - window.innerWidth, 0);
     // Scroll a bit longer than the travel so every tag gets its moment
     const length = () => '+=' + Math.max(distance() * 1.6, window.innerHeight);
@@ -405,25 +436,54 @@ function initSellMotion() {
         containerAnimation: tween,
         start: 'left 92%',
         once: true,
-        onEnter: () => hangTag(swing, i % 2 ? 30 : -34)
+        onEnter: () => hang(swing, i)
       });
     });
+    // Keyboard: focusing something in an off-screen tag scrolls the rail to it
+    const onFocus = e => {
+      const st = tween.scrollTrigger;
+      const d = distance();
+      if (!st || !d) return;
+      const item = e.target.closest('.hang');
+      if (!item) return;
+      const x = item.offsetLeft + item.offsetWidth + parseFloat(getComputedStyle(stage).paddingLeft) - window.innerWidth;
+      const y = st.start + gsap.utils.clamp(0, 1, x / d) * (st.end - st.start);
+      if (lenis) lenis.scrollTo(y, { immediate: true }); else window.scrollTo(0, y);
+      hang(item.querySelector('.hang__swing'), 0);
+    };
+    stage.addEventListener('focusin', onFocus);
     // Tags that are already on screen when the section arrives
     ScrollTrigger.create({
       trigger: stage,
       start: 'top 78%',
       once: true,
       onEnter: () => swings.forEach((swing, i) => {
-        if (swing.getBoundingClientRect().left < window.innerWidth * 0.92 && gsap.getProperty(swing, 'opacity') < 0.5) {
-          gsap.delayedCall(i * 0.14, () => hangTag(swing, i % 2 ? 30 : -34));
+        if (swing.getBoundingClientRect().left < window.innerWidth * 0.92 && !hung.has(swing)) {
+          gsap.delayedCall(i * 0.14, () => hang(swing, i));
         }
       })
     });
+    return () => stage.removeEventListener('focusin', onFocus);
   });
+
+  // gsap.matchMedia() resets the scroll position while it rebuilds the rail across
+  // the 760/761px breakpoint (e.g. turning a phone); put the visitor back.
+  let savedY = window.scrollY;
+  window.addEventListener('scroll', () => { savedY = window.scrollY; }, { passive: true });
+  window.matchMedia('(max-width: 760px)').addEventListener('change', () => {
+    const y = savedY;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, y);
+      lenis?.scrollTo(y, { immediate: true, force: true });
+      ScrollTrigger.update();
+    });
+  });
+
   mm.add('(max-width: 760px)', () => {
     gsap.set(swings, { opacity: 0 });
+    hung.clear();
     swings.forEach((swing, i) => {
-      ScrollTrigger.create({ trigger: swing, start: 'top 88%', once: true, onEnter: () => hangTag(swing, i % 2 ? 26 : -26) });
+      ScrollTrigger.create({ trigger: swing, start: 'top 88%', once: true, onEnter: () => hang(swing, i, i % 2 ? 26 : -26) });
     });
     ScrollTrigger.create({
       trigger: stage,
@@ -505,7 +565,7 @@ async function boot() {
 
   const hint = qs('.scroll-hint');
   const wardrobeReady = loadWardrobe({
-    reducedMotion: !motion,
+    reducedMotion,
     onProgress: p => { if (hint) hint.style.opacity = String(Math.max(0, 1 - p * 14)); }
   });
   const svgsReady = inlineSvgs();
@@ -518,21 +578,32 @@ async function boot() {
   await initInstagram({ lenis, reducedMotion: !motion });
   await svgsReady;
 
-  if (!motion) return;
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
+  if (!motion) {
+    hashTarget()?.scrollIntoView({ behavior: 'instant' });
+    return;
+  }
 
+  initSellMotion(); // pins first, so every trigger below accounts for the pin spacing
   initThemeMorph();
   initTextReveals();
   initParallax();
   initStoriesMotion();
   initMarquee();
   initFeedMotion();
-  initSellMotion();
   initGabiMotion();
   initHistoryMotion();
   initVisitMotion();
   initMagnetic();
   ScrollTrigger.refresh();
+
+  // The browser jumped to #section before content and pin spacing existed
+  const target = hashTarget();
+  if (target) {
+    lenis?.resize();
+    if (lenis) lenis.scrollTo(target, { immediate: true, force: true });
+    else target.scrollIntoView();
+  }
 }
 
 boot();

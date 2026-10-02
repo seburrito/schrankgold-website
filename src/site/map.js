@@ -3,6 +3,7 @@
 // into view. If it cannot load, the branded fallback card stays visible.
 
 const MAPLIBRE_JS = 'https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js';
+const MAPLIBRE_CSS = 'https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css';
 
 export function getPreferredMaps() {
   const ua = navigator.userAgent || navigator.vendor || '';
@@ -37,6 +38,13 @@ export function initMap() {
   const start = () => {
     if (started) return;
     started = true;
+    if (!document.querySelector('link[data-maplibre]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = MAPLIBRE_CSS;
+      link.dataset.maplibre = '';
+      document.head.append(link);
+    }
     loadScript(MAPLIBRE_JS).then(() => build(mapEl)).catch(() => {});
   };
   if (!('IntersectionObserver' in window)) { start(); return; }
@@ -93,7 +101,7 @@ function build(mapEl) {
         if (!e.features || !e.features.length) return;
         const pref = getPreferredMaps();
         popup.setLngLat(e.features[0].geometry.coordinates)
-          .setHTML('<strong>SchrankGold</strong><br/>Am Rätschenbach 11<br/>85435 Erding<br/><em>Mi 10–18, Do–Fr 10–13 &amp; 15–18 Uhr</em><br/><small><a href="' + pref.url + '" target="_blank" rel="noopener">In ' + (pref.provider === 'apple' ? 'Apple Maps' : 'Google Maps') + ' öffnen</a></small>')
+          .setHTML('<strong>SchrankGold</strong><br/>Am Rätschenbach 11<br/>85435 Erding<br/><em>MI 10–18 Uhr<br/>DO 10–13 Uhr &amp; 15–18 Uhr<br/>FR 10–13 Uhr &amp; 15–18 Uhr<br/>SA erster und letzter Samstag im Monat 10–13 Uhr</em><br/><small><a href="' + pref.url + '" target="_blank" rel="noopener">In ' + (pref.provider === 'apple' ? 'Apple Maps' : 'Google Maps') + ' öffnen</a></small>')
           .addTo(map);
       });
       map.on('mouseenter', 'store-icon-layer', () => { map.getCanvas().style.cursor = 'pointer'; });
