@@ -519,7 +519,7 @@ html.js .fuer-damen-label { opacity: 0; }
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 400;
-    font-size: calc(var(--title-fluid) * 0.13);
+    font-size: calc(var(--title-fluid) * 0.075);
     line-height: 1.1;
     color: var(--gold);
     white-space: nowrap;
@@ -541,35 +541,7 @@ html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
     100% { clip-path: inset(0 0 0 0); }
 }
 
-/* Gold light and sparkles that come out of the wardrobe as it opens */
-.wardrobe-stage { position: relative; display: flex; justify-content: center; }
-.wardrobe-glow {
-    position: absolute;
-    left: 50%;
-    top: 58%;
-    width: 150%;
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    background: radial-gradient(closest-side, rgba(255, 220, 130, 0.62), rgba(202, 153, 33, 0.26) 45%, rgba(202, 153, 33, 0) 72%);
-    opacity: 0;
-    scale: 0.4;
-    pointer-events: none;
-}
-.wardrobe-stage .wardrobe { position: relative; z-index: 1; }
-.sparkles { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
-.sparkle {
-    position: absolute;
-    left: 50%;
-    top: 55%;
-    width: 20px;
-    height: 20px;
-    margin: -10px 0 0 -10px;
-    filter: drop-shadow(0 0 6px rgba(255, 214, 120, 0.9));
-    background: var(--gold-light);
-    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
-    opacity: 0;
-}
-.sparkle:nth-child(3n) { background: #FFF3D1; }
+/* Crown dots cheer once the wardrobe is fully open */
 #wardrobe-svg.is-open #crown-dot-left { animation: jump 0.55s ease-in-out; }
 #wardrobe-svg.is-open #crown-dot-center { animation: jump 0.55s ease-in-out 0.1s; }
 #wardrobe-svg.is-open #crown-dot-right { animation: jump 0.55s ease-in-out 0.2s; }

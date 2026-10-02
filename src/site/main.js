@@ -38,12 +38,13 @@ if (motion) {
 
 /* ------------------------------ Deep links ------------------------------ */
 const LEGACY_HASH = { welcome: 'willkommen', 'so-funktionierts': 'abgeben', instagram: 'neuigkeiten', location: 'besuch', 'opening-hours': 'besuch', story: 'geschichte', contact: 'kontakt' };
+const decodeHash = () => { try { return decodeURIComponent(location.hash.slice(1)); } catch (e) { return ''; } };
 {
-  const h = decodeURIComponent(location.hash.slice(1));
+  const h = decodeHash();
   if (LEGACY_HASH[h]) history.replaceState(null, '', '#' + LEGACY_HASH[h]);
 }
 const hashTarget = () => {
-  const id = decodeURIComponent(location.hash.slice(1));
+  const id = decodeHash();
   return id ? document.getElementById(id) : null;
 };
 // Move keyboard focus to a section after jumping to it
@@ -413,6 +414,7 @@ function initSellMotion() {
         start: 'top top',
         end: length,
         pin: true,
+        refreshPriority: 1,
         scrub: 1,
         invalidateOnRefresh: true,
         onUpdate: self => sway(gsap.utils.clamp(-16, 16, self.getVelocity() / -140))
@@ -553,48 +555,31 @@ function initMagnetic() {
 
 /* ------------------------------ Wardrobe effects ------------------------------ */
 function createWardrobeFx() {
-  const glow = qs('[data-wardrobe-glow]');
-  const box = qs('[data-sparkles]');
-  if (!glow || !box || !motion) return () => {};
-  const sparks = Array.from({ length: 26 }, () => {
-    const sp = document.createElement('span');
-    sp.className = 'sparkle';
-    box.append(sp);
-    return sp;
-  });
-  let loops = [];
-  const start = () => {
-    if (loops.length) return;
-    const size = Math.max(box.offsetWidth, box.offsetHeight);
-    loops = sparks.map((sp, i) => {
-      const angle = gsap.utils.random(-165, -15) * Math.PI / 180; // fan upwards and sideways
-      const dist = gsap.utils.random(0.3, 0.7) * size;
-      return gsap.timeline({ repeat: -1, delay: i * 0.11, repeatDelay: gsap.utils.random(0.1, 1.2) })
-        .fromTo(sp, { x: 0, y: 0, scale: 0, opacity: 0, rotation: 0 }, {
-          x: Math.cos(angle) * dist,
-          y: Math.sin(angle) * dist,
-          scale: gsap.utils.random(0.5, 1.5),
-          rotation: gsap.utils.random(-180, 180),
-          opacity: 1,
-          duration: gsap.utils.random(1.4, 2.4),
-          ease: 'power2.out'
-        })
-        .to(sp, { opacity: 0, duration: 0.6 }, '-=0.6');
-    });
-  };
-  const stop = () => {
-    if (!loops.length) return;
-    loops.forEach(t => t.kill());
-    loops = [];
-    gsap.to(sparks, { opacity: 0, duration: 0.4 });
-  };
   return (progress, anim) => {
-    glow.style.opacity = String(Math.min(1, anim * 1.15));
-    glow.style.scale = String(0.4 + anim * 0.9);
-    if (anim > 0.55) start();
-    else if (anim < 0.4) stop();
     qs('#wardrobe-svg')?.classList.toggle('is-open', anim > 0.97);
   };
+}
+
+// Open the page with #debug to see what the colour morph measures
+function initDebug() {
+  if (location.hash !== '#debug') return;
+  const box = document.createElement('pre');
+  box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:999;margin:0;padding:8px 10px;background:#000c;color:#fff;font:12px/1.4 monospace;border-radius:8px;pointer-events:none';
+  document.body.append(box);
+  const line = () => {
+    const mid = innerHeight * 0.55;
+    const sec = [...document.querySelectorAll('[data-theme]')].find(x => { const r = x.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; });
+    box.textContent = [
+      'scrollY ' + Math.round(scrollY) + ' / ' + (document.documentElement.scrollHeight - innerHeight),
+      'innerH ' + innerHeight + '  innerW ' + innerWidth,
+      'section ' + (sec ? sec.id + ' (' + sec.dataset.theme + ')' : '-'),
+      'body bg ' + getComputedStyle(document.body).backgroundColor,
+      'classes ' + document.documentElement.className,
+      'motion ' + motion + '  reduce ' + reducedMotion
+    ].join('\n');
+    requestAnimationFrame(line);
+  };
+  line();
 }
 
 /* ------------------------------ Boot ------------------------------ */
@@ -602,6 +587,7 @@ async function boot() {
   const yearEl = qs('[data-year]');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  safe(initDebug);
   safe(initMenu);
   safe(initChrome);
   safe(initHours);
