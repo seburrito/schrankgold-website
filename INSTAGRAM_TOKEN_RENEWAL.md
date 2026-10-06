@@ -1,57 +1,68 @@
-# Instagram Access Token Erneuern
+# Instagram-Anbindung
 
-## Token-Gültigkeit prüfen
+Die Website zeigt die neuesten Instagram-Beiträge und die aktuellen Stories von
+**@_schrankgold**. So funktioniert es:
 
-1. Gehe zu: [developers.facebook.com/tools/debug/accesstoken](https://developers.facebook.com/tools/debug/accesstoken)
-2. Token aus `.env` einfügen → "Debug" klicken
-3. Unter "Expires" siehst du das Ablaufdatum
+1. Beim Bauen der Website (GitHub Actions → IONOS Deploy Now) holt
+   `prebuild-instagram.js` die Beiträge und Stories über die Instagram-API.
+2. Bilder und Story-Videos werden dabei **auf unseren eigenen Server kopiert**
+   (`ig-media/`). Besucherinnen laden nichts direkt von Instagram/Meta – gut für
+   den Datenschutz, und die Links laufen nicht ab.
+3. Der Workflow **„Instagram aktualisieren“** (`.github/workflows/instagram-refresh.yaml`)
+   baut die Seite alle 2 Stunden (06–22 Uhr) neu und verlängert einmal täglich den
+   Zugangs-Token. Dadurch läuft der Token nicht mehr ab.
+   Er startet automatisch, sobald er im Branch `main` ist. Manuell: GitHub →
+   Actions → „Instagram aktualisieren“ → „Run workflow“.
 
-## Token erneuern (vor Ablauf)
+Stories funktionieren nur mit einem **Instagram-Profi-Konto** (Business oder Creator).
+Gibt es gerade keine Story, zeigt die Website an dieser Stelle die neuesten Beiträge.
 
-Wenn der Token noch gültig ist, kannst du ihn einfach verlängern:
+## Einmalig: neuen Token erzeugen
 
-```bash
-curl -X GET "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=DEIN_AKTUELLER_TOKEN"
-```
+Nötig, wenn der Token abgelaufen ist (Fehler „Session has expired“ im Build-Log)
+oder ganz am Anfang.
 
-Das gibt einen neuen Token zurück mit 60 Tagen Gültigkeit.
+1. [developers.facebook.com](https://developers.facebook.com) → **Meine Apps** →
+   die SchrankGold-App öffnen.
+2. Anwendungsfall **Instagram** → **API-Einrichtung mit Instagram-Login**.
+3. Unter **„Zugriffstoken generieren“** das Konto **_schrankgold** hinzufügen bzw.
+   auswählen und **„Token generieren“** klicken, mit Instagram anmelden, Zugriff erlauben.
+4. Token kopieren.
 
-## Neuen Token generieren (wenn abgelaufen)
+Der Token muss für die Berechtigung `instagram_business_basic` ausgestellt sein
+(Standard bei diesem Ablauf).
 
-1. Gehe zu [developers.facebook.com](https://developers.facebook.com)
-2. Wähle die SchrankGold App
-3. "Instagram Basic Display" → "Basic Display"
-4. "User Token Generator" → "Generate Token"
-5. Instagram Login → Zugriff erlauben
-6. Neuen Token kopieren
+## Token hinterlegen
 
-## Token aktualisieren
+GitHub → Repository → **Settings** → **Secrets and variables** → **Actions** →
+`IG_ACCESS_TOKEN` bearbeiten → neuen Token einfügen → speichern.
 
-Nach dem Erneuern musst du den Token an zwei Stellen aktualisieren:
-
-### 1. Lokale `.env` Datei
+Für lokale Tests zusätzlich in der Datei `.env`:
 
 ```
 IG_ACCESS_TOKEN=NEUER_TOKEN_HIER
 ```
 
-### 2. GitHub Secret (für IONOS Deploy Now)
+## Empfohlen: automatische Speicherung verlängerter Tokens
 
-1. GitHub → Repository → Settings
-2. Secrets and variables → Actions
-3. `IG_ACCESS_TOKEN` bearbeiten
-4. Neuen Token einfügen und speichern
+Falls Instagram beim täglichen Verlängern einen *neuen* Token ausgibt, muss der
+Workflow ihn ins Secret schreiben dürfen. Dafür einmalig:
 
-## Automatische Erinnerung
+1. GitHub → Profilbild → **Settings** → **Developer settings** →
+   **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
+2. Repository: nur `schrankgold-website`. Berechtigung: **Secrets: Read and write**.
+3. Den erzeugten Token im Repository als Secret **`GH_SECRETS_TOKEN`** speichern.
 
-Der Token ist **60 Tage** gültig. Setze dir eine Erinnerung für ca. 50 Tage nach der Erneuerung.
+Ohne dieses Secret funktioniert alles weiter; der Workflow meldet dann nur eine
+Warnung, falls ein neuer Token gespeichert werden müsste.
 
 ## Fehlerbehebung
 
-Token testen:
-```bash
-curl -s "https://graph.instagram.com/me?fields=id,username&access_token=DEIN_TOKEN"
-```
-
-- ✅ Erfolg: `{"id":"...","username":"_schrankgold"}`
-- ❌ Abgelaufen: `{"error":{"message":"Error validating access token..."}}`
+- **Build-Log prüfen:** GitHub → Actions → letzter Lauf „Deploy Now: Build …“ →
+  Schritt „Prebuild Instagram feed“. Dort steht z. B.
+  `Saved 12 posts …` oder die Fehlermeldung von Instagram.
+- **Token testen:**
+  ```bash
+  curl -s "https://graph.instagram.com/me?fields=id,username&access_token=DEIN_TOKEN"
+  ```
+  ✅ `{"id":"...","username":"_schrankgold"}` – ❌ `{"error":{...}}` → neuen Token erzeugen.

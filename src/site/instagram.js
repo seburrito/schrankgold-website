@@ -122,8 +122,13 @@ function renderStories(slides, viewer) {
     const media = el('span', 'story-card__media');
     if (s.type === 'PLACEHOLDER') {
       media.append(placeholder(''));
+    } else if (s.poster) {
+      media.append(el('img', '', { src: s.poster, alt: '', loading: 'lazy' }));
     } else {
-      media.append(el('img', '', { src: s.poster || s.src, alt: '', loading: 'lazy' }));
+      // video story without a cover image: show its first frame
+      const v = el('video', '', { muted: '', playsinline: '', preload: 'metadata', src: s.src + '#t=0.1' });
+      v.muted = true;
+      media.append(v);
     }
     const meta = el('span', 'story-card__meta');
     const time = el('span', 'story-card__time');

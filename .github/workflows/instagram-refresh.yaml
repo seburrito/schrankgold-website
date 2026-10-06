@@ -1,0 +1,51 @@
+# Keeps the Instagram feed and stories on the website fresh.
+# - every 2 hours between 06:00 and 22:00 (German summer time) the site is
+#   rebuilt, which downloads the latest posts and stories
+# - once a day the Instagram access token is extended, so it never expires
+# Scheduled runs only start from the default branch (main).
+name: Instagram aktualisieren
+
+on:
+  schedule:
+    - cron: '7 4 * * *'        # daily: extend token + rebuild
+    - cron: '7 6-20/2 * * *'   # every 2 hours: rebuild
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency: instagram-refresh
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Instagram-Token verlängern
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '7 4 * * *'
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+        run: |
+          if [ -z "$IG_ACCESS_TOKEN" ]; then echo "::warning::Secret IG_ACCESS_TOKEN fehlt"; exit 0; fi
+          resp=$(curl -sS "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${IG_ACCESS_TOKEN}")
+          new=$(echo "$resp" | jq -r '.access_token // empty')
+          if [ -z "$new" ]; then
+            echo "::error::Token konnte nicht verlängert werden: $(echo "$resp" | jq -c '.error // .')"
+            exit 1
+          fi
+          echo "::add-mask::$new"
+          echo "Token gültig für weitere $(( $(echo "$resp" | jq -r '.expires_in') / 86400 )) Tage"
+          if [ "$new" != "$IG_ACCESS_TOKEN" ]; then
+            if [ -n "$GH_TOKEN" ]; then
+              gh secret set IG_ACCESS_TOKEN --body "$new" --repo "$GITHUB_REPOSITORY"
+              echo "Neuer Token im Secret IG_ACCESS_TOKEN gespeichert"
+            else
+              echo "::warning::Instagram hat einen neuen Token ausgegeben, aber GH_SECRETS_TOKEN fehlt – bitte Token manuell erneuern (siehe INSTAGRAM_TOKEN_RENEWAL.md)"
+            fi
+          fi
+
+      - name: Website neu bauen (holt neue Posts und Stories)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run schrankgold-website-orchestration.yaml --ref main --repo "$GITHUB_REPOSITORY"
