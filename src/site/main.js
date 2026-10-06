@@ -147,28 +147,44 @@ function initChrome() {
 
 /* ------------------------------ Motion ------------------------------ */
 function initThemeMorph() {
-  // The section crossing the 55% line of the viewport sets the page colour.
+  // The page colour follows the scroll position: it belongs to the section at
+  // 55% of the viewport and blends gradually into the next section's colour as
+  // that one approaches, so there are no hard jumps between dark and light.
   // Driven by plain scroll/resize events (not ScrollTrigger), so it keeps working
   // in embedded viewers; sections only turn see-through once this runs.
   const meta = qs('meta[name="theme-color"]');
   const sections = qsa('[data-theme]');
   if (!sections.length) return;
-  let current = null;
+  const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const colors = sections.map(sec => rgb(THEME_BG[sec.dataset.theme]));
+  let last = '';
   let queued = false;
   const pick = () => {
     queued = false;
-    const doc = document.documentElement;
-    const atEnd = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
-    const line = window.innerHeight * 0.55;
-    const active = atEnd ? sections[sections.length - 1] : sections.find(sec => {
+    const vh = window.innerHeight;
+    const line = vh * 0.55;
+    const zone = vh * 0.6; // how far before the next section the blend starts
+    const atEnd = vh + window.scrollY >= document.documentElement.scrollHeight - 2;
+    let i = sections.findIndex(sec => {
       const r = sec.getBoundingClientRect();
       return r.top <= line && r.bottom > line;
     });
-    const theme = (active || sections[0]).dataset.theme;
-    if (theme === current) return;
-    current = theme;
-    document.body.style.backgroundColor = THEME_BG[theme];
-    meta?.setAttribute('content', THEME_BG[theme]);
+    if (i < 0) i = 0;
+    let c = colors[i];
+    if (atEnd) c = colors[colors.length - 1];
+    else if (i < sections.length - 1) {
+      const dist = sections[i + 1].getBoundingClientRect().top - line;
+      if (dist < zone) {
+        const t = 1 - Math.max(dist, 0) / zone;
+        const e = t * t * (3 - 2 * t); // smoothstep
+        c = c.map((v, k) => Math.round(v + (colors[i + 1][k] - v) * e));
+      }
+    }
+    const css = `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+    if (css === last) return;
+    last = css;
+    document.body.style.backgroundColor = css;
+    meta?.setAttribute('content', css);
   };
   const queue = () => {
     if (queued) return;
@@ -180,6 +196,21 @@ function initThemeMorph() {
   lenis?.on('scroll', queue);
   pick();
   document.documentElement.classList.add('has-morph');
+}
+
+function initPillarsMotion() {
+  const items = qsa('.pillar');
+  if (!items.length) return;
+  gsap.set(items, { opacity: 0, y: 24 });
+  ScrollTrigger.create({
+    trigger: '.pillars',
+    start: 'top 88%',
+    once: true,
+    onEnter: () => {
+      gsap.to(items, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.12 });
+      items.forEach((it, i) => drawIcon(qs('.pillar__icon', it), 0.15 + i * 0.12));
+    }
+  });
 }
 
 function initHeroIntro() {
@@ -301,27 +332,6 @@ function initStoriesMotion() {
     card.addEventListener('pointerleave', () => {
       gsap.to(card, { rotateY: 0, rotateX: 0, y: 0, duration: 0.9, ease: 'elastic.out(1, 0.5)' });
     });
-  });
-}
-
-function initMarquee() {
-  const track = qs('.marquee__track');
-  if (!track) return;
-  const loop = gsap.to(track, { xPercent: -50, ease: 'none', duration: 30, repeat: -1 });
-  loop.totalTime(loop.duration() * 1000); // far from 0, so scrolling up (reverse) never completes it
-  let direction = 1;
-  ScrollTrigger.create({
-    onUpdate: self => {
-      direction = self.direction;
-      const boost = Math.min(Math.abs(self.getVelocity()) / 350, 5);
-      gsap.to(loop, {
-        timeScale: direction * (1 + boost),
-        duration: 0.2,
-        overwrite: true,
-        onComplete: () => gsap.to(loop, { timeScale: direction, duration: 1.2, ease: 'power2.out' })
-      });
-      gsap.to(track, { skewX: gsap.utils.clamp(-10, 10, self.getVelocity() / -260), duration: 0.3, overwrite: 'auto', onComplete: () => gsap.to(track, { skewX: 0, duration: 0.8 }) });
-    }
   });
 }
 
@@ -628,7 +638,7 @@ async function boot() {
   safe(initTextReveals);
   safe(initParallax);
   safe(initStoriesMotion);
-  safe(initMarquee);
+  safe(initPillarsMotion);
   safe(initFeedMotion);
   safe(initGabiMotion);
   safe(initHistoryMotion);

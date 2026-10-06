@@ -139,23 +139,18 @@
         </div>
         <h3 class="h3" data-reveal>Komm vorbei, wir freuen uns auf dich!</h3>
         <p class="manifest__text" data-scrub-words>Keine Second-HAND, sondern <span class="nowrap"><em>Second-BEST</em>-Ware</span> mitten in Erding.</p>
-        <p class="status" data-hours-status data-reveal role="status" aria-live="polite"><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span></p>
+        <ul class="pillars" aria-label="Was uns wichtig ist">
+          <li class="pillar"><svg class="pillar__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 25C7 14 14 7 26 6c0 12-7 19-18 19z"></path><path d="M7 25 18 14"></path></svg><span>Nachhaltigkeit</span></li>
+          <li class="pillar"><svg class="pillar__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M9 6h14l5 7-12 14L4 13z"></path><path d="M4 13h24M12 6l4 21 4-21"></path></svg><span>Qualität</span></li>
+          <li class="pillar"><svg class="pillar__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 12V9.5c0-1.5 3-1.8 3-4.3a3 3 0 0 0-6 0"></path><path d="M16 12 4 22h24z"></path></svg><span>Mode</span></li>
+          <li class="pillar"><svg class="pillar__icon" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27S5 20.5 5 12.5A5.6 5.6 0 0 1 16 9a5.6 5.6 0 0 1 11 3.5C27 20.5 16 27 16 27z"></path></svg><span class="pillar__cap">persönlicher Service</span></li>
+        </ul>
+        <a class="status status--link" href="#opening-hours" data-hours-status data-reveal aria-live="polite"><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span><svg class="status__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></a>
       </div>
       <div class="manifest__towers" aria-hidden="true">
-        <img class="tower tower--a" src="assets/erding-tower-full.svg" alt="" data-parallax="-12" />
-        <img class="tower tower--b" src="assets/schoener-turm.svg" alt="" data-parallax="-24" />
+        <img class="tower" src="assets/erding-tower-full.svg" alt="" data-parallax="-8" />
       </div>
     </section>
-
-    <!-- ===================== MARQUEE ===================== -->
-    <div class="marquee" aria-hidden="true" data-marquee>
-      <div class="marquee__track">
-        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
-        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
-        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
-        <span>Nachhaltigkeit</span><i>✦</i><span>Qualität</span><i>✦</i><span>Mode</span><i>✦</i><span>persönlicher Service</span><i>✦</i>
-      </div>
-    </div>
 
     <!-- ===================== NEUIGKEITEN: stories + feed ===================== -->
     <section class="news" id="neuigkeiten" data-theme="ink">
@@ -200,7 +195,7 @@
     </section>
 
     <!-- ===================== WARENANNAHME: tags on a clothes rail ===================== -->
-    <section class="sell" id="abgeben" data-theme="bone">
+    <section class="sell" id="abgeben" data-theme="deep">
       <div class="sell__pin" data-sell-pin>
         <div class="wrap sell__head">
           <div class="heading">
@@ -216,14 +211,14 @@
             <li class="hang">
               <div class="hang__swing">
                 <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
-                <article class="tag tag--deep">
+                <article class="tag tag--cream">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">1</span>
                     <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path><path d="M9 15l2 2 4-4"></path></svg>
                   </div>
                   <h4 class="tag__title">Dein Termin bei mir</h4>
                   <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich telefonisch oder über Whatsapp.</p>
-                  <a class="btn btn--gold btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
+                  <a class="btn btn--ink btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
                     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
                     Telefon
                   </a>
@@ -246,7 +241,7 @@
             <li class="hang">
               <div class="hang__swing">
                 <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
-                <article class="tag tag--red">
+                <article class="tag tag--blush">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">3</span>
                     <svg class="tag__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12.5" r="8.5"></circle><path d="M12 7.5v5l3.5 2"></path></svg>
