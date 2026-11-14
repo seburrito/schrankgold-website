@@ -1,7 +1,11 @@
-*.DS_Store
-.vscode/
-.vite/
 node_modules/
 dist/
+.vite/
 .env
 .env.local
+*.DS_Store
+.vscode/
+# written by "npm run instagram"
+public/instagram-feed.json
+public/instagram-stories.json
+public/ig-media/

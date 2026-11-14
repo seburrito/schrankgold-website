@@ -2,12 +2,9 @@
 <html lang="de">
 
 <head>
-  <script>document.documentElement.classList.add('js')</script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- @include partials/head.html -->
   <title>Schrankgold | Best Second in Erding</title>
   <meta name="description" content="SchrankGold - Dein Best-Second-Hand Laden für Damen in Erding. Hochwertige Mode, nachhaltig und mit persönlicher Beratung. Besuche uns für einzigartige Lieblingsstücke." />
-  <meta name="theme-color" content="#4D001B" />
 
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website" />
@@ -24,11 +21,7 @@
   <meta name="twitter:image" content="https://schrank.gold/assets/og-image.jpg" />
 
   <link rel="canonical" href="https://schrank.gold/" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <!-- Self-hosted fonts (no Google Fonts request, GDPR-friendly) -->
-  <link rel="preload" href="./assets/fonts/bodoni-moda-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="./assets/fonts/outfit-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="./src/site/site.css" />
+  <link rel="stylesheet" href="src/styles/home.css" />
 
   <script type="application/ld+json">
   {
@@ -56,54 +49,7 @@
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <!-- ===================== TOP BAR ===================== -->
-  <header class="topbar" data-topbar>
-    <a class="topbar__brand" href="#landing" aria-label="SchrankGold – nach oben">
-      <span class="topbar__crown" data-inline-svg="assets/sidebar-crown-icon.svg" aria-hidden="true"></span>
-      <span class="topbar__word">SCHRANK<b>GOLD</b></span>
-    </a>
-    <nav class="topbar__nav" aria-label="Hauptnavigation">
-      <a href="#willkommen">Willkommen</a>
-      <a href="#neuigkeiten">Neuigkeiten</a>
-      <a href="#abgeben">Warenannahme</a>
-      <a href="#gabi">Über Uns</a>
-      <a href="#geschichte">Unsere Geschichte</a>
-      <a href="#besuch">Besuche Uns</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
-    <a class="btn btn--gold btn--sm topbar__cta" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-magnetic>
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" class="fill"></circle></svg>
-      Instagram
-    </a>
-  </header>
-
-  <!-- Menu button: gold pill, the two lines fold into an X -->
-  <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu" data-menu-btn>
-    <span class="menu-btn__label" aria-hidden="true">Menü</span>
-    <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i></span>
-  </button>
-
-  <div class="menu" id="menu" hidden data-menu data-lenis-prevent>
-    <nav class="menu__nav" aria-label="Menü">
-      <a href="#willkommen" data-menu-link>Willkommen</a>
-      <a href="#neuigkeiten" data-menu-link>Neuigkeiten</a>
-      <a href="#abgeben" data-menu-link>Warenannahme</a>
-      <a href="#gabi" data-menu-link>Über Uns</a>
-      <a href="#geschichte" data-menu-link>Unsere Geschichte</a>
-      <a href="#besuch" data-menu-link>Besuche Uns</a>
-      <a href="#kontakt" data-menu-link>Kontakt</a>
-    </nav>
-    <img class="menu__art" src="assets/wardrobe.svg" alt="" aria-hidden="true" data-menu-art />
-    <div class="menu__foot" data-menu-link>
-      <div class="menu__social">
-        <a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" class="fill"></circle></svg></a>
-        <a href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg></a>
-        <a href="tel:+4917698306373" aria-label="Telefon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg></a>
-        <a href="mailto:schrankgold.erding@gmail.com" aria-label="E-Mail"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
-      </div>
-      <p class="menu__legal"><a href="impressum.html">Impressum</a> <span aria-hidden="true">·</span> <a href="privacy.html">Datenschutz</a></p>
-    </div>
-  </div>
+  <!-- @include partials/header.html home="" topbar-class="" -->
 
   <main id="main">
 
@@ -111,14 +57,14 @@
     <section class="landing-section" id="landing" data-theme="deep" aria-label="SchrankGold – best second für Damen">
       <div class="content-container">
         <div class="wardrobe-stage">
-          <div class="wardrobe" id="wardrobe-container" data-src="assets/wardrobe.svg"><noscript><img src="assets/wardrobe.svg" alt="" /></noscript></div>
+          <div class="wardrobe" id="wardrobe-container"><!-- @inline src/assets/img/wardrobe.svg --></div>
         </div>
         <div class="branding-block">
           <h1 class="schrankgold-title">
-            <img src="assets/title.svg" alt="Schrankgold" class="title-graphic" />
+            <img src="src/assets/img/title.svg" alt="Schrankgold" class="title-graphic" />
           </h1>
           <div class="best-second-subtitle">
-            <img src="assets/subtitle.svg" alt="best second" class="subtitle-graphic" />
+            <img src="src/assets/img/subtitle.svg" alt="best second" class="subtitle-graphic" />
           </div>
           <div class="fuer-damen-label">
             <span class="fuer-damen-graphic fuer-damen-text">für Damen</span>
@@ -148,7 +94,7 @@
         <a class="status status--link" href="#opening-hours" data-hours-status data-reveal aria-live="polite"><span class="status__dot"></span><span class="status__text">Öffnungsstatus wird geladen…</span><svg class="status__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></a>
       </div>
       <div class="manifest__towers" aria-hidden="true">
-        <img class="tower" src="assets/erding-tower-full.svg" alt="" data-parallax="-8" />
+        <img class="tower" loading="lazy" src="src/assets/img/erding-tower-full.svg" alt="" data-parallax="-8" />
       </div>
     </section>
 
@@ -163,11 +109,11 @@
           <p>Besucht uns auf Instagram und WhatsApp für aktuelle Infos zu unseren Neuzugängen, Events und Vieles mehr!</p>
           <div class="btn-row">
             <a class="btn btn--gold" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram Profil öffnen" data-magnetic>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" class="fill"></circle></svg>
+              <!-- @icon instagram -->
               Instagram
             </a>
             <a class="btn btn--ghost" href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp Chat öffnen" data-magnetic>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg>
+              <!-- @icon whatsapp -->
               WhatsApp
             </a>
           </div>
@@ -176,8 +122,8 @@
 
       <div class="stories" id="stories">
         <div class="wrap strip-nav" data-reveal>
-          <button type="button" class="round-btn" data-strip-prev aria-label="Stories zurück"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
-          <button type="button" class="round-btn" data-strip-next aria-label="Stories weiter"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
+          <button type="button" class="round-btn" data-strip-prev aria-label="Stories zurück"><!-- @icon chevron-left --></button>
+          <button type="button" class="round-btn" data-strip-next aria-label="Stories weiter"><!-- @icon chevron-right --></button>
         </div>
         <div class="stories__track" data-stories></div>
       </div>
@@ -210,7 +156,7 @@
           <ol class="sell__track" data-sell-track aria-label="Ablauf Verkaufsschritte">
             <li class="hang">
               <div class="hang__swing">
-                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <!-- @icon hook -->
                 <article class="tag tag--cream">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">1</span>
@@ -219,7 +165,7 @@
                   <h4 class="tag__title">Dein Termin bei mir</h4>
                   <p>Bitte ruft mich an und macht einen Termin aus.<br />Ohne Termin keine Abgabe.<br />Ihr erreicht mich telefonisch oder über Whatsapp.</p>
                   <a class="btn btn--ink btn--sm" href="tel:+4917698306373" aria-label="Jetzt anrufen" data-magnetic>
-                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>
+                    <!-- @icon phone -->
                     Telefon
                   </a>
                 </article>
@@ -227,7 +173,7 @@
             </li>
             <li class="hang">
               <div class="hang__swing">
-                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <!-- @icon hook -->
                 <article class="tag tag--gold">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">2</span>
@@ -240,7 +186,7 @@
             </li>
             <li class="hang">
               <div class="hang__swing">
-                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <!-- @icon hook -->
                 <article class="tag tag--blush">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">3</span>
@@ -253,7 +199,7 @@
             </li>
             <li class="hang">
               <div class="hang__swing">
-                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <!-- @icon hook -->
                 <article class="tag tag--ink">
                   <div class="tag__top">
                     <span class="tag__num" aria-hidden="true">4</span>
@@ -266,7 +212,7 @@
             </li>
             <li class="hang hang--doc">
               <div class="hang__swing">
-                <svg class="hook" viewBox="0 0 40 72" aria-hidden="true"><path d="M20 72 V20 a8 8 0 1 1 8 -8"></path></svg>
+                <!-- @icon hook -->
                 <div class="tag tag--paper">
                   <svg class="tag__icon tag__icon--doc" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5M9 13h6M9 17h6"></path></svg>
                   <p>Wie es im Detail funktioniert, könnt ihr hier nachlesen:</p>
@@ -284,9 +230,9 @@
       <div class="wrap gabi__inner">
         <figure class="gabi__visual" data-gabi-visual>
           <div class="gabi__arch">
-            <img src="assets/gabi.svg" alt="Gabi Strobl Illustration" class="gabi__img" />
+            <img loading="lazy" src="src/assets/img/gabi.svg" alt="Gabi Strobl Illustration" class="gabi__img" />
           </div>
-          <figcaption class="gabi__badge"><img src="assets/sidebar-crown-icon.svg" alt="" />Gabi Strobl</figcaption>
+          <figcaption class="gabi__badge"><img loading="lazy" src="src/assets/img/crown.svg" alt="" />Gabi Strobl</figcaption>
         </figure>
         <div class="gabi__copy">
           <div class="heading">
@@ -344,7 +290,7 @@
           </div>
           <div class="map" data-map-reveal>
             <div class="map__fallback">
-              <img class="map__pin" src="assets/sidebar-crown-icon.svg" alt="" />
+              <img class="map__pin" loading="lazy" src="src/assets/img/crown.svg" alt="" />
             </div>
             <div class="map__canvas" id="store-map"
               data-mt-url="https://api.maptiler.com/maps/0199f703-1173-7298-81df-98d97011dd27/style.json?key=IAwxH9Qf6uoA1zhZTKlI"
@@ -356,7 +302,7 @@
               <p>Am Rätschenbach 11<br />85435 Erding</p>
             </address>
             <a class="btn btn--light" href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" aria-label="Route öffnen" data-directions data-magnetic>
-              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+              <!-- @icon pin -->
               Route
             </a>
           </div>
@@ -365,57 +311,36 @@
     </section>
   </main>
 
-  <!-- ===================== FOOTER ===================== -->
-  <footer class="footer" id="kontakt" data-theme="ink" aria-labelledby="footer-heading">
-    <h2 id="footer-heading" class="visually-hidden">Kontakt und Rechtliches</h2>
-    <div class="wrap">
-      <p class="visually-hidden">SchrankGold</p>
-      <p class="footer__word" data-footer-word aria-hidden="true">Schrank<em>Gold</em></p>
-      <div class="footer__grid">
-        <ul class="footer__contact" aria-label="Kontaktmöglichkeiten">
-          <li><a href="tel:+4917698306373" aria-label="Telefon anrufen">+49&nbsp;176&nbsp;9830&nbsp;6373</a></li>
-          <li><a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram Profil _schrankgold">_schrankgold</a></li>
-          <li><a href="mailto:schrankgold.erding@gmail.com" aria-label="E-Mail an SchrankGold senden">schrankgold.erding@gmail.com</a></li>
-        </ul>
-        <div class="footer__legal">
-          <ul aria-label="Rechtliches">
-            <li><a href="impressum.html">Impressum</a></li>
-            <li><a href="privacy.html">Datenschutzerklärung</a></li>
-          </ul>
-          <p>&copy; <span data-year>2026</span> SchrankGold. Alle Rechte vorbehalten.</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <!-- @include partials/footer.html -->
 
   <!-- ===================== MOBILE QUICK BAR ===================== -->
   <nav class="quickbar" aria-label="Schnellaktionen" data-quickbar>
     <a href="tel:+4917698306373" class="quickbar__main">
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"></path></svg>Telefon
+      <!-- @icon phone -->Telefon
     </a>
     <a href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp Chat öffnen">
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg>WhatsApp
+      <!-- @icon whatsapp -->WhatsApp
     </a>
     <a href="https://www.google.com/maps/search/?api=1&amp;query=Am%20R%C3%A4tschenbach%2011%2C%2085435%20Erding" target="_blank" rel="noopener" aria-label="Route öffnen" data-directions>
-      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>Route
+      <!-- @icon pin -->Route
     </a>
   </nav>
 
   <!-- ===================== STORY VIEWER ===================== -->
   <div class="viewer" id="story-viewer" role="dialog" aria-modal="true" aria-label="Instagram-Story" hidden data-viewer>
     <div class="viewer__backdrop" data-viewer-close></div>
-    <button type="button" class="round-btn viewer__side viewer__side--prev" data-viewer-prev aria-label="Vorherige Story"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+    <button type="button" class="round-btn viewer__side viewer__side--prev" data-viewer-prev aria-label="Vorherige Story"><!-- @icon chevron-left --></button>
     <div class="viewer__frame" data-viewer-frame>
       <div class="viewer__bars" data-viewer-bars></div>
       <div class="viewer__head">
-        <span class="viewer__avatar"><img src="assets/wardrobe.svg" alt="" /></span>
+        <span class="viewer__avatar"><img loading="lazy" src="src/assets/img/wardrobe.svg" alt="" /></span>
         <b>_schrankgold</b>
         <span class="viewer__time" data-viewer-time></span>
         <button type="button" class="viewer__icon-btn" data-viewer-sound aria-label="Ton einschalten" hidden>
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4z"></path><path d="M22 9l-6 6M16 9l6 6"></path></svg>
+          <!-- @icon sound-off -->
         </button>
         <button type="button" class="viewer__icon-btn" data-viewer-close aria-label="Story schließen">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          <!-- @icon close -->
         </button>
       </div>
       <div class="viewer__media" data-viewer-media></div>
@@ -429,16 +354,10 @@
         </div>
       </div>
     </div>
-    <button type="button" class="round-btn viewer__side viewer__side--next" data-viewer-next aria-label="Nächste Story"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg></button>
+    <button type="button" class="round-btn viewer__side viewer__side--next" data-viewer-next aria-label="Nächste Story"><!-- @icon chevron-right --></button>
   </div>
 
-  <!-- Animation libraries (self-hosted copies of GSAP 3.14 and Lenis 1.3) -->
-  <script src="./assets/vendor/gsap.min.js"></script>
-  <script src="./assets/vendor/ScrollTrigger.min.js"></script>
-  <script src="./assets/vendor/SplitText.min.js"></script>
-  <script src="./assets/vendor/Flip.min.js"></script>
-  <script src="./assets/vendor/lenis.min.js"></script>
-  <script type="module" src="./src/site/main.js"></script>
+  <script type="module" src="src/main.js"></script>
 </body>
 
 </html>

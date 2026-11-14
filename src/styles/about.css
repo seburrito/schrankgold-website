@@ -1,0 +1,73 @@
+/* =====================================================================
+   ÜBER UNS (Gabi)
+   ===================================================================== */
+.gabi { padding: var(--section-y) 0; }
+.gabi__inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(48px, 7vw, 112px);
+    align-items: center;
+}
+.gabi__visual { position: relative; margin: 0; }
+.gabi__arch {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 999px 999px 28px 28px;
+    overflow: hidden;
+    background: var(--red);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+.gabi__img { width: 165%; max-width: none; height: auto; margin-bottom: -2px; flex: none; }
+.gabi__badge {
+    position: absolute;
+    right: -18px;
+    bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 22px;
+    border-radius: 18px;
+    background: var(--ink);
+    color: var(--gold-light);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 24px;
+    box-shadow: 0 24px 60px rgba(28, 8, 16, 0.3);
+}
+.gabi__badge img { width: 34px; height: auto; }
+.gabi__copy { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.gabi__copy .h3 { font-size: clamp(30px, 3.2vw, 50px); }
+.gabi__copy > p { color: var(--muted); font-size: clamp(17px, 1.2vw, 20px); line-height: 1.7; }
+
+/* =====================================================================
+   UNSERE GESCHICHTE
+   ===================================================================== */
+.history { padding: var(--section-y) 0; }
+.history__lead {
+    margin: clamp(32px, 4vw, 56px) 0 clamp(40px, 5vw, 72px);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(30px, 4vw, 64px);
+    line-height: 1.12;
+    color: var(--gold-light);
+    max-width: 24ch;
+}
+.history__copy {
+    columns: 2 320px;
+    column-gap: clamp(32px, 5vw, 88px);
+    color: var(--muted);
+    font-size: clamp(16px, 1.1vw, 19px);
+    line-height: 1.75;
+}
+.history__copy p { break-inside: avoid; margin: 0 0 1.15em; }
+.history__copy p:first-child::first-letter {
+    float: left;
+    font-family: var(--font-display);
+    font-size: 4.4em;
+    line-height: 0.82;
+    padding: 0.06em 0.1em 0 0;
+    color: var(--gold);
+}

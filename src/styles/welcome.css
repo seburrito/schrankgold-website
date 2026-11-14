@@ -1,0 +1,72 @@
+/* =====================================================================
+   WILLKOMMEN
+   ===================================================================== */
+.manifest {
+    position: relative;
+    padding: var(--section-y) 0 calc(var(--section-y) + 120px);
+    overflow: clip;
+}
+.manifest .wrap { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+.manifest__text {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.6vw, 58px);
+    line-height: 1.14;
+    max-width: 26ch;
+}
+.manifest__towers { position: absolute; inset: 0; pointer-events: none; }
+.tower {
+    --tw: min(44vw, 600px);
+    position: absolute;
+    right: calc(var(--tw) * -0.14);
+    bottom: calc(var(--tw) * -0.34);
+    width: var(--tw);
+    height: auto;
+    opacity: 0.9;
+}
+.pillars {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 0;
+    max-width: 980px;
+}
+.pillar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 26px 4px 0;
+    margin-right: 26px;
+    border-right: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(19px, 1.6vw, 26px);
+    line-height: 1.2;
+}
+.pillar:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+.pillar__cap { text-transform: capitalize; }
+.pillar__icon {
+    width: 30px;
+    height: 30px;
+    flex: none;
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.6s var(--ease-out);
+}
+.pillar:hover .pillar__icon { transform: rotate(-12deg) scale(1.15); }
+
+/* =====================================================================
+   SECTION HEAD
+   ===================================================================== */
+.section-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 28px 64px;
+}
+.section-head__aside { display: flex; flex-direction: column; gap: 22px; max-width: 30rem; color: var(--muted); }

@@ -1,0 +1,48 @@
+  <!-- ===================== TOP BAR ===================== -->
+  <header class="topbar{{topbar-class}}" data-topbar>
+    <a class="topbar__brand" href="{{home}}#landing" aria-label="SchrankGold – nach oben">
+      <span class="topbar__crown" aria-hidden="true"><!-- @inline src/assets/img/crown.svg --></span>
+      <span class="topbar__word">SCHRANK<b>GOLD</b></span>
+    </a>
+    <nav class="topbar__nav" aria-label="Hauptnavigation">
+      <a href="{{home}}#willkommen">Willkommen</a>
+      <a href="{{home}}#neuigkeiten">Neuigkeiten</a>
+      <a href="{{home}}#abgeben">Warenannahme</a>
+      <a href="{{home}}#gabi">Über Uns</a>
+      <a href="{{home}}#geschichte">Unsere Geschichte</a>
+      <a href="{{home}}#besuch">Besuche Uns</a>
+      <a href="{{home}}#kontakt">Kontakt</a>
+    </nav>
+    <a class="btn btn--gold btn--sm topbar__cta" href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" data-magnetic>
+      <!-- @icon instagram -->
+      Instagram
+    </a>
+  </header>
+
+  <!-- Menu button: gold pill, the two lines fold into an X -->
+  <button class="menu-btn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="menu" data-menu-btn>
+    <span class="menu-btn__label" aria-hidden="true">Menü</span>
+    <span class="menu-btn__icon" aria-hidden="true"><i></i><i></i></span>
+  </button>
+
+  <div class="menu" id="menu" hidden data-menu data-lenis-prevent>
+    <nav class="menu__nav" aria-label="Menü">
+      <a href="{{home}}#willkommen" data-menu-link>Willkommen</a>
+      <a href="{{home}}#neuigkeiten" data-menu-link>Neuigkeiten</a>
+      <a href="{{home}}#abgeben" data-menu-link>Warenannahme</a>
+      <a href="{{home}}#gabi" data-menu-link>Über Uns</a>
+      <a href="{{home}}#geschichte" data-menu-link>Unsere Geschichte</a>
+      <a href="{{home}}#besuch" data-menu-link>Besuche Uns</a>
+      <a href="{{home}}#kontakt" data-menu-link>Kontakt</a>
+    </nav>
+    <img class="menu__art" src="src/assets/img/wardrobe.svg" alt="" aria-hidden="true" loading="lazy" />
+    <div class="menu__foot" data-menu-link>
+      <div class="menu__social">
+        <a href="https://www.instagram.com/_schrankgold" target="_blank" rel="noopener" aria-label="Instagram"><!-- @icon instagram --></a>
+        <a href="https://wa.me/4917698306373" target="_blank" rel="noopener" aria-label="WhatsApp"><!-- @icon whatsapp --></a>
+        <a href="tel:+4917698306373" aria-label="Telefon"><!-- @icon phone --></a>
+        <a href="mailto:schrankgold.erding@gmail.com" aria-label="E-Mail"><!-- @icon mail --></a>
+      </div>
+      <p class="menu__legal"><a href="impressum.html">Impressum</a> <span aria-hidden="true">·</span> <a href="privacy.html">Datenschutz</a></p>
+    </div>
+  </div>

@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Schrankgold | Impressum</title>
-		<link rel="stylesheet" href="./src/styles/main.css" />
-		<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-		<!-- Open-source fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Proza+Libre:wght@400;600;700&display=swap"
-			rel="stylesheet" />
-		<!-- Roboto for buttons (semibold) -->
-		<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
-		<!-- MapLibre GL CSS (keeps layout parity with main page) -->
-		<link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
-	</head>
-	<body>
-		<!-- Navigation loaded dynamically from assets/templates/nav.html -->
 
-		<main class="legal-content">
+<head>
+  <!-- @include partials/head.html -->
+  <title>SchrankGold | Impressum</title>
+  <meta name="description" content="Impressum von SchrankGold, Am Rätschenbach 11, 85435 Erding." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="src/styles/legal.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- @include partials/header.html home="index.html" topbar-class=" is-visible" -->
+
+  <main id="main" class="legal">
+    <div class="legal__inner">
 			<h2>Impressum</h2>
 
 			<h3>Angaben gemäß § 5 TMG</h3>
@@ -67,8 +62,12 @@
 			<p>
 				Die durch die Seitenbetreiber erstellten Inhalte, Grafiken und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung der jeweiligen Autorinnen und Autoren bzw. Erstellerinnen und Ersteller. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen entfernen wir derartige Inhalte umgehend.
 			</p>
-		</main>
+		</div>
+  </main>
 
-		<script type="module" src="./script.js"></script>
-		</body>
-	</html>
+  <!-- @include partials/footer.html -->
+
+  <script type="module" src="src/legal.js"></script>
+</body>
+
+</html>
