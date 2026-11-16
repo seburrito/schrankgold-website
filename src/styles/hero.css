@@ -1,0 +1,208 @@
+/* =====================================================================
+   HERO – ported from header.css / wardrobe.css (unchanged logic)
+   ===================================================================== */
+.landing-section {
+    position: relative;
+    min-height: 100vh;
+    --landing-scroll-extra: clamp(1100px, 140vh + 46vw, 3800px);
+    padding-bottom: 0;
+    perspective: 1000px;
+}
+
+.landing-scroll-spacer { pointer-events: none; }
+html.js .landing-scroll-spacer { height: var(--landing-scroll-extra); }
+
+.content-container {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(24px, 3vh, 80px);
+    padding: clamp(20px, 3vh, 60px) 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --design-vw: 1440;
+    --title-min: 320px;
+    --title-max: 600px;
+    --title-fluid: clamp(var(--title-min), 52vw, var(--title-max));
+    --subtitle-ratio: 0.62;
+}
+
+.branding-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.5vh, 24px);
+}
+
+.schrankgold-title {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 10px;
+}
+
+.schrankgold-title .title-graphic {
+    width: var(--title-fluid);
+    height: auto;
+    display: block;
+}
+
+.best-second-subtitle {
+    transition: transform .5s ease-out, opacity .5s ease-out;
+}
+html.js .best-second-subtitle {
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.best-second-subtitle .subtitle-graphic {
+    width: calc(var(--title-fluid) * var(--subtitle-ratio));
+    height: auto;
+    display: block;
+}
+
+.fuer-damen-label {
+    align-self: flex-end;
+    margin: 6px 6% 0 0;
+    transition: opacity .2s ease-out;
+}
+html.js .fuer-damen-label { opacity: 0; }
+
+.fuer-damen-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: calc(var(--title-fluid) * 0.07);
+    line-height: 1.3;
+    color: var(--gold);
+    white-space: nowrap;
+    rotate: -11deg;
+    padding: 0 0.35em 0 0.15em; /* room for the italic overhang of the final n */
+}
+.fuer-damen-label .fuer-damen-graphic {
+    width: max-content;
+    display: block;
+}
+html.js .fuer-damen-label .fuer-damen-graphic { clip-path: inset(0 100% 0 0); }
+
+.fuer-damen-label.handwriting .fuer-damen-graphic { animation: handwrite 1.4s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+
+@keyframes handwrite {
+    0% { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+}
+
+/* Crown dots cheer once the wardrobe is fully open */
+#wardrobe-svg.is-open #crown-dot-left { animation: jump 0.55s ease-in-out; }
+#wardrobe-svg.is-open #crown-dot-center { animation: jump 0.55s ease-in-out 0.1s; }
+#wardrobe-svg.is-open #crown-dot-right { animation: jump 0.55s ease-in-out 0.2s; }
+
+.wardrobe {
+    width: clamp(320px, 50vw, 580px);
+    max-height: 55vh;
+    height: auto;
+    transition: width 0.4s ease;
+    display: flex;
+    justify-content: center;
+}
+
+.wardrobe svg {
+    width: 100%;
+    height: auto;
+    max-height: 55vh;
+    object-fit: contain;
+    display: block;
+}
+
+#wardrobe-svg {
+    width: 100%;
+    height: auto;
+    shape-rendering: geometricPrecision;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    transform-origin: center bottom;
+}
+
+#door-left-group,
+#door-right-group {
+    will-change: transform;
+    transform-origin: center;
+    transform-box: fill-box;
+    transform: translateZ(0);
+    transition: transform 0.4s linear;
+}
+#door-left-group { transform-origin: right center; transform-box: fill-box; }
+#door-right-group { transform-origin: left center; transform-box: fill-box; }
+
+@keyframes wobble {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(11deg); }
+    40% { transform: rotate(-6deg); }
+    60% { transform: rotate(3deg); }
+    80% { transform: rotate(-2deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.wobble-animation {
+    transform-origin: 50% 30%;
+    animation: wobble 2s ease-out forwards;
+}
+
+/* Intro: the wardrobe rises, the logo wipes in, the crown dots bounce once.
+   "backwards" keeps the animation from fighting the scroll-driven styles later. */
+@keyframes intro-rise { from { opacity: 0; transform: translateY(60px); } }
+@keyframes intro-fade { from { opacity: 0; } }
+@keyframes intro-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes jump-intro { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+html.js .wardrobe-stage { animation: intro-rise 1.4s var(--ease-out) backwards; }
+html.js .schrankgold-title { animation: intro-wipe 1.4s cubic-bezier(0.87, 0, 0.13, 1) 0.25s backwards; }
+html.js .scroll-hint { animation: intro-fade 1s ease 1s backwards; }
+html.js #crown-dot-left { animation: jump-intro 0.55s ease-in-out 0.9s; }
+html.js #crown-dot-center { animation: jump-intro 0.55s ease-in-out 1s; }
+html.js #crown-dot-right { animation: jump-intro 0.55s ease-in-out 1.1s; }
+
+.scroll-hint {
+    position: absolute;
+    bottom: clamp(16px, 4vh, 40px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #F3D9E2;
+}
+.scroll-hint i {
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+.scroll-hint i::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    animation: scrollhint 1.8s var(--ease-out) infinite;
+}
+@keyframes scrollhint {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100%); }
+}

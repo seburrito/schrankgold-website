@@ -1,0 +1,12 @@
+/* Homepage styles – the order of the imports is the cascade order */
+@import './base.css';
+@import './chrome.css';
+@import './hero.css';
+@import './welcome.css';
+@import './instagram.css';
+@import './sell.css';
+@import './about.css';
+@import './visit.css';
+@import './footer.css';
+@import './viewer.css';
+@import './responsive.css';

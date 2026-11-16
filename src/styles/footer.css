@@ -1,0 +1,32 @@
+/* =====================================================================
+   FOOTER
+   ===================================================================== */
+.footer { padding: 96px 0 calc(48px + env(safe-area-inset-bottom)); overflow: clip; }
+.footer__word {
+    font-family: var(--font-display);
+    font-size: min(calc((100vw - 2 * var(--gutter)) / 6.3), 220px);
+    line-height: 0.86;
+    padding-right: 0.15em;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+}
+.footer__grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+}
+.footer__contact,
+.footer__legal ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 32px; }
+.footer__contact { font-size: 17px; }
+.footer__contact a, .footer__legal a { text-decoration: none; }
+.footer__contact a:hover, .footer__legal a:hover { color: var(--gold); }
+.footer__legal { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; color: var(--muted); font-size: 15px; }
+
+/* =====================================================================
+   QUICK BAR (mobile)
+   ===================================================================== */
+.quickbar { display: none; }

@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Schrankgold | Datenschutzerklärung</title>
-    <link rel="stylesheet" href="./src/styles/main.css" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <!-- Open-source fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&family=Proza+Libre:wght@400;600;700&display=swap"
-      rel="stylesheet" />
-    <!-- Roboto for buttons (semibold) -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <!-- MapLibre GL CSS (keeps layout parity with main page) -->
-    <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
-  </head>
-  <body>
-    <!-- Navigation loaded dynamically from assets/templates/nav.html -->
 
-    <main class="legal-content">
+<head>
+  <!-- @include partials/head.html -->
+  <title>SchrankGold | Datenschutzerklärung</title>
+  <meta name="description" content="Datenschutzerklärung von SchrankGold, Am Rätschenbach 11, 85435 Erding." />
+  <meta name="robots" content="index, follow" />
+  <link rel="stylesheet" href="src/styles/legal.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- @include partials/header.html home="index.html" topbar-class=" is-visible" -->
+
+  <main id="main" class="legal">
+    <div class="legal__inner">
       <h2>Datenschutzerklärung</h2>
 
       <h3>1. Verantwortliche Stelle</h3>
@@ -52,14 +47,14 @@
       <p>Wir setzen keine eigenen Tracking- oder Marketing-Cookies ein.
 
       <h3>6. Eingebundene Inhalte und Drittanbieter</h3>
-      <h3>Schriften (Google Fonts)</h3>
+      <h3>Schriften</h3>
       <p>
-        Wir binden Schriftarten über Google Fonts (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland) ein. Beim Laden der Schriftarten wird Ihre IP-Adresse an Google übermittelt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer einheitlichen und performanten Darstellung). Weitere Informationen: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">https://policies.google.com/privacy</a>.
+        Die verwendeten Schriftarten werden von unserem eigenen Server ausgeliefert. Dabei wird keine Verbindung zu Google oder anderen Drittanbietern aufgebaut.
       </p>
 
       <h3>Kartenanzeige (MapLibre GL + MapTiler)</h3>
       <p>
-        Für die Standortkarte nutzen wir MapLibre GL JS (CDN-Auslieferung) und Kartendaten von MapTiler (MapTiler AG, Schweiz). Dabei können technische Daten wie IP-Adresse, Browser-Informationen und ggf. Standort-bezogene Anfragen an MapTiler übertragen werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bereitstellung einer Anfahrtskarte). Wenn Sie dies nicht wünschen, können Sie JavaScript in Ihrem Browser deaktivieren; die Karte wird dann nicht geladen.
+        Für die Standortkarte nutzen wir MapLibre GL JS (von unserem eigenen Server ausgeliefert) und Kartendaten von MapTiler (MapTiler AG, Schweiz). Dabei können technische Daten wie IP-Adresse, Browser-Informationen und ggf. Standort-bezogene Anfragen an MapTiler übertragen werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bereitstellung einer Anfahrtskarte). Wenn Sie dies nicht wünschen, können Sie JavaScript in Ihrem Browser deaktivieren; die Karte wird dann nicht geladen.
       </p>
 
       <h3>Routenlinks</h3>
@@ -69,7 +64,7 @@
 
       <h3>Instagram-Feed</h3>
       <p>
-        Auf unserer Website werden aktuelle Beiträge unseres Instagram-Profils (@_schrankgold) angezeigt. Die Daten werden über die Instagram Basic Display API serverseitig von unseren Servern abgerufen und lokal zwischengespeichert. Dabei werden keine Cookies gesetzt und keine Daten von Ihrem Browser an Instagram übertragen. Beim Klick auf einen Beitrag werden Sie zu Instagram weitergeleitet; dort gelten die Datenschutzbestimmungen von Meta Platforms Ireland Ltd.
+        Auf unserer Website werden aktuelle Beiträge unseres Instagram-Profils (@_schrankgold) angezeigt. Beiträge und aktuelle Stories werden beim Aktualisieren der Website über die Instagram-Schnittstelle (Instagram API) abgerufen, auf unserem Server gespeichert und von dort ausgeliefert. Dabei werden keine Cookies gesetzt und keine Daten von Ihrem Browser an Instagram übertragen. Beim Klick auf einen Beitrag werden Sie zu Instagram weitergeleitet; dort gelten die Datenschutzbestimmungen von Meta Platforms Ireland Ltd.
       </p>
 
       <h3>Instagram-Link</h3>
@@ -106,9 +101,13 @@
       </p>
 
       <h3>11. Aktualität dieser Datenschutzerklärung</h3>
-      <p>Stand: 09. Januar 2026. Wir passen diese Erklärung an, wenn sich unsere Dienste oder die Rechtslage ändern.</p>
-    </main>
+      <p>Stand: 14. November 2026. Wir passen diese Erklärung an, wenn sich unsere Dienste oder die Rechtslage ändern.</p>
+    </div>
+  </main>
 
-    <script type="module" src="./script.js"></script>
-  </body>
+  <!-- @include partials/footer.html -->
+
+  <script type="module" src="src/legal.js"></script>
+</body>
+
 </html>

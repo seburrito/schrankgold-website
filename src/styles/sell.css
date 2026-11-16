@@ -1,0 +1,176 @@
+/* =====================================================================
+   WARENANNAHME – the steps hang like price tags on a clothes rail
+   ===================================================================== */
+.sell { position: relative; }
+.sell__pin {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(32px, 5vh, 64px);
+    padding: clamp(88px, 11vh, 120px) 0 clamp(40px, 6vh, 72px);
+    overflow: hidden;
+    overflow: clip;
+}
+.sell__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px 48px;
+}
+.rail-stage {
+    position: relative;
+    width: max-content;
+    padding: 0 max(var(--gutter), (100vw - 1320px) / 2);
+}
+.rail {
+    position: absolute;
+    top: 8px;
+    left: calc(max(var(--gutter), (100vw - 1320px) / 2) - 28px);
+    right: calc(max(var(--gutter), (100vw - 1320px) / 2) - 28px);
+    height: 8px;
+    border-radius: 8px;
+    background: rgba(227, 194, 122, 0.25);
+}
+.rail::before,
+.rail::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    border-radius: 999px;
+    background: var(--gold);
+}
+.rail::before { left: -10px; }
+.rail::after { right: -10px; }
+.rail__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gold);
+    transform-origin: left center;
+}
+.sell__track {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(20px, 2.6vw, 44px);
+}
+.hang { position: relative; flex: none; }
+.hang__swing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: 50% 12px;
+    rotate: calc(var(--sway, 0) * 1deg);
+    filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
+    will-change: transform;
+}
+.hook {
+    position: relative;
+    z-index: 2;
+    width: 40px;
+    height: 72px;
+    fill: none;
+    stroke: var(--gold-light);
+    stroke-width: 3;
+    stroke-linecap: round;
+    overflow: visible;
+}
+.tag {
+    --tag-bg: var(--cream);
+    --tag-fg: #2A0A14;
+    --tag-accent: var(--red);
+    --tag-ring: var(--gold);
+    position: relative;
+    z-index: 1;
+    margin-top: -26px;
+    width: clamp(272px, 24vw, 350px);
+    padding: 54px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+    clip-path: polygon(46px 0, calc(100% - 46px) 0, 100% 46px, 100% 100%, 0 100%, 0 46px);
+}
+/* the eyelet the cord runs through */
+.tag::before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 999px;
+    background: var(--bg);
+    box-shadow: 0 0 0 3px var(--tag-ring);
+}
+.tag--ink { --tag-bg: var(--ink); --tag-fg: var(--cream); --tag-accent: var(--gold); --tag-ring: var(--gold); }
+.tag--blush { --tag-bg: var(--blush); --tag-fg: #2A0A14; --tag-accent: var(--red); --tag-ring: var(--deep); }
+.tag--gold { --tag-bg: var(--gold); --tag-fg: var(--ink); --tag-accent: var(--deep); --tag-ring: var(--deep); }
+.tag--paper { --tag-bg: #FFFDF8; width: clamp(240px, 19vw, 290px); align-items: flex-start; }
+.tag__top { display: flex; justify-content: space-between; align-items: flex-start; }
+.tag__num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(56px, 5vw, 76px);
+    line-height: 0.8;
+    color: var(--tag-accent);
+}
+.tag__icon {
+    width: 40px;
+    height: 40px;
+    fill: none;
+    stroke: var(--tag-accent);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.tag__icon--doc { width: 46px; height: 46px; }
+.tag__title {
+    margin: 10px 0 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(23px, 1.9vw, 29px);
+    line-height: 1.12;
+}
+.tag p { font-size: clamp(15px, 1.05vw, 17px); line-height: 1.6; }
+.tag strong {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.45em;
+    line-height: 1;
+    color: var(--tag-accent);
+}
+.tag .btn { align-self: flex-start; margin-top: 6px; }
+
+/* a short piece of rail per tag (phones, and the no-animation fallback) */
+.hang::before {
+    content: "";
+    display: none;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 150px;
+    height: 8px;
+    margin-left: -75px;
+    border-radius: 8px;
+    background: var(--gold);
+}
+
+/* Without the animated rail (reduced motion, no JS, scripts failed) the tags wrap instead of overflowing */
+html:not(.has-rail) .rail-stage { width: auto; }
+html:not(.has-rail) .rail { display: none; }
+html:not(.has-rail) .sell__track { flex-wrap: wrap; justify-content: center; gap: 40px clamp(20px, 2.6vw, 44px); }
+html:not(.has-rail) .hang::before { display: block; }

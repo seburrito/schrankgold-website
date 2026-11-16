@@ -1,0 +1,27 @@
+/* Impressum and Datenschutz: the shared look (tokens, bars, footer) plus a readable text column */
+@import './base.css';
+@import './chrome.css';
+@import './footer.css';
+@import './responsive.css';
+
+.legal { padding: 148px 0 var(--section-y); }
+.legal__inner {
+    width: min(780px, 100% - 2 * var(--gutter));
+    margin-inline: auto;
+    color: var(--cream);
+}
+.legal h2 {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1.05;
+    margin-bottom: 40px;
+}
+.legal h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin: 36px 0 10px;
+}
+.legal p { color: var(--muted); line-height: 1.75; font-size: 17px; margin-bottom: 12px; }
+.legal a { color: var(--gold-light); }
+.legal a:hover { color: var(--gold); }

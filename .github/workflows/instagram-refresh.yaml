@@ -1,0 +1,44 @@
+# Keeps the Instagram content on the website fresh.
+# - every 2 hours between 06:00 and 22:00 (German summer time) the site is rebuilt,
+#   which loads the latest posts and stories (each build also extends the token)
+# - once a day the token is checked strictly: if it cannot be extended or is
+#   invalid, this run fails and GitHub sends an e-mail
+# Scheduled runs only start from the default branch (main).
+name: Instagram aktualisieren
+
+on:
+  schedule:
+    - cron: '7 4 * * *'        # daily: token check
+    - cron: '7 6-20/2 * * *'   # every 2 hours: rebuild
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency: instagram-refresh
+
+jobs:
+  token:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '7 4 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: v22.x
+      - name: Instagram-Token prüfen und verlängern
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          GH_SECRETS_TOKEN: ${{ secrets.GH_SECRETS_TOKEN }}
+        run: node scripts/instagram-token.js --strict
+
+  rebuild:
+    needs: token
+    if: always() && (needs.token.result == 'success' || needs.token.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Website neu bauen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run schrankgold-website-orchestration.yaml --ref main --repo "$GITHUB_REPOSITORY"
