@@ -73,6 +73,18 @@
    sections are see-through. Without it every section keeps its own colour. */
 .has-morph [data-theme] { background: transparent; }
 
+/* During a blend the page can be dark behind a light section (or the other
+   way round). theme-morph.js marks those sections; they take the text colours
+   that fit the page colour, so text is readable at every scroll position. */
+.has-morph [data-theme][data-on="dark"] { --fg: var(--cream); --muted: #E6CBD4; --line: rgba(227, 194, 122, 0.25); --accent: var(--gold); }
+.has-morph [data-theme][data-on="light"] { --fg: #2A0A14; --muted: #5A3440; --line: rgba(77, 0, 27, 0.18); --accent: var(--red); }
+
+/* Registered as colours so the switch above fades instead of jumping */
+@property --fg { syntax: '<color>'; inherits: true; initial-value: #FFFFFF; }
+@property --muted { syntax: '<color>'; inherits: true; initial-value: #F3D9E2; }
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #CA9921; }
+.has-morph [data-theme] { transition: --fg 0.45s ease, --muted 0.45s ease, --accent 0.45s ease; }
+
 /* ---------- Base ---------- */
 *,
 *::before,

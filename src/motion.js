@@ -46,7 +46,7 @@ function initTextReveals() {
       autoSplit: true,
       onSplit: self => gsap.fromTo(self.words, { opacity: 0.16 }, {
         opacity: 1, stagger: 0.1, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 45%', scrub: true }
+        scrollTrigger: { trigger: el, start: el.dataset.scrubStart || 'top 80%', end: el.dataset.scrubEnd || 'bottom 45%', scrub: true }
       })
     });
   });

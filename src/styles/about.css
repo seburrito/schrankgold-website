@@ -1,7 +1,8 @@
 /* =====================================================================
    ÜBER UNS (Gabi)
    ===================================================================== */
-.gabi { padding: var(--section-y) 0; }
+/* extra room below, so the text has left the screen before the page turns dark again */
+.gabi { padding: var(--section-y) 0 max(calc(var(--section-y) * 1.5), 22vh); }
 .gabi__inner {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -45,6 +46,8 @@
    UNSERE GESCHICHTE
    ===================================================================== */
 .history { padding: var(--section-y) 0; }
+/* while the page is still light above this section (see theme-morph.js) */
+.history[data-on="light"] .history__lead { color: var(--red); }
 .history__lead {
     margin: clamp(32px, 4vw, 56px) 0 clamp(40px, 5vw, 72px);
     font-family: var(--font-display);
@@ -53,6 +56,7 @@
     font-size: clamp(30px, 4vw, 64px);
     line-height: 1.12;
     color: var(--gold-light);
+    transition: color 0.45s ease;
     max-width: 24ch;
 }
 .history__copy {
